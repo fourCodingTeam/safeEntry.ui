@@ -8,7 +8,7 @@ import "@/i18n";
 export default function RootLayout() {
   const [loaded] = useFonts({
     PoppinsNormal: require("@/assets/fonts/Poppins-Regular.ttf"),
-    PoppinsMedium: require("../assets/fonts/Poppins-Medium.ttf"),
+    PoppinsMedium: require("@/assets/fonts/Poppins-Medium.ttf"),
   });
 
   useEffect(() => {
