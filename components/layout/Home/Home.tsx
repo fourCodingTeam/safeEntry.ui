@@ -1,4 +1,4 @@
-import { Header, InviteCard } from "@/components/ui";
+import { Button, Header, InviteCard } from "@/components/ui";
 import React from "react";
 import { PageContainer } from "../styles";
 import { InviteCardsWrapper } from "./Home.styles";
@@ -23,6 +23,7 @@ export function Home() {
           inviteDate={"21 Fev, 2025"}
           status={false}
         />
+        <Button color={"blue"} text={"maumau"}/> 
       </InviteCardsWrapper>
     </PageContainer>
   );
