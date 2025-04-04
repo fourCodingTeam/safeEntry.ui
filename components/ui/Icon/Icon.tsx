@@ -1,7 +1,5 @@
 import React from "react";
-import { Image } from "react-native";
 import { IconProps } from "./Icon.types";
-import { theme } from "@/constants/theme";
 import { StyledIcon } from "./Icon.styles";
 
 const icons = {
@@ -9,6 +7,7 @@ const icons = {
   clock: require("@/assets/icons/clock-icon.png"),
   plus: require("@/assets/icons/plus-icon.png"),
   qr: require("@/assets/icons/qr-icon.png"),
+  icon: require("@/assets/icons/logo.png"),
 };
 
 export function Icon({ name, color }: IconProps) {
