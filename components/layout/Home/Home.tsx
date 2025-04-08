@@ -2,6 +2,7 @@ import { Button, Header, InviteCard } from "@/components/ui";
 import React from "react";
 import { PageContainer } from "../styles";
 import { InviteCardsWrapper } from "./Home.styles";
+import { theme } from "@/constants/theme";
 
 export function Home() {
   return (
@@ -23,7 +24,7 @@ export function Home() {
           inviteDate={"21 Fev, 2025"}
           status={false}
         />
-        <Button color={"blue"} text={"maumau"}/> 
+        <Button color={"blue"} text={"maumau"} />
       </InviteCardsWrapper>
     </PageContainer>
   );

@@ -1,8 +1,16 @@
 import styled from "styled-components/native";
-type ButtonContainerProps = {
-  color: string;
-};
-export const ButtonContainer = styled.View<ButtonContainerProps>`
-  background-color: ${({ color }: ButtonContainerProps) => color};
-  width: 100%;
+import { theme } from "@/constants/theme";
+import Animated from "react-native-reanimated";
+
+export const ButtonContainer = styled(Animated.View)`
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  padding: ${theme.sizes.md};
+  border-radius: ${theme.sizes.lg};
+`;
+
+export const ButtonText = styled.Text`
+  color: ${theme.colors.white};
+  font-size: ${theme.sizes.md};
 `;

@@ -1,11 +1,13 @@
 export const theme = {
   colors: {
     blue: "#293E92",
+    touchedBlue: "#6A7BB2",
     midnight: "#464555",
     midnight60: "#888995",
     white: "#ECF1F5",
     offWhite: "#DEE4E9",
     black: "#131315",
+    touchedBlack: "#404042",
     red: "#8A1126",
     purple: "#7E44C6",
     placeholder: "#95989B",
