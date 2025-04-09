@@ -3,7 +3,7 @@ import React from "react";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { View } from "react-native";
-import { Icon, TabBarIcon } from "@/components/ui";
+import { Header, Icon, TabBarIcon } from "@/components/ui";
 import { theme } from "@/constants/theme";
 
 export default function AppStack() {
