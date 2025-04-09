@@ -1,31 +1,79 @@
 import { Button, Header, InviteCard } from "@/components/ui";
 import React from "react";
 import { PageContainer } from "../styles";
-import { InviteCardsWrapper } from "./Home.styles";
-import { theme } from "@/constants/theme";
+import {
+  ImageWrapper,
+  InviteCardsWrapper,
+  StyledImage,
+  StyledSectionTitle,
+} from "./Home.styles";
+import { useRouter } from "expo-router";
+
+const invites = [
+  {
+    personName: "Thiago",
+    inviteDate: "27 Fev, 2025",
+    status: true,
+  },
+  {
+    personName: "Eduardo Pinha",
+    inviteDate: "25 Fev, 2025",
+    status: true,
+  },
+  {
+    personName: "Marcelo Gonçalves",
+    inviteDate: "21 Fev, 2025",
+    status: false,
+  },
+  {
+    personName: "Guilherme",
+    inviteDate: "20 Fev, 2025",
+    status: false,
+  },
+  {
+    personName: "Ana Maria",
+    inviteDate: "19 Fev, 2025",
+    status: false,
+  },
+  {
+    personName: "Thiago",
+    inviteDate: "18 Fev, 2025",
+    status: false,
+  },
+];
 
 export function Home() {
+  const router = useRouter();
+
   return (
-    <PageContainer>
-      <Header isGreeting={true} userName="Guilherme" />
+    <>
+      <ImageWrapper
+        activeOpacity={0.6}
+        onPress={() => {
+          router.replace("/formulario");
+        }}
+      >
+        <StyledImage source={require("@/assets/images/FoundInvites.png")} />
+      </ImageWrapper>
       <InviteCardsWrapper>
-        <InviteCard
-          personName={"Thiago de Pau"}
-          inviteDate={"27 Fev, 2025"}
-          status={true}
+        <StyledSectionTitle>Convites Ativos</StyledSectionTitle>
+        {invites
+          .sort((a, b) => Number(b.status) - Number(a.status))
+          .slice(0, 4)
+          .map((invite, index) => (
+            <InviteCard
+              key={index}
+              personName={invite.personName}
+              inviteDate={invite.inviteDate}
+              status={invite.status}
+            />
+          ))}
+        <Button
+          color={"blue"}
+          text={"Ver mais"}
+          onPress={() => router.replace("/historico")}
         />
-        <InviteCard
-          personName={"Thiago de Pau"}
-          inviteDate={"25 Fev, 2025"}
-          status={true}
-        />
-        <InviteCard
-          personName={"Thiago de Pau"}
-          inviteDate={"21 Fev, 2025"}
-          status={false}
-        />
-        <Button color={"blue"} text={"maumau"} />
       </InviteCardsWrapper>
-    </PageContainer>
+    </>
   );
 }

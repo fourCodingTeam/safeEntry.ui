@@ -1,11 +1,10 @@
-import { Home } from "@/components/layout";
-import React, { Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Home, PageLayout } from "@/components/layout";
+import React from "react-native";
 
 export default function HomePage() {
   return (
-    <SafeAreaView>
+    <PageLayout isGreeting={true} userName={"Guilherme"}>
       <Home />
-    </SafeAreaView>
+    </PageLayout>
   );
 }
