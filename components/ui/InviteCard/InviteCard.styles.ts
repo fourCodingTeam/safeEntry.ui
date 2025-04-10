@@ -9,7 +9,7 @@ export const InviteCardWrapper = styled.View`
   width: 100%;
   height: 82px;
   align-items: center;
-  shadowColor: ${theme.colors.blue};
+  shadowcolor: ${theme.colors.blue};
   elevation: 16;
   border-radius: ${theme.sizes.md};
   padding: ${theme.sizes.md} ${theme.sizes.lg};
@@ -23,11 +23,6 @@ export const StatusWrapper = styled.View`
   height: 100%;
   align-items: flex-end;
   justify-content: space-between;
-`;
-export const StyledText = styled.Text`
-  color: ${theme.colors.black};
-  font-family: ${theme.fonts.poppinsMedium};
-  font-size: ${theme.sizes.md};
 `;
 export const StyledDateString = styled.Text`
   color: ${theme.colors.midnight60};

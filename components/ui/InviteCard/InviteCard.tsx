@@ -1,13 +1,13 @@
 import React from "react";
+import { StyledText } from "../styles";
+import { Tag } from "../Tag";
 import {
   InviteCardWrapper,
   PersonInfoWrapper,
   StatusWrapper,
   StyledDateString,
-  StyledText,
 } from "./InviteCard.styles";
 import { InviteCardProps } from "./InviteCard.types";
-import { Tag } from "../Tag";
 
 export function InviteCard({
   personName,
