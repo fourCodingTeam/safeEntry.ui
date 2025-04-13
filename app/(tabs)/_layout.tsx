@@ -41,6 +41,7 @@ export default function AppStack() {
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} iconName={"house"} />
           ),
+          title: "",
         }}
       />
       <Tabs.Screen
@@ -49,6 +50,7 @@ export default function AppStack() {
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} iconName={"plus"} />
           ),
+          title: "",
         }}
       />
       <Tabs.Screen
@@ -57,6 +59,7 @@ export default function AppStack() {
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} iconName={"clock"} />
           ),
+          title: "",
         }}
       />
     </Tabs>

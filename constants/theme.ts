@@ -8,6 +8,7 @@ export const theme = {
     offWhite: "#DEE4E9",
     black: "#131315",
     black60: "#404042",
+    black40: "#C1C5C8",
     red: "#8A1126",
     purple: "#7E44C6",
     placeholder: "#95989B",
