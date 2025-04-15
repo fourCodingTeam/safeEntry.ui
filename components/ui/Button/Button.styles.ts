@@ -1,5 +1,5 @@
-import styled from "styled-components/native";
 import { theme } from "@/constants/theme";
+import styled from "styled-components/native";
 import { ButtonColors, colors } from "./Button.types";
 
 interface ButtonProps {
@@ -18,4 +18,5 @@ export const ButtonContainer = styled.TouchableOpacity<ButtonProps>`
 export const ButtonText = styled.Text`
   color: ${theme.colors.white};
   font-size: ${theme.sizes.md};
+  font-family: ${theme.fonts.poppinsMedium};
 `;

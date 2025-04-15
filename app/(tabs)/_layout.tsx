@@ -1,9 +1,7 @@
 import { Tabs } from "expo-router";
 import React from "react";
 
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { View } from "react-native";
-import { Header, Icon, TabBarIcon } from "@/components/ui";
+import { TabBarIcon } from "@/components/ui";
 import { theme } from "@/constants/theme";
 
 export default function AppStack() {
