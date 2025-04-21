@@ -1,5 +1,4 @@
 import { Button, InviteCard } from "@/components/ui";
-import { StartEndCard } from "@/components/ui/StartEndCard/StartEndCard";
 import { useRouter } from "expo-router";
 import React from "react";
 import {
@@ -72,13 +71,6 @@ export function Home() {
           color={"blue"}
           text={"Ver mais"}
           onPress={() => router.replace("/historico")}
-        />
-        <StartEndCard
-          startTitle={"O filho de Judas é azul"}
-          startDescription={"Belonia é igual a Babilonia"}
-          isFinished
-          endTitle={"O filho de Judas é azul"}
-          endDescription={"Belonia é igual a Babilonia"}
         />
       </InviteCardsWrapper>
     </>

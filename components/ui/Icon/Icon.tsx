@@ -1,6 +1,6 @@
 import React from "react";
-import { IconProps } from "./Icon.types";
 import { StyledIcon } from "./Icon.styles";
+import { IconProps } from "./Icon.types";
 
 const icons = {
   house: require("@/assets/icons/house-icon.png"),
@@ -8,6 +8,7 @@ const icons = {
   plus: require("@/assets/icons/plus-icon.png"),
   qr: require("@/assets/icons/qr-icon.png"),
   icon: require("@/assets/icons/logo.png"),
+  back: require("@/assets/icons/back-icon.png"),
 };
 
 export function Icon({ name, color }: IconProps) {
