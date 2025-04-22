@@ -1,13 +1,13 @@
-import { Button, Header, InviteCard } from "@/components/ui";
+import { Button, InviteCard } from "@/components/ui";
+import { StartEndCard } from "@/components/ui/StartEndCard/StartEndCard";
+import { useRouter } from "expo-router";
 import React from "react";
-import { PageContainer } from "../styles";
 import {
   ImageWrapper,
   InviteCardsWrapper,
   StyledImage,
   StyledSectionTitle,
 } from "./Home.styles";
-import { useRouter } from "expo-router";
 
 const invites = [
   {
@@ -72,6 +72,13 @@ export function Home() {
           color={"blue"}
           text={"Ver mais"}
           onPress={() => router.replace("/historico")}
+        />
+        <StartEndCard
+          startTitle={"O filho de Judas é azul"}
+          startDescription={"Belonia é igual a Babilonia"}
+          isFinished
+          endTitle={"O filho de Judas é azul"}
+          endDescription={"Belonia é igual a Babilonia"}
         />
       </InviteCardsWrapper>
     </>
