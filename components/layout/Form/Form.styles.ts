@@ -23,9 +23,3 @@ export const StyledSectionTitle = styled.Text`
   font-family: ${theme.fonts.poppinsNormal};
   color: ${theme.colors.placeholder};
 `;
-
-export const Subtitle = styled.Text`
-  font-size: ${theme.sizes.md};
-  font-family: ${theme.fonts.poppinsNormal};
-  color: ${theme.colors.black};
-`;

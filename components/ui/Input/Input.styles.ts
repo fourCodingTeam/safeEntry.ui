@@ -50,3 +50,9 @@ export const OptionItem = styled.TouchableOpacity<OptionItemProps>`
     isLast ? "0px" : "1px"};
   border-bottom-color: ${theme.colors.black40};
 `;
+
+export const Subtitle = styled.Text`
+  font-size: ${theme.sizes.md};
+  font-family: ${theme.fonts.poppinsNormal};
+  color: ${theme.colors.black};
+`;

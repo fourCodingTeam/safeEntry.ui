@@ -10,11 +10,13 @@ import {
   SelectButtonText,
   OptionList,
   OptionItem,
+  Subtitle,
 } from "./Input.styles";
 
 export function Input({
   type,
   value,
+  label,
   onChange,
   placeholder,
   options = [],
@@ -26,14 +28,18 @@ export function Input({
   return (
     <InputWrapper>
       {type === "text" ? (
-        <StyledTextInput
-          value={value}
-          placeholder={placeholder}
-          editable={!disabled}
-          onChangeText={onChange}
-        />
+        <>
+          <Subtitle>{label}</Subtitle>
+          <StyledTextInput
+            value={value}
+            placeholder={placeholder}
+            editable={!disabled}
+            onChangeText={onChange}
+          />
+        </>
       ) : type === "select" ? (
         <PickerWrapper>
+          <Subtitle>{label}</Subtitle>
           <SelectButton
             placeholder={placeholder}
             onPress={() => setShowOptions(!showOptions)}
@@ -63,12 +69,16 @@ export function Input({
         </PickerWrapper>
       ) : (
         <>
-          <SelectButton onPress={() => setShowPicker(true)} disabled={disabled}>
+          <Subtitle>{label}</Subtitle>
+          <SelectButton
+            label={label}
+            onPress={() => setShowPicker(true)}
+            disabled={disabled}
+          >
             <SelectButtonText>
               {value ? new Date(value).toLocaleDateString() : placeholder}
             </SelectButtonText>
           </SelectButton>
-
           <DateTimePickerModal
             isVisible={showPicker}
             mode="date"

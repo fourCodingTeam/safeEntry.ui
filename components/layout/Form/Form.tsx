@@ -6,7 +6,6 @@ import {
   FormWrapper,
   StyledImage,
   StyledSectionTitle,
-  Subtitle,
 } from "./Form.styles";
 import { useRouter } from "expo-router";
 
@@ -19,31 +18,31 @@ export function Form() {
   return (
     <>
       <FormWrapper>
-        <Subtitle>Nome</Subtitle>
         <Input
           type="text"
+          label="Nome"
           placeholder="Digite o nome do visitante"
           value={nome}
           onChange={setNome}
         />
-        <Subtitle>Motivo</Subtitle>
         <Input
           type="select"
+          label="Motivo"
           placeholder="Selecione o motivo da visita"
           value={reason}
           onChange={setReason}
           options={["Sexo", "Ifood", "Visita"]}
         />
-        <Subtitle>Data da visita</Subtitle>
         <Input
           type="date"
+          label="Data da visita"
           placeholder="Selecione a data da visita"
           value={visitDate}
           onChange={setVisitDate}
         />
-        <Subtitle>Validade do convite</Subtitle>
         <Input
           type="select"
+          label="Validade do convite"
           placeholder="Selecione a validade do convite"
           value={InvitValidity}
           onChange={setInvitValidity}
