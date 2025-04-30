@@ -1,6 +1,6 @@
-import { PageLayout, Form } from "@/components/layout/";
+import { Form, PageLayout } from "@/components/layout/";
 
-import React, { Text } from "react-native";
+import React from "react-native";
 
 export default function FormularioPage() {
   return (
