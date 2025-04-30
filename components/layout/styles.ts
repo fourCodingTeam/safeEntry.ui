@@ -6,5 +6,5 @@ export const PageContainer = styled.View`
   justify-content: center;
   padding-vertical: ${theme.sizes.lgMax};
   padding-horizontal: ${theme.sizes.mdMax};
-  gap: ${theme.sizes.lgMax};
+  gap: ${theme.sizes.md};
 `;
