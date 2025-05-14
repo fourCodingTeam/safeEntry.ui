@@ -1,7 +1,5 @@
-import React from "react";
-import { View } from "react-native";
 import { Header } from "@/components/ui";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React from "react";
 import { PageContainer } from "../styles";
 
 type PageProps = {
@@ -11,19 +9,10 @@ type PageProps = {
   userName?: string;
 };
 
-export function PageLayout({
-  children,
-  pageTitle,
-  isGreeting = false,
-  userName,
-}: PageProps) {
+export function PageLayout({ children, pageTitle, userName }: PageProps) {
   return (
     <PageContainer>
-      <Header
-        isGreeting={isGreeting}
-        pageTitle={pageTitle}
-        userName={userName}
-      />
+      <Header pageTitle={pageTitle} userName={userName} />
       {children}
     </PageContainer>
   );

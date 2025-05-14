@@ -1,54 +1,65 @@
-import styled from "styled-components/native";
 import { theme } from "@/constants/theme";
+import styled from "styled-components/native";
+interface OptionItemProps {
+  isLast?: boolean;
+}
+
+interface OptionItemProps {
+  isLast?: boolean;
+}
 
 export const InputWrapper = styled.View`
   width: 100%;
-  margin-bottom: ${theme.sizes.sm};
 `;
 
 export const StyledTextInput = styled.TextInput`
-  padding: ${theme.sizes.sm};
-  border-radius: ${theme.sizes.mdMax};
-  border: 1px solid ${theme.colors.black40};
-  color: ${theme.colors.black};
+  max-height: 200px;
+  padding: ${theme.sizes.md};
+  border-radius: ${theme.sizes.sm};
+  border: 1px solid ${theme.colors.placeholder};
+  color: ${theme.colors.black60};
+  font-size: ${theme.sizes.md};
+  background-color: ${theme.colors.white};
 `;
 
 export const PickerWrapper = styled.View`
   position: relative;
 `;
 
-export const SelectButton = styled.TouchableOpacity`
-  padding: ${theme.sizes.sm};
-  border-radius: ${theme.sizes.mdMax};
-  border: 1px solid ${theme.colors.black40};
+export const StyledSelectInput = styled.TouchableOpacity`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: ${theme.sizes.md};
+  border-radius: ${theme.sizes.sm};
+  border: 1px solid ${theme.colors.placeholder};
   background-color: ${theme.colors.white};
+  font-size: ${theme.sizes.md};
 `;
 
-export const SelectButtonText = styled.Text`
-  color: ${theme.colors.black};
+export const StyledSelectInputText = styled.Text`
+  color: ${theme.colors.placeholder};
+  font-size: ${theme.sizes.md};
 `;
 
-export const OptionList = styled.View`
+export const OptionList = styled.ScrollView`
+  width: 100%;
+  max-height: 200px;
   border: 1px solid ${theme.colors.black40};
-  border-radius: ${theme.sizes.md};
-  margin-top: 1px;
+  border-radius: ${theme.sizes.sm};
   border-bottom: 1px solid ${theme.colors.black40};
   background-color: ${theme.colors.white};
+  margin-top: 22%;
+  position: absolute;
+  z-index: 1010;
 `;
 
-interface OptionItemProps {
-  isLast?: boolean;
-}
-
-interface OptionItemProps {
-  isLast?: boolean;
-}
-
 export const OptionItem = styled.TouchableOpacity<OptionItemProps>`
-  padding: ${theme.sizes.sm};
+  padding: ${theme.sizes.md};
   border-bottom-width: ${({ isLast }: OptionItemProps) =>
     isLast ? "0px" : "1px"};
   border-bottom-color: ${theme.colors.black40};
+  font-size: ${theme.sizes.md};
 `;
 
 export const Subtitle = styled.Text`

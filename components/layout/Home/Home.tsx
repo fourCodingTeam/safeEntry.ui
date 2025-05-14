@@ -1,6 +1,7 @@
 import { Button, InviteCard } from "@/components/ui";
 import { useRouter } from "expo-router";
 import React from "react";
+import { PageLayout } from "../PageLayout";
 import {
   ImageWrapper,
   InviteCardsWrapper,
@@ -8,48 +9,17 @@ import {
   StyledSectionTitle,
 } from "./Home.styles";
 
-const invites = [
-  {
-    personName: "Thiago",
-    inviteDate: "27 Fev, 2025",
-    status: true,
-  },
-  {
-    personName: "Eduardo Pinha",
-    inviteDate: "25 Fev, 2025",
-    status: true,
-  },
-  {
-    personName: "Marcelo Gonçalves",
-    inviteDate: "21 Fev, 2025",
-    status: false,
-  },
-  {
-    personName: "Guilherme",
-    inviteDate: "20 Fev, 2025",
-    status: false,
-  },
-  {
-    personName: "Ana Maria",
-    inviteDate: "19 Fev, 2025",
-    status: false,
-  },
-  {
-    personName: "Thiago",
-    inviteDate: "18 Fev, 2025",
-    status: false,
-  },
-];
+import invites from "@/mock/invites.json";
 
 export function Home() {
   const router = useRouter();
 
   return (
-    <>
+    <PageLayout userName={"Guilherme"}>
       <ImageWrapper
         activeOpacity={0.6}
         onPress={() => {
-          router.replace("/formulario");
+          router.push("/formulario");
         }}
       >
         <StyledImage source={require("@/assets/images/FoundInvites.png")} />
@@ -59,11 +29,11 @@ export function Home() {
         {invites
           .sort((a, b) => Number(b.status) - Number(a.status))
           .slice(0, 4)
-          .map((invite, index) => (
+          .flatMap((invite, index) => (
             <InviteCard
               key={index}
-              personName={invite.personName}
-              inviteDate={invite.inviteDate}
+              personName={invite.nome}
+              inviteDate={invite.inicioVisita}
               status={invite.status}
             />
           ))}
@@ -73,6 +43,6 @@ export function Home() {
           onPress={() => router.replace("/historico")}
         />
       </InviteCardsWrapper>
-    </>
+    </PageLayout>
   );
 }

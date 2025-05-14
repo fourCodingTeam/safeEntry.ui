@@ -9,10 +9,11 @@ export const InviteCardWrapper = styled.View`
   width: 100%;
   height: 82px;
   align-items: center;
-  shadowcolor: ${theme.colors.blue};
-  elevation: 16;
+  border: 1px solid ${theme.colors.black40};
   border-radius: ${theme.sizes.md};
-  padding: ${theme.sizes.md} ${theme.sizes.lg};
+  padding: ${theme.sizes.md} ${theme.sizes.md};
+  margin-bottom: ${theme.sizes.sm};
+  elevation: 4;
 `;
 export const PersonInfoWrapper = styled.View`
   height: 100%;

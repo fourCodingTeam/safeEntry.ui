@@ -3,7 +3,19 @@ import styled from "styled-components/native";
 
 export const FormWrapper = styled.View`
   width: 100%;
+  gap: ${theme.sizes.md};
+`;
+
+export const InputsWrapper = styled.View`
+  width: 100%;
   gap: ${theme.sizes.sm};
+  padding-horizontal: ${theme.sizes.md};
+`;
+
+export const ButtonWrapper = styled.View`
+  width: 100%;
+  gap: ${theme.sizes.sm};
+  padding-horizontal: ${theme.sizes.md};
 `;
 
 export const ImageWrapper = styled.TouchableOpacity`

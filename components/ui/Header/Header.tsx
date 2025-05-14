@@ -1,17 +1,27 @@
+import { useRouter } from "expo-router";
 import React from "react";
+import {
+  HeaderText,
+  HeaderWrapper,
+  StyledTouchableOpacity,
+} from "./Header.styles";
 import { HeaderProps } from "./Header.types";
-import { HeaderWrapper, HeaderText } from "./Header.styles";
-import { Image } from "react-native";
 
-export function Header({ isGreeting, userName, pageTitle }: HeaderProps) {
+export function Header({ userName, pageTitle }: HeaderProps) {
+  const router = useRouter();
+
   return (
     <HeaderWrapper>
-      {isGreeting ? (
+      {userName ? (
         <HeaderText>Olá, {userName}</HeaderText>
       ) : (
         <HeaderText>{pageTitle}</HeaderText>
       )}
-      <Image source={require("@/assets/icons/logo.png")} />
+      <StyledTouchableOpacity
+        onPress={() => {
+          router.canGoBack() ? router.back() : router.push("/");
+        }}
+      ></StyledTouchableOpacity>
     </HeaderWrapper>
   );
 }
