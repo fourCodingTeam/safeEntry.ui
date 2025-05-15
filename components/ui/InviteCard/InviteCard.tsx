@@ -12,7 +12,8 @@ import { InviteCardProps } from "./InviteCard.types";
 export function InviteCard({
   personName,
   inviteDate,
-  status,
+  ativo,
+  onPress,
 }: InviteCardProps) {
   const formatDate = (dateString: string) => {
     const formattedDate = new Date(dateString).toLocaleDateString("pt-BR", {
@@ -27,14 +28,14 @@ export function InviteCard({
   };
 
   return (
-    <InviteCardWrapper>
+    <InviteCardWrapper activeOpacity={0.8} onPress={onPress}>
       <PersonInfoWrapper>
         <StyledText>{formatName(personName)}</StyledText>
         <StyledDateString>{formatDate(inviteDate)}</StyledDateString>
       </PersonInfoWrapper>
       <StatusWrapper>
         <StyledText>Status</StyledText>
-        <Tag active={status} />
+        <Tag active={ativo} />
       </StatusWrapper>
     </InviteCardWrapper>
   );

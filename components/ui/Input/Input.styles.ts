@@ -49,7 +49,7 @@ export const OptionList = styled.ScrollView`
   border-radius: ${theme.sizes.sm};
   border-bottom: 1px solid ${theme.colors.black40};
   background-color: ${theme.colors.white};
-  margin-top: 22%;
+  margin-top: 83px;
   position: absolute;
   z-index: 1010;
 `;

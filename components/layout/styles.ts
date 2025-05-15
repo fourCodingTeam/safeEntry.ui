@@ -9,3 +9,9 @@ export const PageContainer = styled.View`
   justify-content: flex-start;
   gap: ${theme.sizes.md};
 `;
+
+export const StyledText = styled.Text`
+  font-family: ${theme.fonts.poppinsNormal};
+  font-size: ${theme.sizes.mdMax};
+  color: ${theme.colors.blue};
+`;

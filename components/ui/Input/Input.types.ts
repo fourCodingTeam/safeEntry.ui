@@ -2,10 +2,10 @@ export type InputType = "text" | "select" | "date";
 
 export interface InputProps {
   type: InputType;
-  value: string;
+  value: string | Date;
   label?: string;
   placeholder?: string;
-  onChange: (value: string) => void;
+  onChange: (value: string | Date) => void;
   options?: {
     label: string;
     value: string;

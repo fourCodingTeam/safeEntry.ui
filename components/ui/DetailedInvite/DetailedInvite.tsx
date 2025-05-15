@@ -1,5 +1,8 @@
+import invitesData from "@/mock/invites.json";
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { Image, Modal, Text, TouchableOpacity, View } from "react-native";
+import { Modal, TouchableOpacity } from "react-native";
+import QRCode from "react-native-qrcode-svg";
 import { Button } from "../Button";
 import { StartEndCard } from "../StartEndCard/StartEndCard";
 import {
@@ -7,15 +10,30 @@ import {
   CardsWrapper,
   ContentWrapper,
   Header,
+  QrCodeShareWrapper,
   Title,
 } from "./DetailedInvite.styles";
-import { DetailedInviteProps } from "./DetailedInvite.types";
+
+type DetailedInviteProps = {
+  visible: boolean;
+  inviteId: number;
+  onClose: () => void;
+};
 
 export function DetailedInvite({
   visible,
+  inviteId,
   onClose,
-  invitedPersonName,
 }: DetailedInviteProps) {
+  const invite = invitesData.find((item) => item.id === inviteId);
+
+  if (!invite) return null;
+
+  const formatName = (fullName: string) => {
+    const shortName = fullName.trim().split(" ");
+    return shortName.slice(0, 2).join(" ");
+  };
+
   return (
     <Modal
       visible={visible}
@@ -25,40 +43,59 @@ export function DetailedInvite({
     >
       <ContentWrapper>
         <Header>
-          <TouchableOpacity onPress={() => onClose()}>
-            <Image source={require("@/assets/icons/back-icon.png")} />
+          <TouchableOpacity onPress={onClose}>
+            <Ionicons name="chevron-back" size={18} />
           </TouchableOpacity>
-          <Title>Visita de {invitedPersonName}</Title>
+          <Title>Visita de {formatName(invite.nome)}</Title>
         </Header>
+
         <CardsWrapper>
           <StartEndCard
-            startTitle={"Validade do Convite"}
-            startDescription={"Convite ativo"}
+            startTitle="Validade do Convite"
+            startDescription={
+              invite.ativo ? "Convite ativo" : "Convite inativo"
+            }
           />
           <StartEndCard
-            startTitle={"Inicio da Visita"}
-            startDescription={"27 Fev, 2025 às 14:40"}
-            endTitle={"Fim da Visita"}
-            endDescription={"07 Mar, 2025 às 15:40"}
+            startTitle="Inicio da Visita"
+            startDescription={new Date(invite.inicioVisita).toLocaleDateString(
+              "pt-br",
+              {
+                dateStyle: "short",
+              }
+            )}
+            endTitle="Fim da Visita"
+            endDescription={
+              invite.fimVisita
+                ? new Date(invite.fimVisita).toLocaleDateString("pt-br", {
+                    dateStyle: "short",
+                  })
+                : "Data não disponível"
+            }
           />
           <StartEndCard
-            startTitle={"Duracão prevista"}
-            startDescription={"10 dias"}
-            endTitle={"Duracão Efetiva"}
-            endDescription={"12 dias"}
+            startTitle="Duração prevista"
+            startDescription={`${invite.duracaoPrevistaDias} dia(s)`}
+            endTitle="Duração efetiva"
+            endDescription={
+              invite.duracaoEfetivaDias
+                ? `${invite.duracaoEfetivaDias} dia(s)`
+                : "Não calculada"
+            }
           />
           <StartEndCard
-            startTitle={"Motivo da Visita"}
-            startDescription={"Festa de Aniversario"}
+            startTitle="Motivo da Visita"
+            startDescription={invite.motivoVisita}
           />
         </CardsWrapper>
-        <View>
-          <Text>QR CODE</Text>
-        </View>
-        <ButtonsWrapper>
-          <Button color={"blue"} text={"Compartilhar"} onPress={() => false} />
-          <Button color={"black"} text={"Desativar"} onPress={() => false} />
-        </ButtonsWrapper>
+
+        <QrCodeShareWrapper>
+          <QRCode value={invite.qrCodeUrl} size={200} />
+          <ButtonsWrapper>
+            <Button color="blue" text="Compartilhar" onPress={() => false} />
+            <Button color="black" text="Desativar" onPress={() => false} />
+          </ButtonsWrapper>
+        </QrCodeShareWrapper>
       </ContentWrapper>
     </Modal>
   );

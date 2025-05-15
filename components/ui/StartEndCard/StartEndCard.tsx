@@ -3,6 +3,7 @@ import { StyledText } from "../styles";
 import {
   ContentWrapper,
   Elipse,
+  StartContentWrapper,
   StartEndCardWrapper,
   StyledTextMedium,
   TitleWrapper,
@@ -14,18 +15,17 @@ export function StartEndCard({
   startTitle,
   endDescription,
   endTitle,
-  isFinished,
 }: StartEndCardProps) {
   return (
     <StartEndCardWrapper>
-      <ContentWrapper>
+      <StartContentWrapper>
         <TitleWrapper>
           <Elipse elipseColor={"blue"} />
           <StyledTextMedium>{startTitle}</StyledTextMedium>
         </TitleWrapper>
         <StyledText>{startDescription}</StyledText>
-      </ContentWrapper>
-      {(endTitle || endDescription) && (
+      </StartContentWrapper>
+      {endTitle && endDescription && (
         <ContentWrapper>
           <TitleWrapper>
             <Elipse elipseColor={"midnight"} />

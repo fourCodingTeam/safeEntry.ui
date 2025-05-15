@@ -1,5 +1,6 @@
 import { theme } from "@/constants/theme";
 import { Ionicons } from "@expo/vector-icons";
+import { format } from "date-fns";
 import React, { useState } from "react";
 import { Text } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -89,7 +90,9 @@ export function Input({
             disabled={disabled}
           >
             <StyledSelectInputText>
-              {value ? new Date(value).toLocaleDateString() : placeholder}
+              {value instanceof Date
+                ? format(value, "yyyy-MM-dd")
+                : placeholder}
             </StyledSelectInputText>
             <Ionicons
               name="calendar"
@@ -102,7 +105,7 @@ export function Input({
             mode="date"
             onConfirm={(date) => {
               setShowPicker(false);
-              onChange(date.toISOString());
+              onChange(date);
             }}
             onCancel={() => setShowPicker(false)}
           />

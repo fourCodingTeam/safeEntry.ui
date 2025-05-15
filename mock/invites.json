@@ -1,79 +1,77 @@
 [
   {
+    "id": 1,
     "nome": "Yuri Araújo Soares da Mota",
-    "validadeConvite": "ativo",
     "inicioVisita": "2025-02-27",
     "fimVisita": "2025-03-07",
     "motivoVisita": "Festa de aniversário do meu primo.",
     "duracaoPrevistaDias": 7,
     "duracaoEfetivaDias": 9,
     "qrCodeUrl": "https://example.com/qrcode/yuri-visit-2025",
-    "status": true
+    "ativo": true
   },
   {
+    "id": 2,
     "nome": "Luana Pereira Lima",
-    "validadeConvite": "ativo",
     "inicioVisita": "2025-05-01",
     "fimVisita": "2025-05-03",
     "motivoVisita": "Reunião com o síndico.",
     "duracaoPrevistaDias": 3,
     "duracaoEfetivaDias": 3,
     "qrCodeUrl": "https://example.com/qrcode/luana-visit-2025",
-    "status": false
+    "ativo": false
   },
   {
+    "id": 3,
     "nome": "Carlos Henrique Mendes",
-    "validadeConvite": "inativo",
     "inicioVisita": "2025-04-15",
     "fimVisita": "2025-04-20",
     "motivoVisita": "Trabalho remoto com cliente.",
     "duracaoPrevistaDias": 5,
     "duracaoEfetivaDias": 5,
     "qrCodeUrl": "https://example.com/qrcode/carlos-visit-2025",
-    "status": false
+    "ativo": false
   },
   {
+    "id": 4,
     "nome": "Mariana Costa Oliveira",
-    "validadeConvite": "ativo",
     "inicioVisita": "2025-06-10",
     "fimVisita": "2025-06-17",
     "motivoVisita": "Hospedagem durante férias escolares.",
     "duracaoPrevistaDias": 7,
     "duracaoEfetivaDias": 7,
     "qrCodeUrl": "https://example.com/qrcode/mariana-visit-2025",
-    "status": false
+    "ativo": false
   },
   {
+    "id": 5,
     "nome": "Roberto Nascimento Dias",
-    "validadeConvite": "ativo",
     "inicioVisita": "2025-05-15",
     "fimVisita": "2025-05-18",
     "motivoVisita": "Acompanhamento de obra no apartamento.",
     "duracaoPrevistaDias": 3,
     "duracaoEfetivaDias": 3,
     "qrCodeUrl": "https://example.com/qrcode/roberto-visit-2025",
-    "status": true
+    "ativo": true
   },
   {
+    "id": 6,
     "nome": "Ana Beatriz Santos Rocha",
-    "validadeConvite": "inativo",
     "inicioVisita": "2025-03-05",
     "fimVisita": "2025-03-10",
     "motivoVisita": "Ajuda com mudança de apartamento.",
     "duracaoPrevistaDias": 5,
     "duracaoEfetivaDias": 5,
     "qrCodeUrl": "https://example.com/qrcode/anabeatriz-visit-2025",
-    "status": true
+    "ativo": true
   },
   {
+    "id": 7,
     "nome": "Felipe Gomes Andrade",
-    "validadeConvite": "ativo",
     "inicioVisita": "2025-07-01",
-    "fimVisita": "2025-07-04",
     "motivoVisita": "Participação em reunião de condomínio.",
     "duracaoPrevistaDias": 3,
-    "duracaoEfetivaDias": 3,
     "qrCodeUrl": "https://example.com/qrcode/felipe-visit-2025",
-    "status": true
+    "ativo": true
   }
 ]
