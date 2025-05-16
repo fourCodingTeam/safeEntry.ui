@@ -46,6 +46,9 @@ export function Input({
             editable={!disabled}
             onChangeText={onChange}
             secureTextEntry={isPassword}
+            style={{
+              color: value ? theme.colors.black : theme.colors.placeholder,
+            }}
           />
         </>
       ) : type === "select" ? (
@@ -56,7 +59,13 @@ export function Input({
             onPress={() => setShowOptions(!showOptions)}
             disabled={disabled}
           >
-            <StyledSelectInputText>{selectedOptionLabel}</StyledSelectInputText>
+            <StyledSelectInputText
+              style={{
+                color: value ? theme.colors.black : theme.colors.placeholder,
+              }}
+            >
+              {selectedOptionLabel}
+            </StyledSelectInputText>
             <Ionicons
               name={showOptions ? "chevron-up" : "chevron-down"}
               size={16}
@@ -68,7 +77,7 @@ export function Input({
             <OptionList>
               {options.map((option, index) => (
                 <OptionItem
-                  key={index}
+                  key={option.value}
                   isLast={index === options.length - 1}
                   onPress={() => {
                     onChange(option.value);
@@ -89,7 +98,11 @@ export function Input({
             onPress={() => setShowPicker(true)}
             disabled={disabled}
           >
-            <StyledSelectInputText>
+            <StyledSelectInputText
+              style={{
+                color: value ? theme.colors.black : theme.colors.placeholder,
+              }}
+            >
               {value instanceof Date
                 ? format(value, "yyyy-MM-dd")
                 : placeholder}

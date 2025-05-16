@@ -1,3 +1,4 @@
+import { ToastProvider } from "@/components/ui";
 import "@/i18n";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
@@ -22,6 +23,8 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack screenOptions={{ statusBarStyle: "dark", headerShown: false }} />
+    <ToastProvider>
+      <Stack screenOptions={{ statusBarStyle: "dark", headerShown: false }} />
+    </ToastProvider>
   );
 }

@@ -1,3 +1,4 @@
+import { theme } from "@/constants/theme";
 import invitesData from "@/mock/invites.json";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
@@ -90,7 +91,11 @@ export function DetailedInvite({
         </CardsWrapper>
 
         <QrCodeShareWrapper>
-          <QRCode value={invite.qrCodeUrl} size={200} />
+          <QRCode
+            value={invite.qrCodeUrl}
+            size={200}
+            backgroundColor={theme.colors.white}
+          />
           <ButtonsWrapper>
             <Button color="blue" text="Compartilhar" onPress={() => false} />
             <Button color="black" text="Desativar" onPress={() => false} />
