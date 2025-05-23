@@ -1,22 +1,18 @@
 import { theme } from "@/constants/theme";
 import styled from "styled-components/native";
 
-export const ContentWrapper = styled.View`
+export const ContentWrapper = styled.ScrollView`
   background-color: ${theme.colors.white};
-  align-items: center;
-  justify-content: flex-start;
-  padding: ${theme.sizes.md};
-  gap: ${theme.sizes.md};
   height: 100%;
+  z-index: 1;
 `;
-
-export const StyledScrollView = styled.ScrollView``;
 
 export const Header = styled.View`
   gap: ${theme.sizes.md};
   flex-direction: row;
   align-items: center;
   justify-content: left;
+  margin-bottom: ${theme.sizes.md};
   width: 100%;
 `;
 
@@ -34,8 +30,15 @@ export const CardsWrapper = styled.View`
 `;
 
 export const ButtonsWrapper = styled.View`
-  width: 100%;
+  flex-direction: column;
   gap: ${theme.sizes.sm};
+  background-color: ${theme.colors.white};
+  width: 100%;
+  border-radius: ${theme.sizes.md};
+  border: 1px solid ${theme.colors.black40};
+  padding: ${theme.sizes.smMax} ${theme.sizes.md};
+  elevation: 2;
+  margin-bottom: ${theme.sizes.md};
 `;
 
 export const ButtonText = styled.Text`
@@ -46,7 +49,6 @@ export const ButtonText = styled.Text`
 
 export const QrCodeShareWrapper = styled.View`
   flex-direction: column;
-  align-items: center;
   gap: ${theme.sizes.md};
   background-color: ${theme.colors.white};
   width: 100%;
@@ -54,5 +56,12 @@ export const QrCodeShareWrapper = styled.View`
   border-radius: ${theme.sizes.md};
   border: 1px solid ${theme.colors.black40};
   padding: ${theme.sizes.smMax} ${theme.sizes.md};
+  margin-top: ${theme.sizes.sm};
   elevation: 2;
+`;
+
+export const QrCodeTextWrapper = styled.View`
+  align-items: center;
+  background-color: ${theme.colors.white};
+  gap: ${theme.sizes.sm};
 `;

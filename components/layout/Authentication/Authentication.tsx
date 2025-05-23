@@ -15,12 +15,13 @@ export function Authentication() {
   const toast = useToast();
 
   const handleLogin = async () => {
-    if (!username.trim() || !password.trim()) {
+    if ((username && !username.trim()) || !password.trim()) {
       toast.show("Preencha todos os campos!", 2000, "error");
       return;
     }
     if (username === "admin" && password === "admin1234") {
       router.push("/(tabs)");
+      setPassword("");
     } else {
       toast.show("Usuário ou senha inválidos!", 2000, "error");
     }
@@ -35,7 +36,7 @@ export function Authentication() {
         <StyledText>Login</StyledText>
         <Input
           type="text"
-          value={username}
+          value={username ? username : ""}
           placeholder="Usuário"
           onChange={(value) => setUsername(value as string)}
         />

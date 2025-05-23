@@ -22,17 +22,17 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <ToastContext.Provider value={{ show }}>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, zIndex: 9999 }} pointerEvents="box-none">
         {children}
-        {toastMessage && (
-          <Toast
-            message={toastMessage}
-            duration={duration}
-            type={type}
-            onFinish={() => setToastMessage(null)}
-          />
-        )}
       </View>
+      {toastMessage && (
+        <Toast
+          message={toastMessage}
+          duration={duration}
+          type={type}
+          onFinish={() => setToastMessage(null)}
+        />
+      )}
     </ToastContext.Provider>
   );
 };

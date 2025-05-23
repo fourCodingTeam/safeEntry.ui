@@ -14,7 +14,6 @@ export const TitleWrapper = styled.View`
 
 export const StartEndCardWrapper = styled.View`
   flex-direction: row;
-  align-items: center;
   justify-content: space-between;
   background-color: ${theme.colors.white};
   width: 100%;

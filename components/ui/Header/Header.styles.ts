@@ -15,9 +15,8 @@ export const HeaderText = styled.Text`
 export const StyledTouchableOpacity = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
-  background-color: ${theme.colors.blue};
+  width: 50px;
+  height: 50px;
   border-radius: 50px;
 `;
 export const IconLetter = styled.Text`

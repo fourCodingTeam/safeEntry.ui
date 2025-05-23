@@ -1,4 +1,4 @@
 export interface UserState {
-  username: string;
-  setUsername: (username: string) => void;
+  username: string | null;
+  setUsername: (username: string | null) => void;
 }

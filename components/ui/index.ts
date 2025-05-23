@@ -3,6 +3,7 @@ export * from "./Header";
 export * from "./Icon";
 export * from "./Input";
 export * from "./InviteCard";
+export * from "./Menu";
 export * from "./TabBarIcon";
 export * from "./Tag";
 export * from "./Toast";
