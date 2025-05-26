@@ -95,12 +95,12 @@ export function Form() {
             value={inviteValidity}
             onChange={(value) => setInviteValidity(value as string)}
             options={[
-              { label: "1", value: "1" },
-              { label: "2", value: "2" },
-              { label: "3", value: "3" },
-              { label: "4", value: "4" },
-              { label: "5", value: "5" },
-              { label: "6", value: "6" },
+              { label: "1 dia", value: "1" },
+              { label: "2 dias", value: "2" },
+              { label: "3 dias", value: "3" },
+              { label: "4 dias", value: "4" },
+              { label: "5 dias", value: "5" },
+              { label: "6 dias", value: "6" },
             ]}
           />
         </InputsWrapper>

@@ -19,7 +19,7 @@ export function Authentication() {
       toast.show("Preencha todos os campos!", 2000, "error");
       return;
     }
-    if (username === "admin" && password === "admin1234") {
+    if (username === "Eder" && password === "senha1234") {
       router.push("/(tabs)");
       setPassword("");
     } else {

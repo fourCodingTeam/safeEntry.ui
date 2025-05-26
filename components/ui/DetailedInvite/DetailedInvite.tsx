@@ -111,30 +111,30 @@ export function DetailedInvite({
                 ).toLocaleDateString("pt-br", {
                   dateStyle: "short",
                 })}
-                endTitle="Fim da Visita"
-                endDescription={
-                  invite.fimVisita
-                    ? new Date(invite.fimVisita).toLocaleDateString("pt-br", {
-                        dateStyle: "short",
-                      })
-                    : "Data não disponível"
-                }
+                {...(invite.fimVisita && {
+                  endTitle: "Fim da Visita",
+                  endDescription: new Date(invite.fimVisita).toLocaleDateString(
+                    "pt-br",
+                    {
+                      dateStyle: "short",
+                    }
+                  ),
+                })}
               />
               <StartEndCard
                 startTitle="Duração prevista"
                 startDescription={`${invite.duracaoPrevistaDias} dia(s)`}
-                endTitle="Duração efetiva"
-                endDescription={
-                  invite.duracaoEfetivaDias
-                    ? `${invite.duracaoEfetivaDias} dia(s)`
-                    : "Não calculada"
-                }
+                {...(invite.duracaoEfetivaDias && {
+                  endTitle: "Duração efetiva",
+                  endDescription: `${invite.duracaoEfetivaDias} dia(s)`,
+                })}
               />
               <StartEndCard
                 startTitle="Motivo da Visita"
                 startDescription={invite.motivoVisita}
               />
             </CardsWrapper>
+
             <QrCodeShareWrapper>
               <QrCodeTextWrapper>
                 <StyledText>Escaneie o QR Code para visualizar</StyledText>

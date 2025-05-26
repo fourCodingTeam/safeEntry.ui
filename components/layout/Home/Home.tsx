@@ -36,7 +36,7 @@ export function Home() {
 
   return (
     <>
-      <PageLayout userName={"Guilherme"}>
+      <PageLayout>
         <ImageWrapper
           activeOpacity={0.6}
           onPress={() => {
@@ -50,7 +50,7 @@ export function Home() {
           {invites.length > 0 ? (
             <>
               {invites
-                .sort((a, b) => Number(b.ativo) - Number(a.ativo))
+                .filter((invite) => invite.ativo)
                 .slice(0, 4)
                 .map((invite, index) => (
                   <InviteCard
