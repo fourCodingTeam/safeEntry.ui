@@ -40,10 +40,10 @@ export function AdminHome() {
         <ImageWrapper
           activeOpacity={0.6}
           onPress={() => {
-            router.push("/formulario");
+            router.push("/(admin)/scan");
           }}
         >
-          <StyledImage source={require("@/assets/images/FoundInvites.png")} />
+          <StyledImage source={require("@/assets/images/ReadQrCode.png")} />
         </ImageWrapper>
         <InviteCardsWrapper>
           <StyledSectionTitle>Convites Ativos</StyledSectionTitle>
