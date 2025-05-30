@@ -3,11 +3,11 @@ import { DetailedInvite } from "@/components/ui/DetailedInvite";
 import rawInvitesData from "@/mock/invites.json";
 import { getInviteById } from "@/mock/mock";
 import React, { useState } from "react";
-import { PageLayout } from "../PageLayout";
-import { StyledText } from "../styles";
-import { FiltersWrapper, InviteCardsWrapper } from "./History.styles";
+import { PageLayout } from "../../PageLayout";
+import { StyledText } from "../../styles";
+import { FiltersWrapper, InviteCardsWrapper } from "./AdminHistory.styles";
 
-export function History() {
+export function AdminHistory() {
   const [nome, setNome] = useState("");
   const [selectedFilterOption, setSelectedFilterOption] = useState("");
   const [selectedInvite, setSelectedInvite] = useState<

@@ -24,14 +24,13 @@ import {
 import { MenuProps } from "./Menu.types";
 
 export function Menu({ visible, onClose }: MenuProps) {
-  const username = useUserStore((state) => state.username);
+  const { setUsername, setRole } = useUserStore();
   const router = useRouter();
 
   const handleLogout = () => {
-    if (username && router.canDismiss()) {
-      useUserStore.setState({ username: null });
-      router.dismissAll();
-    }
+    setUsername(null);
+    setRole(null);
+    router.dismissAll();
   };
   return (
     <Modal

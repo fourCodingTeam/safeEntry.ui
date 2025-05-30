@@ -24,7 +24,7 @@ export function Header({ pageTitle }: HeaderProps) {
   return (
     <>
       <HeaderWrapper>
-        {username ? (
+        {!pageTitle ? (
           <HeaderText>Olá, {username}</HeaderText>
         ) : (
           <HeaderText>{pageTitle}</HeaderText>

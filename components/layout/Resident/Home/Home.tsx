@@ -1,7 +1,7 @@
 import { Button, InviteCard } from "@/components/ui";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { PageLayout } from "../PageLayout";
+import { PageLayout } from "../../PageLayout";
 import {
   ImageWrapper,
   InviteCardsWrapper,
@@ -12,7 +12,7 @@ import {
 import { DetailedInvite } from "@/components/ui/DetailedInvite";
 import invites from "@/mock/invites.json";
 import { getInviteById } from "@/mock/mock";
-import { StyledText } from "../styles";
+import { StyledText } from "../../styles";
 
 export function Home() {
   const router = useRouter();

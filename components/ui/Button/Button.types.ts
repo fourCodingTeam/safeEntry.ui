@@ -11,4 +11,5 @@ export interface ButtonProps {
   color: ButtonColors;
   text: string;
   onPress?: () => void;
+  disabled?: boolean;
 }

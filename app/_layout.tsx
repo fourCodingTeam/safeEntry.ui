@@ -1,7 +1,8 @@
 import { ToastProvider } from "@/components/ui";
 import "@/i18n";
+import { useUserStore } from "@/stores";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-gesture-handler";
@@ -13,9 +14,15 @@ export default function RootLayout() {
     PoppinsMedium: require("@/assets/fonts/Poppins-Medium.ttf"),
   });
 
+  const { username, role } = useUserStore();
+  const router = useRouter();
+
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
+      if (!username || !role) {
+        router.replace("/auth");
+      }
     }
   }, [loaded]);
 
@@ -25,7 +32,15 @@ export default function RootLayout() {
 
   return (
     <ToastProvider>
-      <Stack screenOptions={{ statusBarStyle: "dark", headerShown: false }} />
+      <Stack screenOptions={{ statusBarStyle: "dark", headerShown: false }}>
+        {!username || !role ? (
+          <Stack.Screen name="auth" options={{ headerShown: false }} />
+        ) : role === "admin" ? (
+          <Stack.Screen name="(admin)" options={{ headerShown: false }} />
+        ) : (
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        )}
+      </Stack>
     </ToastProvider>
   );
 }

@@ -1,4 +1,5 @@
-import { Button, Input, useToast } from "@/components/ui";
+import { Button, Input, ToastProvider, useToast } from "@/components/ui";
+import { getAllUsers, getRoleById } from "@/mock/mock";
 import { useUserStore } from "@/stores";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -9,46 +10,89 @@ import {
 } from "./Authentication.styles";
 
 export function Authentication() {
-  const { username, setUsername } = useUserStore();
+  const { setUsername, setRole } = useUserStore();
+  const [inputUsername, setInputUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const toast = useToast();
 
   const handleLogin = async () => {
-    if ((username && !username.trim()) || !password.trim()) {
+    if (!inputUsername.trim() || !password.trim()) {
       toast.show("Preencha todos os campos!", 2000, "error");
       return;
     }
-    if (username === "Eder" && password === "senha1234") {
-      router.push("/(tabs)");
-      setPassword("");
-    } else {
-      toast.show("Usuário ou senha inválidos!", 2000, "error");
+
+    setIsLoading(true);
+
+    try {
+      const users = (await getAllUsers()) as any[];
+      const user = users.find(
+        (u) => u.username === inputUsername && u.password === password
+      );
+
+      if (!user) {
+        toast.show("Usuário ou senha inválidos!", 2000, "error");
+        setIsLoading(false);
+        return;
+      }
+
+      const roleData = (await getRoleById(user.roleId)) as {
+        description: string;
+      };
+
+      setUsername(user.username);
+      setRole(roleData.description);
+
+      setTimeout(() => {
+        if (roleData.description === "admin") {
+          router.push("/(admin)");
+        } else {
+          router.push("/(tabs)");
+        }
+        setPassword("");
+        setInputUsername("");
+        setIsLoading(false);
+      }, 500);
+    } catch (error) {
+      console.error(error);
+      toast.show("Erro ao autenticar. Tente novamente!", 2000, "error");
+      setIsLoading(false);
     }
   };
-
   return (
-    <StyledImageBackground
-      source={require("@/assets/images/LoginWallpaper.png")}
-      resizeMode="cover"
-    >
-      <StyledContainer>
-        <StyledText>Login</StyledText>
-        <Input
-          type="text"
-          value={username ? username : ""}
-          placeholder="Usuário"
-          onChange={(value) => setUsername(value as string)}
-        />
-        <Input
-          type="text"
-          value={password}
-          placeholder="Senha"
-          onChange={(value) => setPassword(value as string)}
-          isPassword={true}
-        />
-        <Button color={"black"} text={"Entrar"} onPress={handleLogin} />
-      </StyledContainer>
-    </StyledImageBackground>
+    <ToastProvider>
+      <StyledImageBackground
+        source={require("@/assets/images/LoginWallpaper.png")}
+        resizeMode="cover"
+      >
+        <StyledContainer>
+          <StyledText>Login</StyledText>
+          <Input
+            type="text"
+            value={inputUsername || ""}
+            placeholder="Usuário"
+            onChange={(value: string | Date) => {
+              if (typeof value === "string") {
+                setInputUsername(value);
+              }
+            }}
+          />
+          <Input
+            type="text"
+            value={password || ""}
+            placeholder="Senha"
+            onChange={(value) => setPassword(value as string)}
+            isPassword={true}
+          />
+          <Button
+            color={"black"}
+            text={"Entrar"}
+            onPress={handleLogin}
+            disabled={isLoading}
+          />
+        </StyledContainer>
+      </StyledImageBackground>
+    </ToastProvider>
   );
 }

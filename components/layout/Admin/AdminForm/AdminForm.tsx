@@ -3,11 +3,11 @@ import { getAllMotives } from "@/mock/mock";
 import { format } from "date-fns";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Button, Input, useToast } from "../../ui";
-import { PageLayout } from "../PageLayout";
-import { ButtonWrapper, FormWrapper, InputsWrapper } from "./Form.styles";
+import { Button, Input, useToast } from "../../../ui";
+import { PageLayout } from "../../PageLayout";
+import { ButtonWrapper, FormWrapper, InputsWrapper } from "./AdminForm.styles";
 
-export function Form() {
+export function AdminForm() {
   const router = useRouter();
   const [nome, setNome] = useState("");
   const [reason, setReason] = useState("");
