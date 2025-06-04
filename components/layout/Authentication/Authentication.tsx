@@ -1,5 +1,6 @@
 import { Button, Input, ToastProvider, useToast } from "@/components/ui";
-import { getAllUsers, getRoleById } from "@/mock/mock";
+import { getRoleById } from "@/mock/mock";
+import { Login } from "@/services/api/Auth";
 import { useUserStore } from "@/stores";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -26,22 +27,19 @@ export function Authentication() {
     setIsLoading(true);
 
     try {
-      const users = (await getAllUsers()) as any[];
-      const user = users.find(
-        (u) => u.username === inputUsername && u.password === password
-      );
+      const response = await Login(inputUsername, password);
 
-      if (!user) {
+      if (!response) {
         toast.show("Usuário ou senha inválidos!", 2000, "error");
         setIsLoading(false);
         return;
       }
 
-      const roleData = (await getRoleById(user.roleId)) as {
+      const roleData = (await getRoleById(1)) as {
         description: string;
       };
 
-      setUsername(user.username);
+      setUsername("Resident");
       setRole(roleData.description);
 
       setTimeout(() => {
