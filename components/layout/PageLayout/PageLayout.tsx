@@ -6,13 +6,17 @@ type PageProps = {
   children: React.ReactNode;
   pageTitle?: string;
   isGreeting?: boolean;
-  userName?: string;
+  ableToShowOptions?: boolean;
 };
 
-export function PageLayout({ children, pageTitle, userName }: PageProps) {
+export function PageLayout({
+  children,
+  pageTitle,
+  ableToShowOptions,
+}: PageProps) {
   return (
     <PageContainer>
-      <Header pageTitle={pageTitle} userName={userName} />
+      <Header pageTitle={pageTitle} ableToShowOptions={ableToShowOptions} />
       {children}
     </PageContainer>
   );

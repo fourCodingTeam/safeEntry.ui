@@ -16,16 +16,19 @@ import {
   ContentWrapper,
   Header,
   OptionsWrapper,
-  StyledHighlightedMenuOption,
-  StyledHighlightedText,
   StyledMenuOption,
   Title,
 } from "./Menu.styles";
 import { MenuProps } from "./Menu.types";
 
-export function Menu({ visible, onClose }: MenuProps) {
+export function Menu({ visible, onClose, isResident }: MenuProps) {
   const { setUsername, setRole } = useUserStore();
   const router = useRouter();
+
+  const handleOpenPreferences = () => {
+    router.push("/preferences");
+    onClose();
+  };
 
   const handleLogout = () => {
     setUsername(null);
@@ -55,21 +58,26 @@ export function Menu({ visible, onClose }: MenuProps) {
                     <Title>Opções</Title>
                   </Header>
                   <OptionsWrapper>
-                    <StyledMenuOption activeOpacity={0.5}>
-                      <Ionicons name="options" size={18} />
-                      <StyledText>Preferências</StyledText>
-                    </StyledMenuOption>
-                    <StyledHighlightedMenuOption
+                    {isResident && (
+                      <StyledMenuOption
+                        activeOpacity={0.5}
+                        onPress={handleOpenPreferences}
+                      >
+                        <Ionicons name="options" size={18} />
+                        <StyledText>Preferências</StyledText>
+                      </StyledMenuOption>
+                    )}
+                    <StyledMenuOption
                       activeOpacity={0.8}
                       onPress={handleLogout}
                     >
                       <Ionicons
                         name="log-out-outline"
                         size={18}
-                        color={theme.colors.white}
+                        color={theme.colors.black}
                       />
-                      <StyledHighlightedText>Sair</StyledHighlightedText>
-                    </StyledHighlightedMenuOption>
+                      <StyledText>Sair</StyledText>
+                    </StyledMenuOption>
                   </OptionsWrapper>
                 </ContentWrapper>
               </View>

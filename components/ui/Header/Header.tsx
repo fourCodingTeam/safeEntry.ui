@@ -9,7 +9,7 @@ import {
 } from "./Header.styles";
 import { HeaderProps } from "./Header.types";
 
-export function Header({ pageTitle }: HeaderProps) {
+export function Header({ pageTitle, ableToShowOptions = true }: HeaderProps) {
   const username = useUserStore((state) => state.username);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -29,9 +29,11 @@ export function Header({ pageTitle }: HeaderProps) {
         ) : (
           <HeaderText>{pageTitle}</HeaderText>
         )}
-        <StyledTouchableOpacity onPress={handleOpenMenu}>
-          <Ionicons name="ellipsis-vertical" size={18} />
-        </StyledTouchableOpacity>
+        {ableToShowOptions && (
+          <StyledTouchableOpacity onPress={handleOpenMenu}>
+            <Ionicons name="ellipsis-vertical" size={18} />
+          </StyledTouchableOpacity>
+        )}
       </HeaderWrapper>
       <Menu visible={menuOpen} onClose={handleCloseMenu} />
     </>

@@ -28,6 +28,7 @@ export const StyledMenuOption = styled.TouchableOpacity`
   border-radius: ${theme.sizes.xs};
   width: 100%;
   padding: ${theme.sizes.smMax} ${theme.sizes.sm};
+  background-color: ${theme.colors.offWhite};
 `;
 
 export const StyledHighlightedMenuOption = styled.TouchableOpacity`
