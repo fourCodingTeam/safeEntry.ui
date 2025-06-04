@@ -1,6 +1,6 @@
 import { Button, Input, ToastProvider, useToast } from "@/components/ui";
 import { getRoleById } from "@/mock/mock";
-import { Login } from "@/services/api/Auth";
+import { Login } from "@/services/api/Auth/Login";
 import { useUserStore } from "@/stores";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -33,6 +33,12 @@ export function Authentication() {
         toast.show("Usuário ou senha inválidos!", 2000, "error");
         setIsLoading(false);
         return;
+      }
+
+      const { token, isFirstLogin } = response;
+
+      if (isFirstLogin) {
+        //logica para criar o modal e passar o token
       }
 
       const roleData = (await getRoleById(1)) as {

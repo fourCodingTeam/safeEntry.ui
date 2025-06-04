@@ -1,5 +1,5 @@
 import { BASE_URL } from "@/constants/apiConfig";
-import { loginAuth } from "../@types/loginAuth";
+import { loginAuth } from "@/services/@types/loginAuth";
 
 export async function Login(email: string, password: string) {
   try {
