@@ -72,7 +72,7 @@ export function Authentication() {
             type="text"
             value={inputUsername || ""}
             placeholder="Usuário"
-            onChange={(value: string | Date) => {
+            onChange={(value: string | number | Date) => {
               if (typeof value === "string") {
                 setInputUsername(value);
               }

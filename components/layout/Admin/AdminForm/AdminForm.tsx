@@ -63,7 +63,7 @@ export function AdminForm() {
   }, []);
 
   return (
-    <PageLayout pageTitle="Convidar">
+    <PageLayout pageTitle="Convidar" isResident={false}>
       <FormWrapper>
         <InputsWrapper>
           <Input

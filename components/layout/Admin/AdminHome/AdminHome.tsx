@@ -36,7 +36,7 @@ export function AdminHome() {
 
   return (
     <>
-      <PageLayout>
+      <PageLayout isResident={false}>
         <ImageWrapper
           activeOpacity={0.6}
           onPress={() => {

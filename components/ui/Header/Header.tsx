@@ -9,7 +9,11 @@ import {
 } from "./Header.styles";
 import { HeaderProps } from "./Header.types";
 
-export function Header({ pageTitle, ableToShowOptions = true }: HeaderProps) {
+export function Header({
+  pageTitle,
+  ableToShowOptions = true,
+  isResident = true,
+}: HeaderProps) {
   const username = useUserStore((state) => state.username);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -35,7 +39,11 @@ export function Header({ pageTitle, ableToShowOptions = true }: HeaderProps) {
           </StyledTouchableOpacity>
         )}
       </HeaderWrapper>
-      <Menu visible={menuOpen} onClose={handleCloseMenu} />
+      <Menu
+        visible={menuOpen}
+        onClose={handleCloseMenu}
+        isResident={isResident}
+      />
     </>
   );
 }

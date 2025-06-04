@@ -72,7 +72,7 @@ export function AdminHistory() {
 
   return (
     <>
-      <PageLayout pageTitle="Histórico">
+      <PageLayout pageTitle="Histórico" isResident={false}>
         {rawInvitesData.length > 0 ? (
           <>
             <FiltersWrapper>

@@ -7,16 +7,22 @@ type PageProps = {
   pageTitle?: string;
   isGreeting?: boolean;
   ableToShowOptions?: boolean;
+  isResident?: boolean;
 };
 
 export function PageLayout({
   children,
   pageTitle,
   ableToShowOptions,
+  isResident,
 }: PageProps) {
   return (
     <PageContainer>
-      <Header pageTitle={pageTitle} ableToShowOptions={ableToShowOptions} />
+      <Header
+        pageTitle={pageTitle}
+        ableToShowOptions={ableToShowOptions}
+        isResident={isResident}
+      />
       {children}
     </PageContainer>
   );
