@@ -11,7 +11,7 @@ import {
 } from "./Authentication.styles";
 
 export function Authentication() {
-  const { setUsername, setRole, setToken } = useUserStore();
+  const { setUsername, setRole, setToken, setPersonId } = useUserStore();
   const [inputUsername, setInputUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -45,6 +45,7 @@ export function Authentication() {
         ).toString()
       );
       setToken(response.token);
+      setPersonId(response.personId);
 
       setTimeout(() => {
         if (response.role === 1) {

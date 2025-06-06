@@ -8,4 +8,6 @@ export const useUserStore = create<UserState>((set) => ({
   setRole: (role: string | null) => set({ role: role }),
   token: null,
   setToken: (token: string | null) => set({ token: token }),
+  personId: null,
+  setPersonId: (personId: number | null) => set({ personId: personId }),
 }));

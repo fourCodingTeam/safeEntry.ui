@@ -44,9 +44,9 @@ export function Scan() {
   if (!permission.granted) {
     return (
       <Container>
-        <Message>We need your permission to show the camera</Message>
+        <Message>Precisamos de acesso a Câmera</Message>
         <PermissionButton onPress={requestPermission}>
-          <PermissionButtonText>Grant Permission</PermissionButtonText>
+          <PermissionButtonText>Permitir Acesso</PermissionButtonText>
         </PermissionButton>
       </Container>
     );
@@ -145,7 +145,7 @@ const Message = styled.Text`
 const PermissionButton = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: 50%;
   background-color: ${theme.colors.blue};
   padding: ${theme.sizes.md};
   border-radius: ${theme.sizes.sm};

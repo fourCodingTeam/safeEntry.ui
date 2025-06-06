@@ -5,4 +5,6 @@ export interface UserState {
   setRole: (role: string | null) => void;
   token: string | null;
   setToken: (token: string | null) => void;
+  personId: number | null;
+  setPersonId: (personId: number | null) => void;
 }
