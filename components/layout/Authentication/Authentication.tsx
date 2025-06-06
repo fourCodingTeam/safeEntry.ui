@@ -1,6 +1,6 @@
 import { Button, Input, ToastProvider, useToast } from "@/components/ui";
-import { getRoleById } from "@/mock/mock";
-import { Login } from "@/services/api/Auth/Login";
+import { RoleEnum } from "@/constants/roleEunm";
+import { Login } from "@/services/api/Auth";
 import { useUserStore } from "@/stores";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -11,7 +11,7 @@ import {
 } from "./Authentication.styles";
 
 export function Authentication() {
-  const { setUsername, setRole } = useUserStore();
+  const { setUsername, setRole, setToken } = useUserStore();
   const [inputUsername, setInputUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -29,38 +29,37 @@ export function Authentication() {
     try {
       const response = await Login(inputUsername, password);
 
+      console.log(response?.token);
+
       if (!response) {
         toast.show("Usuário ou senha inválidos!", 2000, "error");
         setIsLoading(false);
         return;
       }
 
-      const { token, isFirstLogin } = response;
-
-      if (isFirstLogin) {
-        //logica para criar o modal e passar o token
-      }
-
-      const roleData = (await getRoleById(1)) as {
-        description: string;
-      };
-
-      setUsername("Resident");
-      setRole(roleData.description);
+      setUsername(response.personName);
+      setRole(
+        (response.role === RoleEnum.RESIDENT
+          ? RoleEnum.RESIDENT
+          : RoleEnum.EMPLOYEE
+        ).toString()
+      );
+      setToken(response.token);
 
       setTimeout(() => {
-        if (roleData.description === "admin") {
-          router.push("/(admin)");
-        } else {
+        if (response.role === 1) {
           router.push("/(tabs)");
+        } else {
+          router.push("/(admin)");
         }
         setPassword("");
         setInputUsername("");
-        setIsLoading(false);
       }, 500);
     } catch (error) {
       console.error(error);
       toast.show("Erro ao autenticar. Tente novamente!", 2000, "error");
+      setIsLoading(false);
+    } finally {
       setIsLoading(false);
     }
   };

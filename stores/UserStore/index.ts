@@ -6,4 +6,6 @@ export const useUserStore = create<UserState>((set) => ({
   setUsername: (username: string | null) => set({ username: username }),
   role: null,
   setRole: (role: string | null) => set({ role: role }),
+  token: null,
+  setToken: (token: string | null) => set({ token: token }),
 }));

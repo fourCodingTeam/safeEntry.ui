@@ -1,49 +1,77 @@
 import { theme } from "@/constants/theme";
-import invitesData from "@/mock/invites.json";
+import { InviteResponse } from "@/services/@types";
+import { getInviteByResidentIdAndVisitorIdAndCode } from "@/services/api";
+import { useUserStore } from "@/stores";
 import { Ionicons } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Modal, TouchableOpacity, View } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 import { captureRef } from "react-native-view-shot";
 import { Button } from "../Button";
+import { Loader } from "../Loader";
 import { StartEndCard } from "../StartEndCard/StartEndCard";
 import { StyledText } from "../styles";
 import { ToastProvider, useToast } from "../ToastProvider";
 import {
   ButtonsWrapper,
   CardsWrapper,
+  Code,
+  CodeWrapper,
   ContentWrapper,
   Header,
   QrCodeShareWrapper,
   QrCodeTextWrapper,
   Title,
 } from "./DetailedInvite.styles";
-
-type DetailedInviteProps = {
-  visible: boolean;
-  inviteId: number;
-  onClose: () => void;
-};
+import { DetailedInviteProps } from "./DetailedInvite.types";
 
 export function DetailedInvite({
+  code,
+  visitorId,
+  residentId,
   visible,
-  inviteId,
   onClose,
 }: DetailedInviteProps) {
-  const invite = invitesData.find((item) => item.id === inviteId);
   const toast = useToast();
+  const [invite, setInvite] = useState<InviteResponse | null>(null);
+  const { token } = useUserStore();
+  const [isLoading, setIsLoading] = useState(false);
+  const qrCodeRef = useRef(null);
 
-  if (!invite) return null;
+  useEffect(() => {
+    const fetchInvite = async () => {
+      if (!token || !residentId || !visitorId || !code) return;
+      setIsLoading(true);
+      try {
+        const data = await getInviteByResidentIdAndVisitorIdAndCode(
+          token,
+          residentId,
+          visitorId,
+          code
+        );
+        setInvite(data);
+      } catch (error) {
+        console.error("Erro ao buscar detalhes do convite:", error);
+        setIsLoading(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (visible) {
+      fetchInvite();
+    } else {
+      setInvite(null);
+    }
+  }, [visible, token, residentId, visitorId, code]);
 
   const formatName = (fullName: string) => {
     const shortName = fullName.trim().split(" ");
     return shortName.slice(0, 2).join(" ");
   };
-
-  const qrCodeRef = useRef(null);
 
   const onShare = async () => {
     try {
@@ -58,7 +86,7 @@ export function DetailedInvite({
       const available = await Sharing.isAvailableAsync();
       if (available) {
         await Clipboard.setStringAsync(
-          `Convite de ${invite.nome}: ${invite.qrCodeUrl}`
+          `Convite de ${invite?.code}: ${invite?.justification}`
         );
         await Sharing.shareAsync(fileName);
       } else {
@@ -82,81 +110,84 @@ export function DetailedInvite({
     >
       <ToastProvider>
         <ContentWrapper>
-          <View
-            collapsable={false}
-            ref={qrCodeRef}
-            style={{
-              backgroundColor: theme.colors.white,
-              paddingHorizontal: 16,
-              paddingVertical: 8,
-            }}
-          >
-            <Header>
-              <TouchableOpacity onPress={onClose}>
-                <Ionicons name="chevron-back" size={18} />
-              </TouchableOpacity>
-              <Title>Visita de {formatName(invite.nome)}</Title>
-            </Header>
-            <CardsWrapper>
-              <StartEndCard
-                startTitle="Validade do Convite"
-                startDescription={
-                  invite.ativo ? "Convite ativo" : "Convite inativo"
-                }
-              />
-              <StartEndCard
-                startTitle="Inicio da Visita"
-                startDescription={new Date(
-                  invite.inicioVisita
-                ).toLocaleDateString("pt-br", {
-                  dateStyle: "short",
-                })}
-                {...(invite.fimVisita && {
-                  endTitle: "Fim da Visita",
-                  endDescription: new Date(invite.fimVisita).toLocaleDateString(
-                    "pt-br",
-                    {
-                      dateStyle: "short",
-                    }
-                  ),
-                })}
-              />
-              <StartEndCard
-                startTitle="Duração prevista"
-                startDescription={`${invite.duracaoPrevistaDias} dia(s)`}
-                {...(invite.duracaoEfetivaDias && {
-                  endTitle: "Duração efetiva",
-                  endDescription: `${invite.duracaoEfetivaDias} dia(s)`,
-                })}
-              />
-              <StartEndCard
-                startTitle="Motivo da Visita"
-                startDescription={invite.motivoVisita}
-              />
-            </CardsWrapper>
+          {!invite || isLoading ? (
+            <Loader />
+          ) : (
+            <>
+              <View
+                collapsable={false}
+                ref={qrCodeRef}
+                style={{
+                  backgroundColor: theme.colors.white,
+                  paddingHorizontal: 16,
+                  paddingVertical: 8,
+                }}
+              >
+                <Header>
+                  <TouchableOpacity onPress={onClose}>
+                    <Ionicons name="chevron-back" size={18} />
+                  </TouchableOpacity>
+                  <Title>Visita de {formatName(invite.visitorName)}</Title>
+                </Header>
 
-            <QrCodeShareWrapper>
-              <QrCodeTextWrapper>
-                <StyledText>Escaneie o QR Code para visualizar</StyledText>
-                <QRCode
-                  value={invite.qrCodeUrl}
-                  size={278}
-                  backgroundColor={theme.colors.white}
-                />
-              </QrCodeTextWrapper>
-            </QrCodeShareWrapper>
-          </View>
-          <View
-            style={{
-              backgroundColor: theme.colors.white,
-              paddingHorizontal: 16,
-            }}
-          >
-            <ButtonsWrapper>
-              <Button color="blue" text="Compartilhar" onPress={onShare} />
-              <Button color="black" text="Desativar" onPress={() => false} />
-            </ButtonsWrapper>
-          </View>
+                <CardsWrapper>
+                  <StartEndCard
+                    startTitle="Validade do Convite"
+                    startDescription={
+                      invite.isActive ? "Convite ativo" : "Convite inativo"
+                    }
+                  />
+                  <StartEndCard
+                    startTitle="Inicio da Visita"
+                    startDescription={new Date(
+                      invite.startDate
+                    ).toLocaleDateString("pt-br", {
+                      dateStyle: "short",
+                    })}
+                    endTitle="Duração da Visita"
+                    endDescription={`${invite.daysToExpiration} dias`}
+                  />
+                  <StartEndCard
+                    startTitle="Motivo da Visita"
+                    startDescription={invite.justification}
+                  />
+
+                  <QrCodeShareWrapper>
+                    <QrCodeTextWrapper>
+                      <StyledText>
+                        Escaneie o QR Code para visualizar
+                      </StyledText>
+                      <QRCode
+                        value={invite.justification}
+                        size={278}
+                        backgroundColor={theme.colors.white}
+                      />
+                    </QrCodeTextWrapper>
+                    <CodeWrapper>
+                      <StyledText>Ou informe este código:</StyledText>
+                      <Code>{invite.code}</Code>
+                    </CodeWrapper>
+                  </QrCodeShareWrapper>
+                </CardsWrapper>
+              </View>
+
+              <View
+                style={{
+                  backgroundColor: theme.colors.white,
+                  paddingHorizontal: 16,
+                }}
+              >
+                <ButtonsWrapper>
+                  <Button color="blue" text="Compartilhar" onPress={onShare} />
+                  <Button
+                    color="black"
+                    text="Desativar"
+                    onPress={() => false}
+                  />
+                </ButtonsWrapper>
+              </View>
+            </>
+          )}
         </ContentWrapper>
       </ToastProvider>
     </Modal>

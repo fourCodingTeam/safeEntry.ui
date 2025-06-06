@@ -1,6 +1,6 @@
 import { Button, InviteCard } from "@/components/ui";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PageLayout } from "../../PageLayout";
 import {
   ImageWrapper,
@@ -10,8 +10,10 @@ import {
 } from "./Home.styles";
 
 import { DetailedInvite } from "@/components/ui/DetailedInvite";
-import invites from "@/mock/invites.json";
 import { getInviteById } from "@/mock/mock";
+import { InviteResponse } from "@/services/@types";
+import { getInvitesByResidentId } from "@/services/api";
+import { useUserStore } from "@/stores";
 import { StyledText } from "../../styles";
 
 export function Home() {
@@ -20,6 +22,28 @@ export function Home() {
     null | (typeof invites)[0]
   >(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [invites, setInvites] = useState<InviteResponse[]>([]);
+  const { token, username } = useUserStore();
+
+  useEffect(() => {
+    const fetchInvitesAsync = async () => {
+      if (!token || !username) {
+        return;
+      }
+      try {
+        const invitesData = await getInvitesByResidentId(6, token);
+        setInvites(invitesData);
+      } catch (error) {
+        console.error("Erro top", error);
+      }
+    };
+
+    fetchInvitesAsync();
+
+    const interval = setInterval(fetchInvitesAsync, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleCardClick = async (inviteId: number) => {
     try {
@@ -50,15 +74,18 @@ export function Home() {
           {invites.length > 0 ? (
             <>
               {invites
-                .filter((invite) => invite.ativo)
+                .filter((invite) => invite.isActive)
                 .slice(0, 4)
                 .map((invite, index) => (
                   <InviteCard
                     key={index}
-                    personName={invite.nome}
-                    inviteDate={invite.inicioVisita}
-                    ativo={invite.ativo}
-                    onPress={() => handleCardClick(invite.id)}
+                    personName={invite.visitorName}
+                    inviteDate={invite.startDate}
+                    ativo={invite.isActive}
+                    onPress={async () => {
+                      setSelectedInvite(invite);
+                      setIsModalOpen(true);
+                    }}
                   />
                 ))}
             </>
@@ -76,7 +103,9 @@ export function Home() {
         <DetailedInvite
           visible={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          inviteId={selectedInvite.id}
+          code={selectedInvite.code}
+          residentId={6}
+          visitorId={selectedInvite.visitorId}
         />
       )}
     </>

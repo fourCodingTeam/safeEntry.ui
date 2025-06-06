@@ -1,5 +1,6 @@
-import { Input, InviteCard } from "@/components/ui";
+import { Input } from "@/components/ui";
 import { DetailedInvite } from "@/components/ui/DetailedInvite";
+import { HouseCard } from "@/components/ui/HouseCard";
 import rawInvitesData from "@/mock/invites.json";
 import { getInviteById } from "@/mock/mock";
 import React, { useState } from "react";
@@ -34,8 +35,6 @@ export function AdminHistory() {
     { label: "Sem filtro", value: "" },
     { label: "Data crescente", value: "byDateAscending" },
     { label: "Data decrescente", value: "byDateDescending" },
-    { label: "Status: ativos primeiro", value: "byStatusActiveFirst" },
-    { label: "Status: inativos primeiro", value: "byStatusInactiveFirst" },
   ];
 
   const applyFilters = (data: typeof rawInvitesData) => {
@@ -61,10 +60,6 @@ export function AdminHistory() {
             ? 1
             : -1
         )
-      : selectedFilterOption === "byStatusActiveFirst"
-      ? filtered.sort((a, b) => (b.ativo ? 1 : 0) - (a.ativo ? 1 : 0))
-      : selectedFilterOption === "byStatusInactiveFirst"
-      ? filtered.sort((a, b) => (a.ativo ? 1 : 0) - (b.ativo ? 1 : 0))
       : filtered;
   };
 
@@ -72,15 +67,15 @@ export function AdminHistory() {
 
   return (
     <>
-      <PageLayout pageTitle="Histórico" isResident={false}>
+      <PageLayout pageTitle="Casas" isResident={false}>
         {rawInvitesData.length > 0 ? (
           <>
             <FiltersWrapper>
               <Input
                 type="text"
                 value={nome}
-                label="Nome do visitante"
-                placeholder="Digite o nome do visitante"
+                label="Número da Casa"
+                placeholder="Digite o número da casa"
                 onChange={(value) => setNome(value as string)}
               />
               <Input
@@ -96,11 +91,10 @@ export function AdminHistory() {
             </FiltersWrapper>
             <InviteCardsWrapper>
               {filteredData.map((item, index) => (
-                <InviteCard
+                <HouseCard
                   key={index}
-                  personName={item.nome}
-                  inviteDate={item.inicioVisita}
-                  ativo={item.ativo}
+                  houseNumber={item.nome}
+                  activeInvites={item.id}
                   onPress={() => handleCardClick(item.id)}
                 />
               ))}

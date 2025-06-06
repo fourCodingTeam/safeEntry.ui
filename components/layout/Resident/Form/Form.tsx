@@ -1,6 +1,6 @@
-import invites from "@/mock/invites.json";
 import { getAllMotives } from "@/mock/mock";
-import { format } from "date-fns";
+import { postInviteGenerate } from "@/services/api";
+import { useUserStore } from "@/stores";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Button, Input, useToast } from "../../../ui";
@@ -10,6 +10,7 @@ import { ButtonWrapper, FormWrapper, InputsWrapper } from "./Form.styles";
 export function Form() {
   const router = useRouter();
   const [nome, setNome] = useState("");
+  const [telefone, setTelefone] = useState<string | null>("");
   const [reason, setReason] = useState("");
   const [inviteValidity, setInviteValidity] = useState("");
   const [visitDate, setVisitDate] = useState<Date | null>(null);
@@ -18,35 +19,49 @@ export function Form() {
     { label: string; value: string }[]
   >([]);
   const toast = useToast();
+  const { token } = useUserStore();
+  const [isloading, setIsloading] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const motivoSelecionado = motivesOptions.find(
       (option) => option.value === reason
     );
 
-    if (!nome || !reason || !inviteValidity || !visitDate) {
+    if (!nome || !reason || !inviteValidity || !visitDate || !telefone) {
       toast.show("Preencha todos os campos!", 1500, "error");
       return;
     }
 
-    const novoInvite = {
-      id: invites.length + 1,
-      nome,
-      inicioVisita: format(inicioVisita, "yyyy-MM-dd"),
-      motivoVisita: motivoSelecionado?.label || "",
-      duracaoPrevistaDias: parseInt(inviteValidity),
-      qrCodeUrl: `https://youtube.com`,
-      ativo: true,
-    };
+    setIsloading(true);
 
-    setNome("");
-    setReason("");
-    setInviteValidity("");
-    setVisitDate(null);
+    try {
+      if (!token) {
+        return;
+      }
+      await postInviteGenerate(
+        token,
+        6,
+        nome,
+        parseInt(telefone.replace(/\D/g, "")),
+        visitDate,
+        parseInt(inviteValidity),
+        motivoSelecionado?.label || "Motivo não selecionado"
+      );
 
-    invites.push(novoInvite);
-    toast.show("Convite criado com sucesso!", 1500, "success");
-    router.replace("/historico");
+      toast.show("Convite gerado com sucesso!", 3000, "success");
+      router.replace("/historico");
+
+      setNome("");
+      setTelefone(null);
+      setReason("");
+      setInviteValidity("");
+      setVisitDate(null);
+    } catch (error) {
+      setIsloading(false);
+      throw error;
+    } finally {
+      setIsloading(false);
+    }
   };
 
   useEffect(() => {
@@ -62,6 +77,26 @@ export function Form() {
     fetchMotives();
   }, []);
 
+  function formatPhoneNumber(value: string): string {
+    const cleaned = value.replace(/\D/g, "").slice(0, 11);
+
+    const match = cleaned.match(/^(\d{0,2})(\d{0,1})(\d{0,4})(\d{0,4})$/);
+
+    if (!match) return value;
+
+    const [, ddd, firstDigit, middle, last] = match;
+
+    let result = "";
+    if (ddd) result += `(${ddd}`;
+    if (ddd.length === 2) result += `) `;
+    if (firstDigit) result += `${firstDigit} `;
+    if (middle) result += `${middle}`;
+    if (middle.length === 4 && last) result += `-`;
+    if (last) result += `${last}`;
+
+    return result.trim();
+  }
+
   return (
     <PageLayout pageTitle="Convidar">
       <FormWrapper>
@@ -72,6 +107,17 @@ export function Form() {
             placeholder="Digite o nome do visitante"
             value={nome}
             onChange={(value) => setNome(value as string)}
+          />
+          <Input
+            type="text"
+            label="Telefone"
+            placeholder="Telefone do visitante"
+            keyboardType="N"
+            maxLength={16}
+            value={telefone as string}
+            onChange={(value) =>
+              setTelefone(formatPhoneNumber(value as string))
+            }
           />
           <Input
             type="select"
@@ -105,7 +151,12 @@ export function Form() {
           />
         </InputsWrapper>
         <ButtonWrapper>
-          <Button color={"blue"} text={"Convidar"} onPress={handleSubmit} />
+          <Button
+            color={"blue"}
+            text={"Convidar"}
+            onPress={handleSubmit}
+            disabled={isloading}
+          />
         </ButtonWrapper>
       </FormWrapper>
     </PageLayout>

@@ -1,7 +1,9 @@
 import { BASE_URL } from "@/constants/apiConfig";
-import { createPersonRequest } from "../../request/Person/CreatePersonRequest";
+import { createResidentRequest } from "../../@types/resident";
 
-export async function CreatePerson(data: createPersonRequest): Promise<String> {
+export async function CreateResident(
+  data: createResidentRequest
+): Promise<String> {
   try {
     const response = await fetch(`${BASE_URL}/Resident`, {
       method: "POST",

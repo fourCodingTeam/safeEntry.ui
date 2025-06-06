@@ -62,46 +62,50 @@ export function AdminForm() {
     fetchMotives();
   }, []);
 
+  // name
+  // phone
+  // home number
+  // email
+  // password
+
   return (
-    <PageLayout pageTitle="Convidar" isResident={false}>
+    <PageLayout pageTitle="Cadastrar Modador" isResident={false}>
       <FormWrapper>
         <InputsWrapper>
           <Input
             type="text"
             label="Nome"
-            placeholder="Digite o nome do visitante"
+            placeholder="Digite o nome do morador"
             value={nome}
             onChange={(value) => setNome(value as string)}
           />
           <Input
-            type="select"
-            label="Motivo"
-            placeholder="Selecione o motivo da visita"
-            value={reason}
-            onChange={(value) => setReason(value as string)}
-            options={motivesOptions}
+            type="text"
+            label="Telefone"
+            placeholder="(XX) XXXXX-XXXX"
+            value={nome}
+            onChange={(value) => setNome(value as string)}
           />
           <Input
-            type="date"
-            label="Data da visita"
-            placeholder="Selecione a data da visita"
-            value={visitDate as Date}
-            onChange={(value) => setVisitDate(value as Date)}
+            type="text"
+            label="Número da Casa"
+            placeholder="Digite o número da casa do morador"
+            value={nome}
+            onChange={(value) => setNome(value as string)}
           />
           <Input
-            type="select"
-            label="Validade do convite"
-            placeholder="Selecione a validade do convite"
-            value={inviteValidity}
-            onChange={(value) => setInviteValidity(value as string)}
-            options={[
-              { label: "1 dia", value: "1" },
-              { label: "2 dias", value: "2" },
-              { label: "3 dias", value: "3" },
-              { label: "4 dias", value: "4" },
-              { label: "5 dias", value: "5" },
-              { label: "6 dias", value: "6" },
-            ]}
+            type="text"
+            label="E-mail"
+            placeholder="Digite o e-mail do morador"
+            value={nome}
+            onChange={(value) => setNome(value as string)}
+          />
+          <Input
+            type="text"
+            label="Senha"
+            placeholder="Digite a senha do morador"
+            value={nome}
+            onChange={(value) => setNome(value as string)}
           />
         </InputsWrapper>
         <ButtonWrapper>

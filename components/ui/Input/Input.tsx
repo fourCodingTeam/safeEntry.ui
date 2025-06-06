@@ -25,6 +25,8 @@ export function Input({
   options = [],
   disabled = false,
   isPassword,
+  keyboardType,
+  maxLength,
 }: InputProps) {
   const [showPicker, setShowPicker] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
@@ -44,7 +46,9 @@ export function Input({
             placeholder={placeholder}
             placeholderTextColor={theme.colors.placeholder}
             editable={!disabled}
+            maxLength={maxLength}
             onChangeText={onChange}
+            keyboardType={keyboardType === "N" ? "numeric" : "default"}
             secureTextEntry={isPassword}
             style={{
               color: value ? theme.colors.black : theme.colors.placeholder,

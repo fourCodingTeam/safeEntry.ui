@@ -1,4 +1,4 @@
-export type createPersonRequest = {
+export type createResidentRequest = {
   name: string;
   phoneNumber: number;
   condominiumId: number;

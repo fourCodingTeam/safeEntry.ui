@@ -65,3 +65,21 @@ export const QrCodeTextWrapper = styled.View`
   background-color: ${theme.colors.white};
   gap: ${theme.sizes.sm};
 `;
+
+export const CodeWrapper = styled.View`
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: ${theme.sizes.sm};
+  background-color: ${theme.colors.white};
+  border-radius: ${theme.sizes.md};
+  border: 1px solid ${theme.colors.black40};
+  padding: ${theme.sizes.smMax} ${theme.sizes.md};
+`;
+export const Code = styled.Text`
+  color: ${theme.colors.black};
+  font-family: ${theme.fonts.poppinsMedium};
+  font-size: ${theme.sizes.mdPart};
+  letter-spacing: ${theme.sizes.lg};
+`;

@@ -1,8 +1,9 @@
 import { Input, InviteCard } from "@/components/ui";
 import { DetailedInvite } from "@/components/ui/DetailedInvite";
-import rawInvitesData from "@/mock/invites.json";
-import { getInviteById } from "@/mock/mock";
-import React, { useState } from "react";
+import { InviteResponse } from "@/services/@types";
+import { getInvitesByResidentId } from "@/services/api";
+import { useUserStore } from "@/stores";
+import React, { useEffect, useState } from "react";
 import { PageLayout } from "../../PageLayout";
 import { StyledText } from "../../styles";
 import { FiltersWrapper, InviteCardsWrapper } from "./History.styles";
@@ -10,25 +11,30 @@ import { FiltersWrapper, InviteCardsWrapper } from "./History.styles";
 export function History() {
   const [nome, setNome] = useState("");
   const [selectedFilterOption, setSelectedFilterOption] = useState("");
-  const [selectedInvite, setSelectedInvite] = useState<
-    null | (typeof rawInvitesData)[0]
-  >(null);
+  const [selectedInvite, setSelectedInvite] = useState<InviteResponse>();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [invites, setInvites] = useState<InviteResponse[]>([]);
+  const { token, username } = useUserStore();
 
-  const handleCardClick = async (inviteId: number) => {
-    try {
-      const invite = (await getInviteById(
-        inviteId
-      )) as (typeof rawInvitesData)[0];
-      if (invite) {
-        setSelectedInvite(invite);
-        setIsModalOpen(true);
+  useEffect(() => {
+    const fetchInvitesAsync = async () => {
+      if (!token || !username) {
+        return;
       }
-      return invite;
-    } catch (error) {
-      console.error("Failed to fetch invite:", error);
-    }
-  };
+      try {
+        const invitesData = await getInvitesByResidentId(6, token);
+        setInvites(invitesData);
+      } catch (error) {
+        console.error("Erro top", error);
+      }
+    };
+
+    fetchInvitesAsync();
+
+    const interval = setInterval(fetchInvitesAsync, 10000);
+
+    return () => clearInterval(interval);
+  }, [token, username]);
 
   const filterOptions = [
     { label: "Sem filtro", value: "" },
@@ -38,42 +44,40 @@ export function History() {
     { label: "Status: inativos primeiro", value: "byStatusInactiveFirst" },
   ];
 
-  const applyFilters = (data: typeof rawInvitesData) => {
+  const applyFilters = (data: InviteResponse[]) => {
     let filtered = [...data];
 
     filtered = nome.trim()
       ? filtered.filter((item) =>
-          item.nome.toLowerCase().includes(nome.toLowerCase())
+          item.visitorName.toLowerCase().includes(nome.toLowerCase())
         )
       : filtered;
 
     return selectedFilterOption === "byDateAscending"
       ? filtered.sort((a, b) =>
-          new Date(a.inicioVisita).getTime() >
-          new Date(b.inicioVisita).getTime()
+          new Date(a.startDate).getTime() > new Date(b.startDate).getTime()
             ? 1
             : -1
         )
       : selectedFilterOption === "byDateDescending"
       ? filtered.sort((a, b) =>
-          new Date(a.inicioVisita).getTime() <
-          new Date(b.inicioVisita).getTime()
+          new Date(a.startDate).getTime() < new Date(b.startDate).getTime()
             ? 1
             : -1
         )
       : selectedFilterOption === "byStatusActiveFirst"
-      ? filtered.sort((a, b) => (b.ativo ? 1 : 0) - (a.ativo ? 1 : 0))
+      ? filtered.sort((a, b) => (b.isActive ? 1 : 0) - (a.isActive ? 1 : 0))
       : selectedFilterOption === "byStatusInactiveFirst"
-      ? filtered.sort((a, b) => (a.ativo ? 1 : 0) - (b.ativo ? 1 : 0))
+      ? filtered.sort((a, b) => (a.isActive ? 1 : 0) - (b.isActive ? 1 : 0))
       : filtered;
   };
 
-  const filteredData = applyFilters(rawInvitesData);
+  const filteredData = applyFilters(invites);
 
   return (
     <>
       <PageLayout pageTitle="Histórico">
-        {rawInvitesData.length > 0 ? (
+        {invites.length > 0 ? (
           <>
             <FiltersWrapper>
               <Input
@@ -98,10 +102,13 @@ export function History() {
               {filteredData.map((item, index) => (
                 <InviteCard
                   key={index}
-                  personName={item.nome}
-                  inviteDate={item.inicioVisita}
-                  ativo={item.ativo}
-                  onPress={() => handleCardClick(item.id)}
+                  personName={item.visitorName}
+                  inviteDate={item.startDate}
+                  ativo={item.isActive}
+                  onPress={async () => {
+                    setSelectedInvite(item);
+                    setIsModalOpen(true);
+                  }}
                 />
               ))}
             </InviteCardsWrapper>
@@ -114,7 +121,9 @@ export function History() {
         <DetailedInvite
           visible={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          inviteId={selectedInvite.id}
+          code={selectedInvite.code}
+          residentId={6}
+          visitorId={selectedInvite.visitorId}
         />
       )}
     </>

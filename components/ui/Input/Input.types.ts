@@ -12,4 +12,6 @@ export interface InputProps {
   }[];
   disabled?: boolean;
   isPassword?: boolean;
+  keyboardType?: string;
+  maxLength?: number;
 }

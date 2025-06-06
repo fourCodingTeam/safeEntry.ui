@@ -65,7 +65,7 @@ export function Scan() {
           <FocusBox />
           <ButtonContainer>
             <FlipButton onPress={toggleCameraFacing}>
-              <FlipButtonText>Flip Camera</FlipButtonText>
+              <FlipButtonText>Virar a Câmera</FlipButtonText>
             </FlipButton>
           </ButtonContainer>
         </StyledCameraView>
@@ -79,7 +79,7 @@ export function Scan() {
               : "QR CODE INVÁLIDO, VISITA NÃO ENCONTRADA"}
           </ValidationMessage>
           <ResetButton onPress={resetScanner}>
-            <ResetButtonText>Scan Again</ResetButtonText>
+            <ResetButtonText>Ler Novamente</ResetButtonText>
           </ResetButton>
         </ValidationContainer>
       )}

@@ -19,7 +19,3 @@ export const StyledTouchableOpacity = styled.TouchableOpacity`
   height: 50px;
   border-radius: 50px;
 `;
-export const IconLetter = styled.Text`
-  color: ${theme.colors.white};
-  font-family: ${theme.fonts.poppinsMedium};
-`;

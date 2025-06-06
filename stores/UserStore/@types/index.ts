@@ -3,4 +3,6 @@ export interface UserState {
   setUsername: (username: string | null) => void;
   role: string | null;
   setRole: (role: string | null) => void;
+  token: string | null;
+  setToken: (token: string | null) => void;
 }
