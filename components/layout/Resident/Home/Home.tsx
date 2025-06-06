@@ -10,11 +10,11 @@ import {
 } from "./Home.styles";
 
 import { DetailedInvite } from "@/components/ui/DetailedInvite";
+import { EmptyList } from "@/components/ui/EmptyList";
 import { getInviteById } from "@/mock/mock";
 import { InviteResponse } from "@/services/@types";
 import { getInvitesByResidentId } from "@/services/api";
 import { useUserStore } from "@/stores";
-import { StyledText } from "../../styles";
 
 export function Home() {
   const router = useRouter();
@@ -23,15 +23,15 @@ export function Home() {
   >(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [invites, setInvites] = useState<InviteResponse[]>([]);
-  const { token, username } = useUserStore();
+  const { personId, token, username } = useUserStore();
 
   useEffect(() => {
     const fetchInvitesAsync = async () => {
-      if (!token || !username) {
+      if (!token || !username || !personId) {
         return;
       }
       try {
-        const invitesData = await getInvitesByResidentId(6, token);
+        const invitesData = await getInvitesByResidentId(personId, token);
         setInvites(invitesData);
       } catch (error) {
         console.error("Erro top", error);
@@ -90,21 +90,24 @@ export function Home() {
                 ))}
             </>
           ) : (
-            <StyledText>Não há convites aqui!</StyledText>
+            <EmptyList />
           )}
-          <Button
-            color={"blue"}
-            text={"Ver mais"}
-            onPress={() => router.replace("/historico")}
-          />
+          {invites.length < 3 ||
+            (!invites && (
+              <Button
+                color={"blue"}
+                text={"Ver mais"}
+                onPress={() => router.replace("/historico")}
+              />
+            ))}
         </InviteCardsWrapper>
       </PageLayout>
-      {selectedInvite && isModalOpen && (
+      {selectedInvite && isModalOpen && personId !== null && (
         <DetailedInvite
           visible={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           code={selectedInvite.code}
-          residentId={6}
+          residentId={personId}
           visitorId={selectedInvite.visitorId}
         />
       )}

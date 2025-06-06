@@ -37,7 +37,8 @@ export function DetailedInvite({
 }: DetailedInviteProps) {
   const toast = useToast();
   const [invite, setInvite] = useState<InviteResponse | null>(null);
-  const { token } = useUserStore();
+  const [hideItem, setHideItem] = useState(false);
+  const { token, username } = useUserStore();
   const [isLoading, setIsLoading] = useState(false);
   const qrCodeRef = useRef(null);
 
@@ -75,6 +76,10 @@ export function DetailedInvite({
 
   const onShare = async () => {
     try {
+      setHideItem(true);
+
+      await new Promise((resolve) => setTimeout(resolve, 1));
+
       const uri = await captureRef(qrCodeRef, {
         format: "png",
         quality: 1,
@@ -98,6 +103,8 @@ export function DetailedInvite({
       }
     } catch (error) {
       console.error("Erro ao compartilhar QR Code:", error);
+    } finally {
+      setHideItem(false);
     }
   };
 
@@ -123,20 +130,30 @@ export function DetailedInvite({
                   paddingVertical: 8,
                 }}
               >
-                <Header>
-                  <TouchableOpacity onPress={onClose}>
-                    <Ionicons name="chevron-back" size={18} />
-                  </TouchableOpacity>
-                  <Title>Visita de {formatName(invite.visitorName)}</Title>
-                </Header>
+                {!hideItem && (
+                  <Header>
+                    <TouchableOpacity onPress={onClose}>
+                      <Ionicons name="chevron-back" size={18} />
+                    </TouchableOpacity>
+                    <Title>Visita de {formatName(invite.visitorName)}</Title>
+                  </Header>
+                )}
+
+                {hideItem && username !== null && (
+                  <Header>
+                    <Title>Convite feito por {formatName(username)}</Title>
+                  </Header>
+                )}
 
                 <CardsWrapper>
-                  <StartEndCard
-                    startTitle="Validade do Convite"
-                    startDescription={
-                      invite.isActive ? "Convite ativo" : "Convite inativo"
-                    }
-                  />
+                  {!hideItem && (
+                    <StartEndCard
+                      startTitle="Validade do Convite"
+                      startDescription={
+                        invite.isActive ? "Convite ativo" : "Convite inativo"
+                      }
+                    />
+                  )}
                   <StartEndCard
                     startTitle="Inicio da Visita"
                     startDescription={new Date(
@@ -154,9 +171,13 @@ export function DetailedInvite({
 
                   <QrCodeShareWrapper>
                     <QrCodeTextWrapper>
-                      <StyledText>
-                        Escaneie o QR Code para visualizar
-                      </StyledText>
+                      {!hideItem ? (
+                        <StyledText>
+                          Escaneie o QR Code para visualizar
+                        </StyledText>
+                      ) : (
+                        <StyledText>QR Code</StyledText>
+                      )}
                       <QRCode
                         value={invite.justification}
                         size={278}
@@ -164,7 +185,11 @@ export function DetailedInvite({
                       />
                     </QrCodeTextWrapper>
                     <CodeWrapper>
-                      <StyledText>Ou informe este código:</StyledText>
+                      {!hideItem ? (
+                        <StyledText>Código numérico</StyledText>
+                      ) : (
+                        <StyledText>Ou informe este código:</StyledText>
+                      )}
                       <Code>{invite.code}</Code>
                     </CodeWrapper>
                   </QrCodeShareWrapper>

@@ -19,7 +19,6 @@ export async function getInvitesByResidentId(
     });
 
     if (!response.ok) {
-      console.log("Failed to fetch invites for resident:", response.status);
       return [];
     }
 

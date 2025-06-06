@@ -1,11 +1,11 @@
 import { Input, InviteCard } from "@/components/ui";
 import { DetailedInvite } from "@/components/ui/DetailedInvite";
+import { EmptyList } from "@/components/ui/EmptyList";
 import { InviteResponse } from "@/services/@types";
 import { getInvitesByResidentId } from "@/services/api";
 import { useUserStore } from "@/stores";
 import React, { useEffect, useState } from "react";
 import { PageLayout } from "../../PageLayout";
-import { StyledText } from "../../styles";
 import { FiltersWrapper, InviteCardsWrapper } from "./History.styles";
 
 export function History() {
@@ -14,15 +14,15 @@ export function History() {
   const [selectedInvite, setSelectedInvite] = useState<InviteResponse>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [invites, setInvites] = useState<InviteResponse[]>([]);
-  const { token, username } = useUserStore();
+  const { token, username, personId } = useUserStore();
 
   useEffect(() => {
     const fetchInvitesAsync = async () => {
-      if (!token || !username) {
+      if (!token || !username || !personId) {
         return;
       }
       try {
-        const invitesData = await getInvitesByResidentId(6, token);
+        const invitesData = await getInvitesByResidentId(personId, token);
         setInvites(invitesData);
       } catch (error) {
         console.error("Erro top", error);
@@ -114,15 +114,17 @@ export function History() {
             </InviteCardsWrapper>
           </>
         ) : (
-          <StyledText>Não há convites aqui!</StyledText>
+          <InviteCardsWrapper>
+            <EmptyList />
+          </InviteCardsWrapper>
         )}
       </PageLayout>
-      {selectedInvite && isModalOpen && (
+      {selectedInvite && isModalOpen && personId !== null && (
         <DetailedInvite
           visible={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           code={selectedInvite.code}
-          residentId={6}
+          residentId={personId}
           visitorId={selectedInvite.visitorId}
         />
       )}

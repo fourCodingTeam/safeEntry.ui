@@ -19,7 +19,7 @@ export function Form() {
     { label: string; value: string }[]
   >([]);
   const toast = useToast();
-  const { token } = useUserStore();
+  const { token, personId } = useUserStore();
   const [isloading, setIsloading] = useState(false);
 
   const handleSubmit = async () => {
@@ -35,12 +35,12 @@ export function Form() {
     setIsloading(true);
 
     try {
-      if (!token) {
+      if (!token || !personId) {
         return;
       }
       await postInviteGenerate(
         token,
-        6,
+        personId,
         nome,
         parseInt(telefone.replace(/\D/g, "")),
         visitDate,
@@ -80,21 +80,20 @@ export function Form() {
   function formatPhoneNumber(value: string): string {
     const cleaned = value.replace(/\D/g, "").slice(0, 11);
 
-    const match = cleaned.match(/^(\d{0,2})(\d{0,1})(\d{0,4})(\d{0,4})$/);
-
-    if (!match) return value;
-
-    const [, ddd, firstDigit, middle, last] = match;
-
-    let result = "";
-    if (ddd) result += `(${ddd}`;
-    if (ddd.length === 2) result += `) `;
-    if (firstDigit) result += `${firstDigit} `;
-    if (middle) result += `${middle}`;
-    if (middle.length === 4 && last) result += `-`;
-    if (last) result += `${last}`;
-
-    return result.trim();
+    if (cleaned.length <= 2) {
+      return `(${cleaned}`;
+    } else if (cleaned.length <= 6) {
+      return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2)}`;
+    } else if (cleaned.length <= 10) {
+      return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 6)}-${cleaned.slice(
+        6
+      )}`;
+    } else {
+      return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(
+        7,
+        11
+      )}`;
+    }
   }
 
   return (
