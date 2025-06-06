@@ -12,7 +12,7 @@ export const ButtonContainer = styled.TouchableOpacity<ButtonProps>`
   width: 100vw;
   background-color: ${({ buttonColor }: ButtonProps) => colors[buttonColor]};
   padding: ${theme.sizes.md};
-  border-radius: ${theme.sizes.lg};
+  border-radius: ${theme.sizes.sm};
 `;
 
 export const ButtonText = styled.Text`

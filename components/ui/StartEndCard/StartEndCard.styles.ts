@@ -14,16 +14,14 @@ export const TitleWrapper = styled.View`
 
 export const StartEndCardWrapper = styled.View`
   flex-direction: row;
-  align-items: center;
   justify-content: space-between;
   background-color: ${theme.colors.white};
   width: 100%;
-  height: 82px;
   align-items: center;
-  shadowcolor: ${theme.colors.blue};
-  elevation: 16;
   border-radius: ${theme.sizes.md};
-  padding: ${theme.sizes.md} ${theme.sizes.lg};
+  border: 1px solid ${theme.colors.black40};
+  padding: ${theme.sizes.smMax} ${theme.sizes.md};
+  elevation: 2;
 `;
 
 export const Elipse = styled.View<ElipseProps>`
@@ -33,7 +31,12 @@ export const Elipse = styled.View<ElipseProps>`
   border-radius: 50%;
 `;
 
-export const ContentWrapper = styled.View``;
+export const StartContentWrapper = styled.View`
+  align-items: flex-start;
+`;
+export const ContentWrapper = styled.View`
+  align-items: flex-end;
+`;
 
 export const StyledTextMedium = styled.Text`
   color: ${theme.colors.black};

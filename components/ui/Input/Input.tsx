@@ -1,17 +1,20 @@
+import { theme } from "@/constants/theme";
+import { Ionicons } from "@expo/vector-icons";
+import { format } from "date-fns";
 import React, { useState } from "react";
 import { Text } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { InputProps } from "./Input.types";
 import {
   InputWrapper,
-  StyledTextInput,
-  PickerWrapper,
-  SelectButton,
-  SelectButtonText,
-  OptionList,
   OptionItem,
+  OptionList,
+  PickerWrapper,
+  StyledSelectInput,
+  StyledSelectInputText,
+  StyledTextInput,
   Subtitle,
 } from "./Input.styles";
+import { InputProps } from "./Input.types";
 
 export function Input({
   type,
@@ -21,47 +24,71 @@ export function Input({
   placeholder,
   options = [],
   disabled = false,
+  isPassword,
+  keyboardType,
+  maxLength,
 }: InputProps) {
   const [showPicker, setShowPicker] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+
+  const selectedOptionLabel =
+    options.find((option) => option.value === value)?.label ||
+    placeholder ||
+    "Selecione";
 
   return (
     <InputWrapper>
       {type === "text" ? (
         <>
-          <Subtitle>{label}</Subtitle>
+          {label && <Subtitle>{label}</Subtitle>}
           <StyledTextInput
             value={value}
             placeholder={placeholder}
+            placeholderTextColor={theme.colors.placeholder}
             editable={!disabled}
+            maxLength={maxLength}
             onChangeText={onChange}
+            keyboardType={keyboardType === "N" ? "numeric" : "default"}
+            secureTextEntry={isPassword}
+            style={{
+              color: value ? theme.colors.black : theme.colors.placeholder,
+            }}
           />
         </>
       ) : type === "select" ? (
         <PickerWrapper>
-          <Subtitle>{label}</Subtitle>
-          <SelectButton
+          {label && <Subtitle>{label}</Subtitle>}
+          <StyledSelectInput
             placeholder={placeholder}
             onPress={() => setShowOptions(!showOptions)}
             disabled={disabled}
           >
-            <SelectButtonText>
-              {value || placeholder || "Selecione"}
-            </SelectButtonText>
-          </SelectButton>
+            <StyledSelectInputText
+              style={{
+                color: value ? theme.colors.black : theme.colors.placeholder,
+              }}
+            >
+              {selectedOptionLabel}
+            </StyledSelectInputText>
+            <Ionicons
+              name={showOptions ? "chevron-up" : "chevron-down"}
+              size={16}
+              color={theme.colors.black60}
+            />
+          </StyledSelectInput>
 
           {showOptions && (
             <OptionList>
               {options.map((option, index) => (
                 <OptionItem
-                  key={option}
+                  key={option.value}
                   isLast={index === options.length - 1}
                   onPress={() => {
-                    onChange(option);
+                    onChange(option.value);
                     setShowOptions(false);
                   }}
                 >
-                  <Text>{option}</Text>
+                  <Text style={{ fontSize: 16 }}>{option.label}</Text>
                 </OptionItem>
               ))}
             </OptionList>
@@ -69,22 +96,33 @@ export function Input({
         </PickerWrapper>
       ) : (
         <>
-          <Subtitle>{label}</Subtitle>
-          <SelectButton
+          {label && <Subtitle>{label}</Subtitle>}
+          <StyledSelectInput
             label={label}
             onPress={() => setShowPicker(true)}
             disabled={disabled}
           >
-            <SelectButtonText>
-              {value ? new Date(value).toLocaleDateString() : placeholder}
-            </SelectButtonText>
-          </SelectButton>
+            <StyledSelectInputText
+              style={{
+                color: value ? theme.colors.black : theme.colors.placeholder,
+              }}
+            >
+              {value instanceof Date
+                ? format(value, "yyyy-MM-dd")
+                : placeholder}
+            </StyledSelectInputText>
+            <Ionicons
+              name="calendar"
+              size={18}
+              color={theme.colors.placeholder}
+            />
+          </StyledSelectInput>
           <DateTimePickerModal
             isVisible={showPicker}
             mode="date"
             onConfirm={(date) => {
               setShowPicker(false);
-              onChange(date.toISOString());
+              onChange(date);
             }}
             onCancel={() => setShowPicker(false)}
           />

@@ -1,3 +1,3 @@
-export * from "./Home";
-export * from "./PageLayout";
-export * from "./Form";
+export * from "./Admin";
+export * from "./Authentication";
+export * from "./Resident";

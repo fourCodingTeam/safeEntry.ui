@@ -1,7 +1,6 @@
 import { theme } from "@/constants/theme";
 
 export type StartEndCardProps = {
-  isFinished?: boolean;
   startTitle: string;
   endTitle?: string;
   startDescription: string;

@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "descricao": "Visita casual"
+  },
+  {
+    "id": 2,
+    "descricao": "Consulta médica"
+  },
+  {
+    "id": 3,
+    "descricao": "Entrega de documentos"
+  },
+  {
+    "id": 4,
+    "descricao": "Entrevista de emprego"
+  },
+  {
+    "id": 5,
+    "descricao": "Reunião com funcionário"
+  },
+  {
+    "id": 6,
+    "descricao": "Serviço de manutenção"
+  },
+  {
+    "id": 7,
+    "descricao": "Inspeção técnica"
+  },
+  {
+    "id": 8,
+    "descricao": "Participação em evento"
+  },
+  {
+    "id": 9,
+    "descricao": "Entrega de encomenda"
+  },
+  {
+    "id": 10,
+    "descricao": "Visita institucional"
+  }
+]

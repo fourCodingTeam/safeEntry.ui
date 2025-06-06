@@ -1,10 +1,6 @@
-import { Home, PageLayout } from "@/components/layout";
-import React from "react-native";
+import { Home } from "@/components/layout";
+import React from "react";
 
 export default function HomePage() {
-  return (
-    <PageLayout isGreeting={true} userName={"Guilherme"}>
-      <Home />
-    </PageLayout>
-  );
+  return <Home />;
 }

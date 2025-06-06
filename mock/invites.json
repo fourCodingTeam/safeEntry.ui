@@ -1,0 +1,51 @@
+[
+  {
+    "id": 18,
+    "nome": "Camila Souza Ferreira",
+    "inicioVisita": "2025-05-24",
+    "motivoVisita": "Planejamento de evento familiar.",
+    "duracaoPrevistaDias": 2,
+    "qrCodeUrl": "https://example.com/qrcode/camila-visit-2025",
+    "ativo": true
+  },
+  {
+    "id": 19,
+    "nome": "Rafael Lima Teixeira",
+    "inicioVisita": "2025-02-10",
+    "fimVisita": "2025-02-15",
+    "motivoVisita": "Trabalho técnico na rede elétrica.",
+    "duracaoPrevistaDias": 5,
+    "duracaoEfetivaDias": 5,
+    "qrCodeUrl": "https://example.com/qrcode/rafael-visit-2025",
+    "ativo": false
+  },
+  {
+    "id": 20,
+    "nome": "Lívia Costa Monteiro",
+    "inicioVisita": "2025-06-01",
+    "motivoVisita": "Hospedagem durante curso na cidade.",
+    "duracaoPrevistaDias": 10,
+    "qrCodeUrl": "https://example.com/qrcode/livia-visit-2025",
+    "ativo": true
+  },
+  {
+    "id": 21,
+    "nome": "Eduardo Santana Lopes",
+    "inicioVisita": "2025-03-12",
+    "fimVisita": "2025-03-14",
+    "motivoVisita": "Consultoria sobre infraestrutura.",
+    "duracaoPrevistaDias": 2,
+    "duracaoEfetivaDias": 2,
+    "qrCodeUrl": "https://example.com/qrcode/eduardo-visit-2025",
+    "ativo": false
+  },
+  {
+    "id": 22,
+    "nome": "Fernanda Alves Duarte",
+    "inicioVisita": "2025-05-28",
+    "motivoVisita": "Instalação de equipamentos eletrônicos.",
+    "duracaoPrevistaDias": 1,
+    "qrCodeUrl": "https://example.com/qrcode/fernanda-visit-2025",
+    "ativo": true
+  }
+]

@@ -6,6 +6,7 @@ export const theme = {
     midnight60: "#888995",
     white: "#ECF1F5",
     offWhite: "#DEE4E9",
+    darkWhite: "#e1e6eb",
     black: "#131315",
     black60: "#404042",
     black40: "#C1C5C8",
@@ -16,7 +17,9 @@ export const theme = {
   sizes: {
     xs: "4px",
     sm: "8px",
+    smMax: "14px",
     md: "16px",
+    mdPart: "20px",
     mdMax: "24px",
     lg: "32px",
     lgMax: "48px",

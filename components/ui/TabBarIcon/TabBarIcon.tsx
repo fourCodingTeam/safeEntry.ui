@@ -1,8 +1,8 @@
 import { theme } from "@/constants/theme";
 import React from "react";
 import { View } from "react-native";
-import { TabBarIconProps } from "./TabBarIcon.types";
 import { Icon } from "../Icon";
+import { TabBarIconProps } from "./TabBarIcon.types";
 
 export function TabBarIcon({ focused, iconName }: TabBarIconProps) {
   return (

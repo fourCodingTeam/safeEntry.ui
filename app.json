@@ -33,7 +33,15 @@
           "backgroundColor": "#ECF1F5"
         }
       ],
-      "expo-localization"
+      "expo-localization",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Gostaria de permitir o acesso da câmera para $(PRODUCT_NAME)?",
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "recordAudioAndroid": true
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

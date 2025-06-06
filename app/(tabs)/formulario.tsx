@@ -1,11 +1,7 @@
-import { Form, PageLayout } from "@/components/layout/";
+import { Form } from "@/components/layout/";
 
-import React from "react-native";
+import React from "react";
 
 export default function FormularioPage() {
-  return (
-    <PageLayout isGreeting={false} pageTitle="Convidar">
-      <Form />
-    </PageLayout>
-  );
+  return <Form />;
 }

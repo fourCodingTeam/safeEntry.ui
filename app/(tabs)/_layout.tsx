@@ -3,6 +3,7 @@ import React from "react";
 
 import { TabBarIcon } from "@/components/ui";
 import { theme } from "@/constants/theme";
+import { Pressable } from "react-native";
 
 export default function AppStack() {
   return (
@@ -40,6 +41,9 @@ export default function AppStack() {
             <TabBarIcon focused={focused} iconName={"house"} />
           ),
           title: "",
+          tabBarButton: (props) => (
+            <Pressable {...props} android_ripple={null} />
+          ),
         }}
       />
       <Tabs.Screen
@@ -49,6 +53,9 @@ export default function AppStack() {
             <TabBarIcon focused={focused} iconName={"plus"} />
           ),
           title: "",
+          tabBarButton: (props) => (
+            <Pressable {...props} android_ripple={null} />
+          ),
         }}
       />
       <Tabs.Screen
@@ -58,6 +65,9 @@ export default function AppStack() {
             <TabBarIcon focused={focused} iconName={"clock"} />
           ),
           title: "",
+          tabBarButton: (props) => (
+            <Pressable {...props} android_ripple={null} />
+          ),
         }}
       />
     </Tabs>

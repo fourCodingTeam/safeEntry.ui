@@ -1,7 +1,7 @@
 import { theme } from "@/constants/theme";
 import styled from "styled-components/native";
 
-export const InviteCardWrapper = styled.View`
+export const InviteCardWrapper = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -9,10 +9,11 @@ export const InviteCardWrapper = styled.View`
   width: 100%;
   height: 82px;
   align-items: center;
-  shadowcolor: ${theme.colors.blue};
-  elevation: 16;
+  border: 1px solid ${theme.colors.black40};
   border-radius: ${theme.sizes.md};
-  padding: ${theme.sizes.md} ${theme.sizes.lg};
+  padding: ${theme.sizes.md} ${theme.sizes.md};
+  margin-bottom: ${theme.sizes.sm};
+  elevation: 1;
 `;
 export const PersonInfoWrapper = styled.View`
   height: 100%;
