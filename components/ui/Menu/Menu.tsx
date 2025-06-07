@@ -22,7 +22,7 @@ import {
 import { MenuProps } from "./Menu.types";
 
 export function Menu({ visible, onClose, isResident }: MenuProps) {
-  const { setUsername, setRole } = useUserStore();
+  const { setUsername, setRole, setToken } = useUserStore();
   const router = useRouter();
 
   const handleOpenPreferences = () => {
@@ -33,7 +33,8 @@ export function Menu({ visible, onClose, isResident }: MenuProps) {
   const handleLogout = () => {
     setUsername(null);
     setRole(null);
-    router.dismissAll();
+    setToken(null);
+    router.replace("/auth");
   };
   return (
     <Modal

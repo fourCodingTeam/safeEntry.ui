@@ -2,27 +2,31 @@ import { Input, InviteCard } from "@/components/ui";
 import { DetailedInvite } from "@/components/ui/DetailedInvite";
 import { EmptyList } from "@/components/ui/EmptyList";
 import { InviteResponse } from "@/services/@types";
-import { getInvitesByResidentId } from "@/services/api";
-import { useUserStore } from "@/stores";
+import { getInvitesByAddressId } from "@/services/api";
+import { useAddressStore, useUserStore } from "@/stores";
 import React, { useEffect, useState } from "react";
 import { PageLayout } from "../../PageLayout";
-import { FiltersWrapper, InviteCardsWrapper } from "./History.styles";
+import { FiltersWrapper, InviteCardsWrapper } from "./AdminInvites.styles";
 
-export function History() {
+export function AdminInvites() {
   const [nome, setNome] = useState("");
   const [selectedFilterOption, setSelectedFilterOption] = useState("");
   const [selectedInvite, setSelectedInvite] = useState<InviteResponse>();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [visitorId, setVisitorId] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const [invites, setInvites] = useState<InviteResponse[]>([]);
-  const { token, username, personId } = useUserStore();
+
+  const { token } = useUserStore();
+  const { addressId, houseNumber } = useAddressStore();
 
   useEffect(() => {
     const fetchInvitesAsync = async () => {
-      if (!token || !username || !personId) {
+      if (!token || !addressId) {
         return;
       }
       try {
-        const invitesData = await getInvitesByResidentId(personId, token);
+        const invitesData = await getInvitesByAddressId(addressId, token);
         setInvites(invitesData);
       } catch (error) {
         console.error("Erro top", error);
@@ -34,7 +38,7 @@ export function History() {
     const interval = setInterval(fetchInvitesAsync, 500000);
 
     return () => clearInterval(interval);
-  }, [token, username]);
+  }, [token, addressId]);
 
   const filterOptions = [
     { label: "Sem filtro", value: "" },
@@ -76,28 +80,32 @@ export function History() {
 
   return (
     <>
-      <PageLayout pageTitle="Histórico">
+      <PageLayout
+        pageTitle={`Casa ${houseNumber}`}
+        isResident={false}
+        ableToGoBack={true}
+      >
+        <FiltersWrapper>
+          <Input
+            type="text"
+            value={nome}
+            label="Nome do visitante"
+            placeholder="Digite o nome do visitante"
+            onChange={(value) => setNome(value as string)}
+          />
+          <Input
+            type="select"
+            label="Ordenar por"
+            value={selectedFilterOption}
+            onChange={(value) => setSelectedFilterOption(value as string)}
+            options={filterOptions.map((option) => ({
+              label: option.label,
+              value: option.value,
+            }))}
+          />
+        </FiltersWrapper>
         {invites.length > 0 ? (
           <>
-            <FiltersWrapper>
-              <Input
-                type="text"
-                value={nome}
-                label="Nome do visitante"
-                placeholder="Digite o nome do visitante"
-                onChange={(value) => setNome(value as string)}
-              />
-              <Input
-                type="select"
-                label="Ordenar por"
-                value={selectedFilterOption}
-                onChange={(value) => setSelectedFilterOption(value as string)}
-                options={filterOptions.map((option) => ({
-                  label: option.label,
-                  value: option.value,
-                }))}
-              />
-            </FiltersWrapper>
             <InviteCardsWrapper>
               {filteredData.map((item, index) => (
                 <InviteCard
@@ -106,6 +114,7 @@ export function History() {
                   inviteDate={item.startDate}
                   ativo={item.isActive}
                   onPress={async () => {
+                    setVisitorId(item.visitorId);
                     setSelectedInvite(item);
                     setIsModalOpen(true);
                   }}
@@ -114,17 +123,15 @@ export function History() {
             </InviteCardsWrapper>
           </>
         ) : (
-          <InviteCardsWrapper>
-            <EmptyList />
-          </InviteCardsWrapper>
+          <EmptyList />
         )}
       </PageLayout>
-      {selectedInvite && isModalOpen && personId !== null && (
+      {selectedInvite && isModalOpen && visitorId !== null && (
         <DetailedInvite
           visible={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           code={selectedInvite.code}
-          residentId={personId}
+          residentId={selectedInvite.residentId}
           visitorId={selectedInvite.visitorId}
         />
       )}

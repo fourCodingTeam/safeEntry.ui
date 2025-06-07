@@ -49,9 +49,9 @@ export function Authentication() {
 
       setTimeout(() => {
         if (response.role === 1) {
-          router.push("/(tabs)");
+          router.replace("/(tabs)");
         } else {
-          router.push("/(admin)");
+          router.replace("/(admin)");
         }
         setPassword("");
         setInputUsername("");

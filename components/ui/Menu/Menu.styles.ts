@@ -25,10 +25,10 @@ export const StyledMenuOption = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   gap: ${theme.sizes.sm};
-  border-radius: ${theme.sizes.xs};
+  border-radius: ${theme.sizes.sm};
   width: 100%;
   padding: ${theme.sizes.smMax} ${theme.sizes.sm};
-  background-color: ${theme.colors.offWhite};
+  background-color: ${theme.colors.darkWhite};
 `;
 
 export const StyledHighlightedMenuOption = styled.TouchableOpacity`

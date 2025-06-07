@@ -172,11 +172,11 @@ export function DetailedInvite({
                   <QrCodeShareWrapper>
                     <QrCodeTextWrapper>
                       {!hideItem ? (
-                        <StyledText>
-                          Escaneie o QR Code para visualizar
-                        </StyledText>
-                      ) : (
                         <StyledText>QR Code</StyledText>
+                      ) : (
+                        <StyledText>
+                          Apresente este QR Code na entrada
+                        </StyledText>
                       )}
                       <QRCode
                         value={invite.justification}

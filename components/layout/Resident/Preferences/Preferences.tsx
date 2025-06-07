@@ -1,4 +1,5 @@
 import { Button, Input } from "@/components/ui";
+import { useUserStore } from "@/stores";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -16,6 +17,8 @@ import {
 export function Preferences() {
   const router = useRouter();
   const [callPreference, setCallPreference] = useState("");
+  const { username } = useUserStore();
+  const firstLetter = username?.slice(0, 1).toUpperCase();
 
   const handlePress = () => {
     if (router.canGoBack()) {
@@ -32,7 +35,7 @@ export function Preferences() {
         </StyledGoBackTouchableOpacity>
       </GoBackWrapper>
       <LetterWrapper>
-        <IconLetter>J</IconLetter>
+        <IconLetter>{firstLetter}</IconLetter>
       </LetterWrapper>
       <FormWrapper>
         <InputsWrapper>

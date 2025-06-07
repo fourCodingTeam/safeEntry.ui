@@ -30,6 +30,31 @@ export async function getInvitesByResidentId(
   }
 }
 
+export async function getInvitesByAddressId(
+  addressId: number,
+  token: string
+): Promise<InviteResponse[]> {
+  try {
+    const response = await fetch(`${BASE_URL}/Invite/address/${addressId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const invitesData = (await response.json()) as InviteResponse[];
+
+    return invitesData;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function getInviteByResidentIdAndVisitorIdAndCode(
   token: string,
   residentId: number,

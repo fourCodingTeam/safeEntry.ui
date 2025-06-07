@@ -1,17 +1,26 @@
+import { theme } from "@/constants/theme";
 import invites from "@/mock/invites.json";
 import { getAllMotives } from "@/mock/mock";
 import { format } from "date-fns";
+import Checkbox from "expo-checkbox";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Button, Input, useToast } from "../../../ui";
 import { PageLayout } from "../../PageLayout";
-import { ButtonWrapper, FormWrapper, InputsWrapper } from "./AdminForm.styles";
+import {
+  ButtonWrapper,
+  FormWrapper,
+  InputsWrapper,
+  StyledCheckBoxText,
+  StyledCheckBoxWrapper,
+} from "./AdminForm.styles";
 
 export function AdminForm() {
   const router = useRouter();
   const [nome, setNome] = useState("");
   const [reason, setReason] = useState("");
   const [inviteValidity, setInviteValidity] = useState("");
+  const [isChecked, setChecked] = useState(false);
   const [visitDate, setVisitDate] = useState<Date | null>(null);
   const inicioVisita = new Date(visitDate as Date);
   const [motivesOptions, setMotivesOptions] = useState<
@@ -69,7 +78,7 @@ export function AdminForm() {
   // password
 
   return (
-    <PageLayout pageTitle="Cadastrar Modador" isResident={false}>
+    <PageLayout pageTitle="Cadastrar Morador" isResident={false}>
       <FormWrapper>
         <InputsWrapper>
           <Input
@@ -107,6 +116,23 @@ export function AdminForm() {
             value={nome}
             onChange={(value) => setNome(value as string)}
           />
+          <StyledCheckBoxWrapper>
+            <Checkbox
+              value={isChecked}
+              onValueChange={setChecked}
+              color={isChecked ? theme.colors.blue : theme.colors.placeholder}
+              style={{ borderRadius: 4, borderWidth: 1 }}
+            />
+            <StyledCheckBoxText
+              style={{
+                color: isChecked
+                  ? theme.colors.black
+                  : theme.colors.placeholder,
+              }}
+            >
+              É responsável pela casa
+            </StyledCheckBoxText>
+          </StyledCheckBoxWrapper>
         </InputsWrapper>
         <ButtonWrapper>
           <Button color={"blue"} text={"Convidar"} onPress={handleSubmit} />

@@ -1,5 +1,6 @@
-export type InviteCardProps = {
-  houseNumber: string;
+export type HouseCardProps = {
+  houseNumber: number;
+  houseOwnerName: string;
   activeInvites: number;
   onPress: () => void;
 };

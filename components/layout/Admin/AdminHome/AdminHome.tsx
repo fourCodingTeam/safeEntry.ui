@@ -46,7 +46,7 @@ export function AdminHome() {
           <StyledImage source={require("@/assets/images/ReadQrCode.png")} />
         </ImageWrapper>
         <InviteCardsWrapper>
-          <StyledSectionTitle>Convites Aprovados</StyledSectionTitle>
+          <StyledSectionTitle>Convites Ativos</StyledSectionTitle>
           {invites.length > 0 ? (
             <>
               {invites

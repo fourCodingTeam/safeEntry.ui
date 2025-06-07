@@ -33,6 +33,7 @@ export const IconLetter = styled.Text`
   color: ${theme.colors.white};
   font-family: ${theme.fonts.poppinsMedium};
   font-size: ${theme.sizes.xl};
+  line-height: 165px;
 `;
 
 export const StyledGoBackText = styled.Text`
