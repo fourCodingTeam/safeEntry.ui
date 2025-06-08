@@ -28,3 +28,9 @@ export type InviteResponse = {
   justification: string;
   isActive: boolean;
 };
+
+export type InviteValidateRequest = {
+  addressId: number;
+  visitorId: number;
+  code: number;
+};

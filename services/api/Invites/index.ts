@@ -3,6 +3,7 @@ import {
   InviteGenerateRequest,
   InviteGenerateResponse,
   InviteResponse,
+  InviteValidateRequest,
 } from "@/services/@types/invite";
 
 export async function getInvitesByResidentId(
@@ -120,6 +121,36 @@ export async function postInviteGenerate(
 
     const inviteData = (await response.json()) as InviteGenerateResponse;
     return inviteData;
+  } catch (error) {
+    throw error;
+  }
+}
+export async function postInviteValidate(
+  token: string,
+  addressId: number,
+  visitorId: number,
+  code: number
+) {
+  try {
+    const response = await fetch(`${BASE_URL}/Invite/Validate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        addressId,
+        visitorId,
+        code,
+      } as InviteValidateRequest),
+    });
+
+    if (!response.ok) {
+      console.error("Failed to validate invite:", response.status);
+      return "Convite expirado ou não existente";
+    }
+
+    return true;
   } catch (error) {
     throw error;
   }

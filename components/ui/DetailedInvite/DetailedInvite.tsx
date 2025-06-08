@@ -69,6 +69,16 @@ export function DetailedInvite({
     }
   }, [visible, token, residentId, visitorId, code]);
 
+  if (invite == null) return;
+
+  const qrData = {
+    code: invite.code,
+    visitorId: invite.visitorId,
+    residentId: invite.residentId,
+    addressId: invite.addressId,
+    justification: invite.justification,
+  };
+
   const formatName = (fullName: string) => {
     const shortName = fullName.trim().split(" ");
     return shortName.slice(0, 2).join(" ");
@@ -179,7 +189,7 @@ export function DetailedInvite({
                         </StyledText>
                       )}
                       <QRCode
-                        value={invite.justification}
+                        value={JSON.stringify(qrData)}
                         size={278}
                         backgroundColor={theme.colors.white}
                       />
