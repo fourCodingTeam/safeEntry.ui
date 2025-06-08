@@ -1,5 +1,8 @@
+import { useToast } from "@/components/ui";
+import { DeniedModal } from "@/components/ui/DeniedModal";
 import { theme } from "@/constants/theme";
-import invites from "@/mock/invites.json";
+import { postInviteValidate } from "@/services/api";
+import { useUserStore } from "@/stores";
 import {
   BarcodeScanningResult,
   CameraType,
@@ -15,26 +18,54 @@ export function Scan() {
   const [scanned, setScanned] = useState(false);
   const [cameraOpen, setCameraOpen] = useState(true);
   const [isValidQRCode, setIsValidQRCode] = useState<boolean | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toast = useToast();
+  const { token } = useUserStore();
 
   const toggleCameraFacing = () => {
     setFacing((current) => (current === "back" ? "front" : "back"));
   };
 
-  const handleBarcodeScanned = (data: BarcodeScanningResult) => {
+  const handleBarcodeScanned = async (data: BarcodeScanningResult) => {
     setScanned(true);
     setCameraOpen(false);
 
-    const isValid = invites.some(
-      (invite: { qrCodeUrl: string }) =>
-        invite.qrCodeUrl === data.data.toString()
-    );
-    setIsValidQRCode(isValid);
+    try {
+      const qrData = JSON.parse(data.data);
+
+      const { addressId, visitorId, code } = qrData;
+
+      if (!addressId || !visitorId || !code || !token) {
+        throw new Error("QR Code inválido");
+      }
+
+      const result = await postInviteValidate(
+        token,
+        addressId,
+        visitorId,
+        code
+      );
+
+      setIsValidQRCode(result === true);
+      setIsModalOpen(true);
+
+      if (result !== true) {
+        toast.show(result as string, 3000, "error");
+      }
+    } catch (error) {
+      console.error("Erro ao validar QR Code:", error);
+      toast.show("QR Code inválido ou erro na validação", 3000, "error");
+      setIsValidQRCode(false);
+      setIsModalOpen(true);
+    }
   };
 
   const resetScanner = () => {
     setScanned(false);
     setCameraOpen(true);
     setIsValidQRCode(null);
+    setIsModalOpen(false);
   };
 
   if (!permission) {
@@ -70,6 +101,13 @@ export function Scan() {
           </ButtonContainer>
         </StyledCameraView>
       )}
+
+      <DeniedModal
+        visible={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        resetScanner={resetScanner}
+        message="Negado"
+      />
 
       {scanned && (
         <ValidationContainer>
