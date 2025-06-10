@@ -1,27 +1,43 @@
 import { BASE_URL } from "@/constants/apiConfig";
-import { createResidentRequest } from "../../@types/resident";
+import { createResidentResponse } from "@/services/@types";
 
-export async function CreateResident(
-  data: createResidentRequest
-): Promise<String> {
+export async function postCreateResident(
+  token: string,
+  name: string,
+  phoneNumber: number,
+  condominiumId: number,
+  homeNumber: number,
+  email: string,
+  password: string,
+  isHomeOwner: boolean,
+  homeStreet?: string
+): Promise<createResidentResponse | null> {
   try {
-    const response = await fetch(`${BASE_URL}/Resident`, {
+    const response = await fetch(`${BASE_URL}/Residents`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        data,
+        token,
+        name,
+        phoneNumber,
+        condominiumId,
+        homeStreet,
+        homeNumber,
+        email,
+        password,
+        isHomeOwner,
       }),
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(
-        `Erro ${response.status}: ${errorData.message || "Erro desconhecido"}`
-      );
+      console.error("Failed to create resident:", response.status);
+      return null;
     }
-    return await response.json();
+    const data = await response.json();
+    return data as createResidentResponse;
   } catch (error) {
     console.error("Erro ao criar um novo morador", error);
     throw error;

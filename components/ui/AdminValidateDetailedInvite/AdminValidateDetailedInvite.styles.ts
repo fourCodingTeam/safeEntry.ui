@@ -1,9 +1,7 @@
 import { theme } from "@/constants/theme";
 import styled from "styled-components/native";
 
-export const ContentWrapper = styled.View`
-  align-items: center;
-  justify-content: center;
+export const ContentWrapper = styled.ScrollView`
   background-color: ${theme.colors.white};
   height: 100%;
   z-index: 1;
@@ -14,6 +12,7 @@ export const Header = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: left;
+  margin-bottom: ${theme.sizes.md};
   width: 100%;
 `;
 
@@ -35,17 +34,33 @@ export const ButtonsWrapper = styled.View`
   gap: ${theme.sizes.sm};
   background-color: ${theme.colors.white};
   width: 100%;
+  border-radius: ${theme.sizes.md};
+  border: 1px solid ${theme.colors.black40};
   padding: ${theme.sizes.smMax} ${theme.sizes.md};
+  elevation: 2;
+  margin-bottom: ${theme.sizes.md};
 `;
 
-export const ErrorText = styled.Text`
-  color: ${theme.colors.red};
+export const ButtonText = styled.Text`
+  color: ${theme.colors.white};
+  font-size: ${theme.sizes.md};
+  font-family: ${theme.fonts.poppinsMedium};
+`;
+
+export const ValidateCodeWrapper = styled.View`
+  flex-direction: column;
+  gap: ${theme.sizes.md};
+  background-color: ${theme.colors.white};
+  width: 100%;
+  align-items: center;
+  border-radius: ${theme.sizes.md};
+  border: 1px solid ${theme.colors.black40};
+  padding: ${theme.sizes.smMax} ${theme.sizes.md};
+  elevation: 2;
+`;
+
+export const ValidateCodeTitle = styled.Text`
+  color: ${theme.colors.black};
   font-family: ${theme.fonts.poppinsMedium};
   font-size: ${theme.sizes.mdPart};
-`;
-
-export const StyledImage = styled.Image`
-  width: 100%;
-  height: 160px;
-  object-fit: contain;
 `;

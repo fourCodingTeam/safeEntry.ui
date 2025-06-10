@@ -1,27 +1,31 @@
-import { useToast } from "@/components/ui";
+import { Loader, useToast } from "@/components/ui";
 import { DeniedModal } from "@/components/ui/DeniedModal";
 import { theme } from "@/constants/theme";
 import { postInviteValidate } from "@/services/api";
 import { useUserStore } from "@/stores";
+import { useCameraStore } from "@/stores/CameraStore";
 import {
   BarcodeScanningResult,
   CameraType,
   CameraView,
   useCameraPermissions,
 } from "expo-camera";
-import React, { useState } from "react";
+import { useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components/native";
 
 export function Scan() {
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
-  const [cameraOpen, setCameraOpen] = useState(true);
   const [isValidQRCode, setIsValidQRCode] = useState<boolean | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const toast = useToast();
-  const { token } = useUserStore();
+  const { token, personId } = useUserStore();
+  const { isOpen, setIsOpen } = useCameraStore();
 
   const toggleCameraFacing = () => {
     setFacing((current) => (current === "back" ? "front" : "back"));
@@ -29,26 +33,33 @@ export function Scan() {
 
   const handleBarcodeScanned = async (data: BarcodeScanningResult) => {
     setScanned(true);
-    setCameraOpen(false);
+    setIsLoading(true);
 
     try {
       const qrData = JSON.parse(data.data);
+      console.log(qrData);
 
       const { addressId, visitorId, code } = qrData;
 
-      if (!addressId || !visitorId || !code || !token) {
+      if (!addressId || !visitorId || !code || !token || !personId) {
         throw new Error("QR Code inválido");
       }
+
+      const dateNow = new Date();
 
       const result = await postInviteValidate(
         token,
         addressId,
         visitorId,
-        code
+        personId,
+        code,
+        dateNow
       );
 
       setIsValidQRCode(result === true);
       setIsModalOpen(true);
+
+      console.log(result);
 
       if (result !== true) {
         toast.show(result as string, 3000, "error");
@@ -57,13 +68,32 @@ export function Scan() {
       console.error("Erro ao validar QR Code:", error);
       toast.show("QR Code inválido ou erro na validação", 3000, "error");
       setIsValidQRCode(false);
+      setIsLoading(false);
       setIsModalOpen(true);
+    } finally {
+      setIsLoading(false);
+      setIsOpen(false);
     }
   };
 
+  const handleNavigateIfScanSuccessful = () => {
+    toast.show("Entrada Aprovada!", 3000, "success");
+    setScanned(false);
+    setIsOpen(false);
+    setIsValidQRCode(null);
+    setIsModalOpen(false);
+    router.push("/(admin)");
+  };
+
+  useEffect(() => {
+    if (isValidQRCode === true && isModalOpen) {
+      handleNavigateIfScanSuccessful();
+    }
+  }, [isValidQRCode, isModalOpen]);
+
   const resetScanner = () => {
     setScanned(false);
-    setCameraOpen(true);
+    setIsOpen(true);
     setIsValidQRCode(null);
     setIsModalOpen(false);
   };
@@ -85,7 +115,7 @@ export function Scan() {
 
   return (
     <Container>
-      {cameraOpen && (
+      {isOpen && (
         <StyledCameraView
           facing={facing}
           onBarcodeScanned={scanned ? undefined : handleBarcodeScanned}
@@ -93,6 +123,7 @@ export function Scan() {
             barcodeTypes: ["qr"],
           }}
         >
+          {isLoading && <Loader />}
           <FocusBox />
           <ButtonContainer>
             <FlipButton onPress={toggleCameraFacing}>
@@ -102,24 +133,13 @@ export function Scan() {
         </StyledCameraView>
       )}
 
-      <DeniedModal
-        visible={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        resetScanner={resetScanner}
-        message="Negado"
-      />
-
-      {scanned && (
-        <ValidationContainer>
-          <ValidationMessage isValid={isValidQRCode}>
-            {isValidQRCode
-              ? "QR CODE VÁLIDO, VISITA VÁLIDA"
-              : "QR CODE INVÁLIDO, VISITA NÃO ENCONTRADA"}
-          </ValidationMessage>
-          <ResetButton onPress={resetScanner}>
-            <ResetButtonText>Ler Novamente</ResetButtonText>
-          </ResetButton>
-        </ValidationContainer>
+      {!isValidQRCode && (
+        <DeniedModal
+          visible={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          resetScanner={resetScanner}
+          message="Negado"
+        />
       )}
     </Container>
   );

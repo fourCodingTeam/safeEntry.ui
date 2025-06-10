@@ -129,7 +129,9 @@ export async function postInviteValidate(
   token: string,
   addressId: number,
   visitorId: number,
-  code: number
+  employeeId: number,
+  code: number,
+  dateNow: Date
 ) {
   try {
     const response = await fetch(`${BASE_URL}/Invite/Validate`, {
@@ -141,12 +143,72 @@ export async function postInviteValidate(
       body: JSON.stringify({
         addressId,
         visitorId,
+        employeeId,
         code,
+        dateNow,
       } as InviteValidateRequest),
     });
 
     if (!response.ok) {
       console.error("Failed to validate invite:", response.status);
+      return "Convite expirado ou não existente";
+    }
+
+    return true;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function putDeactivateInvite(
+  token: string,
+  addressId: number,
+  visitorId: number,
+  code: number
+) {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/Invite/deactivate/${addressId}/${visitorId}/${code}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.error("Failed to deactivate invite:", response.status);
+      return "Convite expirado ou não existente";
+    }
+
+    return true;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function putActivateInvite(
+  token: string,
+  addressId: number,
+  visitorId: number,
+  code: number
+) {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/Invite/activate/${addressId}/${visitorId}/${code}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.error("Failed to activate invite:", response.status);
       return "Convite expirado ou não existente";
     }
 

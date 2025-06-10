@@ -7,6 +7,7 @@ const icons = {
   clock: require("@/assets/icons/clock-icon.png"),
   plus: require("@/assets/icons/plus-icon.png"),
   qr: require("@/assets/icons/qr-icon.png"),
+  ticket: require("@/assets/icons/ticket-icon.png"),
   icon: require("@/assets/icons/logo.png"),
   back: require("@/assets/icons/back-icon.png"),
 };

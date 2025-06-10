@@ -1,3 +1,4 @@
+export * from "./AdminValidateDetailedInvite";
 export * from "./Button";
 export * from "./Header";
 export * from "./Icon";

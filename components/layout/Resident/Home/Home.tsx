@@ -11,7 +11,6 @@ import {
 
 import { DetailedInvite } from "@/components/ui/DetailedInvite";
 import { EmptyList } from "@/components/ui/EmptyList";
-import { getInviteById } from "@/mock/mock";
 import { InviteResponse } from "@/services/@types";
 import { getInvitesByResidentId } from "@/services/api";
 import { useUserStore } from "@/stores";
@@ -43,20 +42,7 @@ export function Home() {
     const interval = setInterval(fetchInvitesAsync, 1000);
 
     return () => clearInterval(interval);
-  }, []);
-
-  const handleCardClick = async (inviteId: number) => {
-    try {
-      const invite = (await getInviteById(inviteId)) as (typeof invites)[0];
-      if (invite) {
-        setSelectedInvite(invite);
-        setIsModalOpen(true);
-      }
-      return invite;
-    } catch (error) {
-      console.error("Failed to fetch invite:", error);
-    }
-  };
+  }, [personId, token, username]);
 
   return (
     <>

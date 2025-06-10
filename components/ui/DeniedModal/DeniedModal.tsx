@@ -1,5 +1,6 @@
 import { theme } from "@/constants/theme";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import React from "react";
 import { Modal, TouchableOpacity, View } from "react-native";
 import { Button } from "../Button";
@@ -21,6 +22,8 @@ export function DeniedModal({
   message,
   resetScanner,
 }: DeniedModalProps) {
+  const router = useRouter();
+
   return (
     <Modal
       visible={visible}
@@ -58,7 +61,7 @@ export function DeniedModal({
                 <Button
                   color="black"
                   text="Voltar ao Inicio"
-                  onPress={onClose}
+                  onPress={resetScanner}
                 />
               </ButtonsWrapper>
             </CardsWrapper>

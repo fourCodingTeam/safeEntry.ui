@@ -1,10 +1,9 @@
 import { theme } from "@/constants/theme";
-import invites from "@/mock/invites.json";
-import { getAllMotives } from "@/mock/mock";
-import { format } from "date-fns";
+import { postCreateResident } from "@/services/api";
+import { useUserStore } from "@/stores";
 import Checkbox from "expo-checkbox";
 import { useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, Input, useToast } from "../../../ui";
 import { PageLayout } from "../../PageLayout";
 import {
@@ -18,64 +17,66 @@ import {
 export function AdminForm() {
   const router = useRouter();
   const [nome, setNome] = useState("");
-  const [reason, setReason] = useState("");
-  const [inviteValidity, setInviteValidity] = useState("");
-  const [isChecked, setChecked] = useState(false);
-  const [visitDate, setVisitDate] = useState<Date | null>(null);
-  const inicioVisita = new Date(visitDate as Date);
-  const [motivesOptions, setMotivesOptions] = useState<
-    { label: string; value: string }[]
-  >([]);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [houseNumber, setHouseNumber] = useState(0);
+  const [email, setEmail] = useState("");
+  const [isHomeOwner, setIsHomeOwner] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { personId, token } = useUserStore();
+
   const toast = useToast();
 
-  const handleSubmit = () => {
-    const motivoSelecionado = motivesOptions.find(
-      (option) => option.value === reason
-    );
-
-    if (!nome || !reason || !inviteValidity || !visitDate) {
-      toast.show("Preencha todos os campos!", 1500, "error");
+  const handleSubmit = async () => {
+    if (!personId || !token) {
       return;
     }
+    setIsLoading(true);
+    try {
+      await postCreateResident(
+        token,
+        nome,
+        parseInt(phoneNumber.replace(/\D/g, "")),
+        1,
+        houseNumber,
+        email,
+        "SaF3Entry@2025",
+        isHomeOwner
+      );
 
-    const novoInvite = {
-      id: invites.length + 1,
-      nome,
-      inicioVisita: format(inicioVisita, "yyyy-MM-dd"),
-      motivoVisita: motivoSelecionado?.label || "",
-      duracaoPrevistaDias: parseInt(inviteValidity),
-      qrCodeUrl: `https://youtube.com`,
-      ativo: true,
-    };
-
-    setNome("");
-    setReason("");
-    setInviteValidity("");
-    setVisitDate(null);
-
-    invites.push(novoInvite);
-    toast.show("Convite criado com sucesso!", 1500, "success");
-    router.replace("/historico");
+      toast.show("Morador cadastrado com sucesso!", 3000, "success");
+      router.replace("/historico");
+    } catch (error) {
+      setIsLoading(false);
+      return error;
+    } finally {
+      setNome("");
+      setPhoneNumber("");
+      setHouseNumber(0);
+      setEmail("");
+      setIsHomeOwner(false);
+      setIsLoading(false);
+    }
   };
 
-  useEffect(() => {
-    async function fetchMotives() {
-      const motives = await getAllMotives();
-      const options = (motives as any[]).map((m) => ({
-        label: m.descricao,
-        value: m.id.toString(),
-      }));
-      setMotivesOptions(options);
+  function formatPhoneNumber(value: string): string {
+    const cleaned = value.replace(/\D/g, "").slice(0, 11);
+
+    if (cleaned.length <= 2) {
+      return `(${cleaned}`;
+    } else if (cleaned.length <= 6) {
+      return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2)}`;
+    } else if (cleaned.length <= 10) {
+      return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 6)}-${cleaned.slice(
+        6
+      )}`;
+    } else {
+      return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(
+        7,
+        11
+      )}`;
     }
-
-    fetchMotives();
-  }, []);
-
-  // name
-  // phone
-  // home number
-  // email
-  // password
+  }
 
   return (
     <PageLayout pageTitle="Cadastrar Morador" isResident={false}>
@@ -90,42 +91,37 @@ export function AdminForm() {
           />
           <Input
             type="text"
-            label="Telefone"
+            label="phoneNumber"
             placeholder="(XX) XXXXX-XXXX"
-            value={nome}
-            onChange={(value) => setNome(value as string)}
+            value={phoneNumber}
+            onChange={(value) =>
+              setPhoneNumber(formatPhoneNumber(value as string))
+            }
           />
           <Input
             type="text"
             label="Número da Casa"
             placeholder="Digite o número da casa do morador"
-            value={nome}
-            onChange={(value) => setNome(value as string)}
+            value={houseNumber}
+            onChange={(value) => setHouseNumber(value as number)}
           />
           <Input
             type="text"
             label="E-mail"
             placeholder="Digite o e-mail do morador"
-            value={nome}
-            onChange={(value) => setNome(value as string)}
-          />
-          <Input
-            type="text"
-            label="Senha"
-            placeholder="Digite a senha do morador"
-            value={nome}
-            onChange={(value) => setNome(value as string)}
+            value={email}
+            onChange={(value) => setEmail(value as string)}
           />
           <StyledCheckBoxWrapper>
             <Checkbox
-              value={isChecked}
-              onValueChange={setChecked}
-              color={isChecked ? theme.colors.blue : theme.colors.placeholder}
+              value={isHomeOwner}
+              onValueChange={setIsHomeOwner}
+              color={isHomeOwner ? theme.colors.blue : theme.colors.placeholder}
               style={{ borderRadius: 4, borderWidth: 1 }}
             />
             <StyledCheckBoxText
               style={{
-                color: isChecked
+                color: isHomeOwner
                   ? theme.colors.black
                   : theme.colors.placeholder,
               }}
@@ -135,7 +131,12 @@ export function AdminForm() {
           </StyledCheckBoxWrapper>
         </InputsWrapper>
         <ButtonWrapper>
-          <Button color={"blue"} text={"Convidar"} onPress={handleSubmit} />
+          <Button
+            color={"blue"}
+            text={"Convidar"}
+            onPress={handleSubmit}
+            disabled={isLoading}
+          />
         </ButtonWrapper>
       </FormWrapper>
     </PageLayout>

@@ -29,8 +29,6 @@ export function Authentication() {
     try {
       const response = await Login(inputUsername, password);
 
-      console.log(response?.token);
-
       if (!response) {
         toast.show("Usuário ou senha inválidos!", 2000, "error");
         setIsLoading(false);
@@ -47,15 +45,23 @@ export function Authentication() {
       setToken(response.token);
       setPersonId(response.personId);
 
-      setTimeout(() => {
-        if (response.role === 1) {
-          router.replace("/(tabs)");
-        } else {
-          router.replace("/(admin)");
-        }
+      if (response.isFirstLogin) {
+        toast.show("Defina sua nova senha.", 3000, "neutral");
+        setIsLoading(false);
+        router.push("/passwordChange");
         setPassword("");
         setInputUsername("");
-      }, 500);
+      } else {
+        setTimeout(() => {
+          if (response.role === 1) {
+            router.replace("/(tabs)");
+          } else {
+            router.replace("/(admin)");
+          }
+          setPassword("");
+          setInputUsername("");
+        }, 500);
+      }
     } catch (error) {
       console.error(error);
       toast.show("Erro ao autenticar. Tente novamente!", 2000, "error");

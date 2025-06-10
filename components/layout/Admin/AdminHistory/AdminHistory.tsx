@@ -1,4 +1,4 @@
-import { Input } from "@/components/ui";
+import { Input, Loader } from "@/components/ui";
 import { EmptyList } from "@/components/ui/EmptyList";
 import { HouseCard } from "@/components/ui/HouseCard";
 import { AddressResponse } from "@/services/@types";
@@ -58,6 +58,7 @@ export function AdminHistory() {
   const filterOptions = [
     { label: "Sem filtro", value: "" },
     { label: "Número da casa", value: "byHouseNumber" },
+    { label: "Número de convites", value: "byNumberOfInvites" },
   ];
 
   const applyFilters = (data: AddressResponse[]) => {
@@ -71,11 +72,17 @@ export function AdminHistory() {
         )
       : filtered;
 
-    return selectedFilterOption === "byHouseNumber"
-      ? filtered.sort((a, b) =>
-          new Date(a.homeNumber) > new Date(b.homeNumber) ? 1 : -1
-        )
-      : filtered;
+    if (selectedFilterOption === "byHouseNumber") {
+      filtered = filtered.sort((a, b) =>
+        a.homeNumber > b.homeNumber ? 1 : -1
+      );
+    } else if (selectedFilterOption === "byNumberOfInvites") {
+      filtered = filtered.sort(
+        (a, b) => (inviteCounts[b.id] || 0) - (inviteCounts[a.id] || 0)
+      );
+    }
+
+    return filtered;
   };
 
   const filteredData = applyFilters(addresses);
@@ -102,35 +109,41 @@ export function AdminHistory() {
             }))}
           />
         </FiltersWrapper>
-        {addresses.length > 0 ? (
+        {!isLoading ? (
           <>
-            <InviteCardsWrapper>
-              {filteredData.map((item) => {
-                const owner = item.residents.find(
-                  (resident) => resident.isHomeOwner
-                );
+            {addresses.length > 0 ? (
+              <>
+                <InviteCardsWrapper>
+                  {filteredData.map((item) => {
+                    const owner = item.residents.find(
+                      (resident) => resident.isHomeOwner
+                    );
 
-                return (
-                  <HouseCard
-                    key={item.id}
-                    houseNumber={item.homeNumber}
-                    houseOwnerName={owner ? owner.name : ""}
-                    activeInvites={inviteCounts[item.id] || 0}
-                    onPress={() => {
-                      setAddressId(item.id);
-                      setHouseNumber(item.homeNumber);
-                      router.push({
-                        pathname: "/houseInvites/[id]",
-                        params: { id: item.id },
-                      });
-                    }}
-                  />
-                );
-              })}
-            </InviteCardsWrapper>
+                    return (
+                      <HouseCard
+                        key={item.id}
+                        houseNumber={item.homeNumber}
+                        houseOwnerName={owner ? owner.name : ""}
+                        activeInvites={inviteCounts[item.id] || 0}
+                        onPress={() => {
+                          setAddressId(item.id);
+                          setHouseNumber(item.homeNumber);
+                          router.push({
+                            pathname: "/houseInvites/[id]",
+                            params: { id: item.id },
+                          });
+                        }}
+                      />
+                    );
+                  })}
+                </InviteCardsWrapper>
+              </>
+            ) : (
+              <EmptyList />
+            )}
           </>
         ) : (
-          <EmptyList />
+          <Loader />
         )}
       </PageLayout>
     </>

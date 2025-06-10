@@ -1,5 +1,9 @@
-import { Input, InviteCard } from "@/components/ui";
-import { DetailedInvite } from "@/components/ui/DetailedInvite";
+import {
+  AdminValidateDetailedInvite,
+  Input,
+  InviteCard,
+  Loader,
+} from "@/components/ui";
 import { EmptyList } from "@/components/ui/EmptyList";
 import { InviteResponse } from "@/services/@types";
 import { getInvitesByAddressId } from "@/services/api";
@@ -25,11 +29,15 @@ export function AdminInvites() {
       if (!token || !addressId) {
         return;
       }
+      setIsLoading(true);
       try {
         const invitesData = await getInvitesByAddressId(addressId, token);
         setInvites(invitesData);
       } catch (error) {
         console.error("Erro top", error);
+        setIsLoading(false);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -104,7 +112,9 @@ export function AdminInvites() {
             }))}
           />
         </FiltersWrapper>
-        {invites.length > 0 ? (
+        {isLoading ? (
+          <Loader />
+        ) : invites.length > 0 ? (
           <>
             <InviteCardsWrapper>
               {filteredData.map((item, index) => (
@@ -127,7 +137,7 @@ export function AdminInvites() {
         )}
       </PageLayout>
       {selectedInvite && isModalOpen && visitorId !== null && (
-        <DetailedInvite
+        <AdminValidateDetailedInvite
           visible={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           code={selectedInvite.code}

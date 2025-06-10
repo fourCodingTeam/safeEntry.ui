@@ -1,4 +1,5 @@
 import { theme } from "@/constants/theme";
+import { formatName } from "@/utils/formatName";
 import React from "react";
 import { StyledText } from "../styles";
 import {
@@ -21,10 +22,10 @@ export function HouseCard({
     <HouseCardWrapper activeOpacity={0.8} onPress={onPress}>
       <PersonInfoWrapper>
         <StyledText>Casa N. {houseNumber}</StyledText>
-        <StyledOwnerText>{houseOwnerName}</StyledOwnerText>
+        <StyledOwnerText>{formatName(houseOwnerName)}</StyledOwnerText>
       </PersonInfoWrapper>
       <StatusWrapper>
-        <StyledText>Convites Ativos</StyledText>
+        <StyledText>Convites</StyledText>
         <TagWrapper
           color={
             activeInvites > 0 ? theme.colors.blue : theme.colors.placeholder
