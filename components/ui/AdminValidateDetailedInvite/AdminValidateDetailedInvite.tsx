@@ -85,9 +85,10 @@ export function AdminValidateDetailedInvite({
       toast.show("Ocorreu um erro ao validar o convite.", 2000, "error");
       return;
     }
+
     setIsLoading(true);
     try {
-      await postInviteValidate(
+      const data = await postInviteValidate(
         token,
         addressId,
         visitorId,
@@ -95,15 +96,17 @@ export function AdminValidateDetailedInvite({
         validationCode,
         new Date()
       );
-    } catch (error) {
-      console.error("Erro ao validar o convite:", error);
-      setIsLoading(false);
-    } finally {
+
       toast.show(
         "Convite validado com sucesso! Entrada liberada.",
         2000,
         "success"
       );
+      onClose();
+    } catch (error) {
+      toast.show("Código inválido. Tente novamente.", 2000, "error");
+      onClose();
+    } finally {
       setIsLoading(false);
     }
   };
@@ -179,10 +182,7 @@ export function AdminValidateDetailedInvite({
                   <Button
                     color="blue"
                     text="Validar"
-                    onPress={() => {
-                      handleValidateInvite();
-                      onClose();
-                    }}
+                    onPress={handleValidateInvite}
                     disabled={isLoading}
                   />
                 </ButtonsWrapper>

@@ -14,6 +14,8 @@ import {
 import { StyledText } from "../styles";
 import {
   ContentWrapper,
+  Divider,
+  DividerWrapper,
   Header,
   OptionsWrapper,
   StyledMenuOption,
@@ -68,6 +70,9 @@ export function Menu({ visible, onClose, isResident }: MenuProps) {
                         <StyledText>Preferências</StyledText>
                       </StyledMenuOption>
                     )}
+                    <DividerWrapper>
+                      <Divider />
+                    </DividerWrapper>
                     <StyledMenuOption
                       activeOpacity={0.8}
                       onPress={handleLogout}

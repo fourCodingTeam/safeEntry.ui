@@ -150,8 +150,10 @@ export async function postInviteValidate(
     });
 
     if (!response.ok) {
-      console.error("Failed to validate invite:", response.status);
-      return "Convite expirado ou não existente";
+      const errorMessage = await response.text();
+      throw new Error(
+        errorMessage || `Erro ao validar convite: ${response.status}`
+      );
     }
 
     return true;

@@ -36,7 +36,7 @@ export function History() {
 
     fetchInvitesAsync();
 
-    const interval = setInterval(fetchInvitesAsync, 500000);
+    const interval = setInterval(fetchInvitesAsync, 10000);
 
     return () => clearInterval(interval);
   }, [token, username]);
