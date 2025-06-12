@@ -34,7 +34,7 @@ export function AdminInvites() {
         const invitesData = await getInvitesByAddressId(addressId, token);
         setInvites(invitesData);
       } catch (error) {
-        console.error("Erro top", error);
+        console.error("Erro: ", error);
         setIsLoading(false);
       } finally {
         setIsLoading(false);

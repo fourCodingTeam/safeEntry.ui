@@ -44,7 +44,6 @@ export function AdminHome() {
           inviteCountsMap[addressesData[i].id] = item.count;
         });
         setInviteCounts(inviteCountsMap);
-        console.log(inviteCountsMap);
         setAddresses(addressesData);
       } catch (error) {
         console.error(`Mensagem de erro: ${error}`);

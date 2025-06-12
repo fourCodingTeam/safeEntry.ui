@@ -37,7 +37,6 @@ export function Scan() {
 
     try {
       const qrData = JSON.parse(data.data);
-      console.log(qrData);
 
       const { addressId, visitorId, code } = qrData;
 
@@ -59,10 +58,8 @@ export function Scan() {
       setIsValidQRCode(result === true);
       setIsModalOpen(true);
 
-      console.log(result);
-
       if (result !== true) {
-        toast.show(result as string, 3000, "error");
+        toast.show("Erro ao ler o QR Code!", 3000, "error");
       }
     } catch (error) {
       console.error("Erro ao validar QR Code:", error);

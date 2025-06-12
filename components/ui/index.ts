@@ -10,3 +10,4 @@ export * from "./TabBarIcon";
 export * from "./Tag";
 export * from "./Toast";
 export * from "./ToastProvider";
+export * from "./ValidatedInviteCard";

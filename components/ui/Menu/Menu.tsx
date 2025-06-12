@@ -70,9 +70,7 @@ export function Menu({ visible, onClose, isResident }: MenuProps) {
                         <StyledText>Preferências</StyledText>
                       </StyledMenuOption>
                     )}
-                    <DividerWrapper>
-                      <Divider />
-                    </DividerWrapper>
+                    <DividerWrapper>{isResident && <Divider />}</DividerWrapper>
                     <StyledMenuOption
                       activeOpacity={0.8}
                       onPress={handleLogout}

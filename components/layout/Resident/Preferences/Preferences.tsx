@@ -1,8 +1,13 @@
-import { Button, Input } from "@/components/ui";
+import { Button, Input, useToast } from "@/components/ui";
+import { StatusEnum } from "@/constants/roleEunm";
+import {
+  getResidentById,
+  patchUpdatePersonStatus,
+} from "@/services/api/Status";
 import { useUserStore } from "@/stores";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PageLayout } from "../../PageLayout";
 import {
   FormWrapper,
@@ -16,15 +21,62 @@ import {
 
 export function Preferences() {
   const router = useRouter();
-  const [callPreference, setCallPreference] = useState("");
+  const [callPreference, setCallPreference] = useState(0);
   const { username } = useUserStore();
   const firstLetter = username?.slice(0, 1).toUpperCase();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const toast = useToast();
+
+  const { token, personId } = useUserStore();
 
   const handlePress = () => {
     if (router.canGoBack()) {
       router.back();
     }
   };
+
+  useEffect(() => {
+    const fetchUserDataAsync = async () => {
+      if (!token || !personId) {
+        return;
+      }
+      setIsLoading(true);
+      try {
+        const residentData = await getResidentById(personId, token);
+        setCallPreference(residentData.status);
+      } catch (error) {
+        console.error("Erro top", error);
+        setIsLoading(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserDataAsync();
+  }, [token, personId]);
+
+  const handleSubmit = async () => {
+    if (!token || !personId) {
+      return;
+    }
+    setIsLoading(true);
+    try {
+      await patchUpdatePersonStatus(personId, callPreference, token);
+      toast.show("Status atualizado com sucesso!", 2500, "success");
+    } catch (error) {
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const allStatus = [
+    { label: StatusEnum.Disponivel, value: 1 },
+    { label: StatusEnum.AguardandoEntrega, value: 2 },
+    { label: StatusEnum.AguardandoVisita, value: 3 },
+    { label: StatusEnum.NaoQueroReceberVisitas, value: 4 },
+  ];
 
   return (
     <PageLayout pageTitle="Preferências" ableToShowOptions={false}>
@@ -44,15 +96,15 @@ export function Preferences() {
             label="Preferência de Contato"
             placeholder="Selecione a preferência de contato"
             value={callPreference}
-            onChange={(value) => setCallPreference(value as string)}
-            options={[
-              { label: "Quero receber ligações", value: "1" },
-              { label: "Não quero receber ligações", value: "2" },
-              { label: "Fora de casa", value: "3" },
-              { label: "No trabalho", value: "4" },
-            ]}
+            onChange={(value) => setCallPreference(Number(value))}
+            options={allStatus}
           />
-          <Button color="blue" text="Salvar" />
+          <Button
+            color="blue"
+            text="Salvar"
+            onPress={handleSubmit}
+            disabled={isLoading}
+          />
         </InputsWrapper>
       </FormWrapper>
     </PageLayout>

@@ -1,0 +1,6 @@
+export enum StatusEnum {
+  "Disponível" = 1,
+  "Aguardando Entrega" = 2,
+  "Aguardando Visita" = 3,
+  "NaoQueroReceberVisitas" = 4,
+}

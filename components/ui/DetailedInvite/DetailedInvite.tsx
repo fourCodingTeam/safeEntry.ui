@@ -58,7 +58,6 @@ export function DetailedInvite({
           visitorId,
           code
         );
-        console.log(data);
         setInvite(data);
       } catch (error) {
         console.error("Erro ao buscar detalhes do convite:", error);

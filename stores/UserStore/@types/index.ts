@@ -7,4 +7,6 @@ export interface UserState {
   setToken: (token: string | null) => void;
   personId: number | null;
   setPersonId: (personId: number | null) => void;
+  statusId: number | null;
+  setStatusId: (statusId: number | null) => void;
 }
