@@ -14,7 +14,6 @@ export function Form() {
   const [reason, setReason] = useState("");
   const [inviteValidity, setInviteValidity] = useState("");
   const [visitDate, setVisitDate] = useState<Date | null>(null);
-  const inicioVisita = new Date(visitDate as Date);
   const [motivesOptions, setMotivesOptions] = useState<
     { label: string; value: string }[]
   >([]);
@@ -36,6 +35,14 @@ export function Form() {
 
     try {
       if (!token || !personId) {
+        return;
+      }
+      if (visitDate < new Date()) {
+        toast.show(
+          "A data da visita não pode ser menor que a data de hoje!",
+          2000,
+          "error"
+        );
         return;
       }
       await postInviteGenerate(
