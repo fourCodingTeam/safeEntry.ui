@@ -43,7 +43,7 @@ export function Home() {
 
     fetchInvitesAsync();
 
-    const interval = setInterval(fetchInvitesAsync, 1000);
+    const interval = setInterval(fetchInvitesAsync, 10000);
 
     return () => clearInterval(interval);
   }, [personId, token, username]);

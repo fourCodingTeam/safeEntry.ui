@@ -31,6 +31,10 @@ export function AdminForm() {
     if (!personId || !token) {
       return;
     }
+    if (!nome || !phoneNumber || !houseNumber || !email || !isHomeOwner) {
+      toast.show("Preencha todos os campos!", 2500, "error");
+      return;
+    }
     setIsLoading(true);
     try {
       await postCreateResident(
@@ -133,7 +137,7 @@ export function AdminForm() {
         <ButtonWrapper>
           <Button
             color={"blue"}
-            text={"Convidar"}
+            text={"Cadastrar"}
             onPress={handleSubmit}
             disabled={isLoading}
           />
