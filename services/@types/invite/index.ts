@@ -28,3 +28,17 @@ export type InviteResponse = {
   justification: string;
   isActive: boolean;
 };
+
+export type InviteValidateRequest = {
+  addressId: number;
+  visitorId: number;
+  employeeId: number;
+  code: number;
+  dateNow: Date;
+};
+
+export type InviteChangeStatusRequest = {
+  addressId: number;
+  visitorId: number;
+  code: number;
+};

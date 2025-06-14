@@ -1,6 +1,10 @@
 import { theme } from "@/constants/theme";
 import { InviteResponse } from "@/services/@types";
-import { getInviteByResidentIdAndVisitorIdAndCode } from "@/services/api";
+import {
+  getInviteByResidentIdAndVisitorIdAndCode,
+  putActivateInvite,
+  putDeactivateInvite,
+} from "@/services/api";
 import { useUserStore } from "@/stores";
 import { Ionicons } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
@@ -41,6 +45,7 @@ export function DetailedInvite({
   const { token, username } = useUserStore();
   const [isLoading, setIsLoading] = useState(false);
   const qrCodeRef = useRef(null);
+  const [refreshFlag, setRefreshFlag] = useState(0);
 
   useEffect(() => {
     const fetchInvite = async () => {
@@ -67,7 +72,15 @@ export function DetailedInvite({
     } else {
       setInvite(null);
     }
-  }, [visible, token, residentId, visitorId, code]);
+  }, [visible, token, residentId, visitorId, code, refreshFlag]);
+
+  if (invite == null) return;
+
+  const qrData = {
+    addressId: invite.addressId,
+    visitorId: invite.visitorId,
+    code: invite.code,
+  };
 
   const formatName = (fullName: string) => {
     const shortName = fullName.trim().split(" ");
@@ -105,6 +118,32 @@ export function DetailedInvite({
       console.error("Erro ao compartilhar QR Code:", error);
     } finally {
       setHideItem(false);
+    }
+  };
+
+  const handleDeactivateInvite = async () => {
+    if (!token || !invite || !visitorId || !code) return;
+    setIsLoading(true);
+    try {
+      await putDeactivateInvite(token, invite.addressId, visitorId, code);
+      setRefreshFlag((prev) => prev + 1);
+    } catch (error) {
+      console.error("Erro ao desativar o convite:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleActivateInvite = async () => {
+    if (!token || !invite || !visitorId || !code) return;
+    setIsLoading(true);
+    try {
+      await putActivateInvite(token, invite.addressId, visitorId, code);
+      setRefreshFlag((prev) => prev + 1);
+    } catch (error) {
+      console.error("Erro ao ativar o convite:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -172,14 +211,14 @@ export function DetailedInvite({
                   <QrCodeShareWrapper>
                     <QrCodeTextWrapper>
                       {!hideItem ? (
-                        <StyledText>
-                          Escaneie o QR Code para visualizar
-                        </StyledText>
-                      ) : (
                         <StyledText>QR Code</StyledText>
+                      ) : (
+                        <StyledText>
+                          Apresente este QR Code na entrada
+                        </StyledText>
                       )}
                       <QRCode
-                        value={invite.justification}
+                        value={JSON.stringify(qrData)}
                         size={278}
                         backgroundColor={theme.colors.white}
                       />
@@ -205,9 +244,13 @@ export function DetailedInvite({
                 <ButtonsWrapper>
                   <Button color="blue" text="Compartilhar" onPress={onShare} />
                   <Button
-                    color="black"
-                    text="Desativar"
-                    onPress={() => false}
+                    color={invite.isActive ? "black" : "blue"}
+                    text={invite.isActive ? "Desativar" : "Ativar"}
+                    onPress={
+                      invite.isActive
+                        ? handleDeactivateInvite
+                        : handleActivateInvite
+                    }
                   />
                 </ButtonsWrapper>
               </View>

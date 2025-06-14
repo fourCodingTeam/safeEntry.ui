@@ -5,7 +5,7 @@ interface TagWrapperProps {
   color: string;
 }
 
-export const InviteCardWrapper = styled.TouchableOpacity`
+export const HouseCardWrapper = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -32,7 +32,7 @@ export const StatusWrapper = styled.View`
   justify-content: space-between;
 `;
 
-export const StyledDateString = styled.Text`
+export const StyledOwnerText = styled.Text`
   color: ${theme.colors.midnight60};
   font-family: ${theme.fonts.poppinsNormal};
   font-size: ${theme.sizes.md};

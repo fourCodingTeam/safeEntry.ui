@@ -1,37 +1,41 @@
 import { theme } from "@/constants/theme";
+import { formatName } from "@/utils/formatName";
 import React from "react";
 import { StyledText } from "../styles";
 import {
-  InviteCardWrapper,
+  HouseCardWrapper,
   PersonInfoWrapper,
   StatusWrapper,
+  StyledOwnerText,
   TagText,
   TagWrapper,
 } from "./HouseCard.styles";
-import { InviteCardProps } from "./HouseCard.types";
+import { HouseCardProps } from "./HouseCard.types";
 
 export function HouseCard({
   houseNumber,
   activeInvites,
+  houseOwnerName,
   onPress,
-}: InviteCardProps) {
+}: HouseCardProps) {
   return (
-    <InviteCardWrapper activeOpacity={0.8} onPress={onPress}>
+    <HouseCardWrapper activeOpacity={0.8} onPress={onPress}>
       <PersonInfoWrapper>
-        <StyledText>Casa N.{houseNumber}</StyledText>
+        <StyledText>Casa N. {houseNumber}</StyledText>
+        <StyledOwnerText>{formatName(houseOwnerName)}</StyledOwnerText>
       </PersonInfoWrapper>
       <StatusWrapper>
-        <StyledText>Convites Ativos</StyledText>
+        <StyledText>Convites</StyledText>
         <TagWrapper
           color={
-            activeInvites > 1 ? theme.colors.blue : theme.colors.placeholder
+            activeInvites > 0 ? theme.colors.blue : theme.colors.placeholder
           }
         >
           <TagText>
-            {activeInvites > 1 ? `${activeInvites} Convites` : `Sem convites`}
+            {activeInvites > 0 ? `${activeInvites} Convites` : `Sem convites`}
           </TagText>
         </TagWrapper>
       </StatusWrapper>
-    </InviteCardWrapper>
+    </HouseCardWrapper>
   );
 }

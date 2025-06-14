@@ -1,4 +1,4 @@
-import { Input, InviteCard } from "@/components/ui";
+import { Input, InviteCard, Loader } from "@/components/ui";
 import { DetailedInvite } from "@/components/ui/DetailedInvite";
 import { EmptyList } from "@/components/ui/EmptyList";
 import { InviteResponse } from "@/services/@types";
@@ -13,6 +13,7 @@ export function History() {
   const [selectedFilterOption, setSelectedFilterOption] = useState("");
   const [selectedInvite, setSelectedInvite] = useState<InviteResponse>();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [invites, setInvites] = useState<InviteResponse[]>([]);
   const { token, username, personId } = useUserStore();
 
@@ -21,11 +22,15 @@ export function History() {
       if (!token || !username || !personId) {
         return;
       }
+      setIsLoading(true);
       try {
         const invitesData = await getInvitesByResidentId(personId, token);
         setInvites(invitesData);
       } catch (error) {
         console.error("Erro top", error);
+        setIsLoading(false);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -77,42 +82,42 @@ export function History() {
   return (
     <>
       <PageLayout pageTitle="Histórico">
-        {invites.length > 0 ? (
-          <>
-            <FiltersWrapper>
-              <Input
-                type="text"
-                value={nome}
-                label="Nome do visitante"
-                placeholder="Digite o nome do visitante"
-                onChange={(value) => setNome(value as string)}
+        <FiltersWrapper>
+          <Input
+            type="text"
+            value={nome}
+            label="Nome do visitante"
+            placeholder="Digite o nome do visitante"
+            onChange={(value) => setNome(value as string)}
+          />
+          <Input
+            type="select"
+            label="Ordenar por"
+            value={selectedFilterOption}
+            onChange={(value) => setSelectedFilterOption(value as string)}
+            options={filterOptions.map((option) => ({
+              label: option.label,
+              value: option.value,
+            }))}
+          />
+        </FiltersWrapper>
+        {isLoading ? (
+          <Loader />
+        ) : invites.length > 0 ? (
+          <InviteCardsWrapper>
+            {filteredData.map((item, index) => (
+              <InviteCard
+                key={index}
+                personName={item.visitorName}
+                inviteDate={item.startDate}
+                ativo={item.isActive}
+                onPress={async () => {
+                  setSelectedInvite(item);
+                  setIsModalOpen(true);
+                }}
               />
-              <Input
-                type="select"
-                label="Ordenar por"
-                value={selectedFilterOption}
-                onChange={(value) => setSelectedFilterOption(value as string)}
-                options={filterOptions.map((option) => ({
-                  label: option.label,
-                  value: option.value,
-                }))}
-              />
-            </FiltersWrapper>
-            <InviteCardsWrapper>
-              {filteredData.map((item, index) => (
-                <InviteCard
-                  key={index}
-                  personName={item.visitorName}
-                  inviteDate={item.startDate}
-                  ativo={item.isActive}
-                  onPress={async () => {
-                    setSelectedInvite(item);
-                    setIsModalOpen(true);
-                  }}
-                />
-              ))}
-            </InviteCardsWrapper>
-          </>
+            ))}
+          </InviteCardsWrapper>
         ) : (
           <InviteCardsWrapper>
             <EmptyList />

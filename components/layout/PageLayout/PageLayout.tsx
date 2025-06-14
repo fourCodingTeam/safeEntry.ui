@@ -5,7 +5,7 @@ import { PageContainer } from "../styles";
 type PageProps = {
   children: React.ReactNode;
   pageTitle?: string;
-  isGreeting?: boolean;
+  ableToGoBack?: boolean;
   ableToShowOptions?: boolean;
   isResident?: boolean;
 };
@@ -14,6 +14,7 @@ export function PageLayout({
   children,
   pageTitle,
   ableToShowOptions,
+  ableToGoBack,
   isResident,
 }: PageProps) {
   return (
@@ -21,6 +22,7 @@ export function PageLayout({
       <Header
         pageTitle={pageTitle}
         ableToShowOptions={ableToShowOptions}
+        ableToGoBack={ableToGoBack}
         isResident={isResident}
       />
       {children}

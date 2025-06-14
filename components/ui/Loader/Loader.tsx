@@ -6,11 +6,10 @@ export function Loader() {
   return (
     <View
       style={{
-        height: "100%",
         width: "100%",
         justifyContent: "center",
         alignItems: "center",
-        paddingVertical: 400,
+        paddingVertical: 200,
       }}
     >
       <ActivityIndicator color={theme.colors.blue} size={32} />

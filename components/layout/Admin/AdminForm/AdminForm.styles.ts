@@ -35,3 +35,14 @@ export const StyledSectionTitle = styled.Text`
   font-family: ${theme.fonts.poppinsNormal};
   color: ${theme.colors.placeholder};
 `;
+
+export const StyledCheckBoxWrapper = styled.View`
+  margin-top: ${theme.sizes.sm};
+  flex-direction: row;
+  gap: ${theme.sizes.sm};
+`;
+
+export const StyledCheckBoxText = styled.Text`
+  font-size: ${theme.sizes.md};
+  font-family: ${theme.fonts.poppinsNormal};
+`;

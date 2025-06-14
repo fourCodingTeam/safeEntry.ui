@@ -1,4 +1,4 @@
-import { Button, InviteCard } from "@/components/ui";
+import { Button, InviteCard, Loader } from "@/components/ui";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { PageLayout } from "../../PageLayout";
@@ -11,7 +11,6 @@ import {
 
 import { DetailedInvite } from "@/components/ui/DetailedInvite";
 import { EmptyList } from "@/components/ui/EmptyList";
-import { getInviteById } from "@/mock/mock";
 import { InviteResponse } from "@/services/@types";
 import { getInvitesByResidentId } from "@/services/api";
 import { useUserStore } from "@/stores";
@@ -24,39 +23,30 @@ export function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [invites, setInvites] = useState<InviteResponse[]>([]);
   const { personId, token, username } = useUserStore();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchInvitesAsync = async () => {
       if (!token || !username || !personId) {
         return;
       }
+      setIsLoading(true);
       try {
         const invitesData = await getInvitesByResidentId(personId, token);
         setInvites(invitesData);
       } catch (error) {
         console.error("Erro top", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchInvitesAsync();
 
-    const interval = setInterval(fetchInvitesAsync, 1000);
+    const interval = setInterval(fetchInvitesAsync, 10000);
 
     return () => clearInterval(interval);
-  }, []);
-
-  const handleCardClick = async (inviteId: number) => {
-    try {
-      const invite = (await getInviteById(inviteId)) as (typeof invites)[0];
-      if (invite) {
-        setSelectedInvite(invite);
-        setIsModalOpen(true);
-      }
-      return invite;
-    } catch (error) {
-      console.error("Failed to fetch invite:", error);
-    }
-  };
+  }, [personId, token, username]);
 
   return (
     <>
@@ -71,7 +61,9 @@ export function Home() {
         </ImageWrapper>
         <InviteCardsWrapper>
           <StyledSectionTitle>Convites Ativos</StyledSectionTitle>
-          {invites.length > 0 ? (
+          {isLoading ? (
+            <Loader />
+          ) : invites.length > 0 ? (
             <>
               {invites
                 .filter((invite) => invite.isActive)

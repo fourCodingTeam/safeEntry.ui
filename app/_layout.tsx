@@ -14,7 +14,7 @@ export default function RootLayout() {
     PoppinsMedium: require("@/assets/fonts/Poppins-Medium.ttf"),
   });
 
-  const { username, role } = useUserStore();
+  const { username, role, token } = useUserStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function RootLayout() {
   return (
     <ToastProvider>
       <Stack screenOptions={{ statusBarStyle: "dark", headerShown: false }}>
-        {!username || !role ? (
+        {!username || !role || !token ? (
           <Stack.Screen name="auth" options={{ headerShown: false }} />
         ) : role === "admin" ? (
           <Stack.Screen name="(admin)" options={{ headerShown: false }} />

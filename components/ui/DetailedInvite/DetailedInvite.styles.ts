@@ -56,7 +56,6 @@ export const QrCodeShareWrapper = styled.View`
   border-radius: ${theme.sizes.md};
   border: 1px solid ${theme.colors.black40};
   padding: ${theme.sizes.smMax} ${theme.sizes.md};
-  margin-top: ${theme.sizes.sm};
   elevation: 2;
 `;
 

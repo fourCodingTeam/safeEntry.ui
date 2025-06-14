@@ -6,7 +6,6 @@ export const ContentWrapper = styled.View`
   background-color: ${theme.colors.white};
   border: 1px solid ${theme.colors.black40};
   justify-content: flex-end;
-  padding: ${theme.sizes.lg} ${theme.sizes.md};
   gap: ${theme.sizes.md};
   bottom: 0;
   width: 100%;
@@ -25,10 +24,9 @@ export const StyledMenuOption = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   gap: ${theme.sizes.sm};
-  border-radius: ${theme.sizes.xs};
+  padding: ${theme.sizes.md} ${theme.sizes.md};
+  border-radius: ${theme.sizes.sm};
   width: 100%;
-  padding: ${theme.sizes.smMax} ${theme.sizes.sm};
-  background-color: ${theme.colors.offWhite};
 `;
 
 export const StyledHighlightedMenuOption = styled.TouchableOpacity`
@@ -38,7 +36,18 @@ export const StyledHighlightedMenuOption = styled.TouchableOpacity`
   background-color: ${theme.colors.red};
   border-radius: ${theme.sizes.xs};
   width: 100%;
-  padding: ${theme.sizes.smMax} ${theme.sizes.sm};
+  padding: ${theme.sizes.lg} ${theme.sizes.md};
+`;
+
+export const DividerWrapper = styled.View`
+  width: 100%;
+  padding: 0 ${theme.sizes.sm};
+`;
+
+export const Divider = styled.View`
+  background-color: ${theme.colors.placeholder};
+  width: 100%;
+  height: 1px;
 `;
 
 export const StyledHighlightedText = styled.Text`
@@ -48,6 +57,7 @@ export const StyledHighlightedText = styled.Text`
 `;
 
 export const Header = styled.View`
+  padding: ${theme.sizes.smMax} ${theme.sizes.sm};
   gap: ${theme.sizes.md};
   flex-direction: row;
   align-items: center;

@@ -1,116 +1,150 @@
-import { Input } from "@/components/ui";
-import { DetailedInvite } from "@/components/ui/DetailedInvite";
+import { Input, Loader } from "@/components/ui";
+import { EmptyList } from "@/components/ui/EmptyList";
 import { HouseCard } from "@/components/ui/HouseCard";
-import rawInvitesData from "@/mock/invites.json";
-import { getInviteById } from "@/mock/mock";
-import React, { useState } from "react";
+import { AddressResponse } from "@/services/@types";
+import { getAllAddresses, getInviteCountByAddressId } from "@/services/api";
+import { useAddressStore, useUserStore } from "@/stores";
+import { useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
 import { PageLayout } from "../../PageLayout";
-import { StyledText } from "../../styles";
 import { FiltersWrapper, InviteCardsWrapper } from "./AdminHistory.styles";
 
 export function AdminHistory() {
   const [nome, setNome] = useState("");
   const [selectedFilterOption, setSelectedFilterOption] = useState("");
-  const [selectedInvite, setSelectedInvite] = useState<
-    null | (typeof rawInvitesData)[0]
-  >(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [inviteCounts, setInviteCounts] = useState<Record<number, number>>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [addresses, setAddresses] = useState<AddressResponse[]>([]);
+  const { setAddressId, setHouseNumber } = useAddressStore();
+  const router = useRouter();
 
-  const handleCardClick = async (inviteId: number) => {
-    try {
-      const invite = (await getInviteById(
-        inviteId
-      )) as (typeof rawInvitesData)[0];
-      if (invite) {
-        setSelectedInvite(invite);
-        setIsModalOpen(true);
+  const { token, username, personId } = useUserStore();
+
+  useEffect(() => {
+    const fetchAllAddressesAsync = async () => {
+      if (!token || !username || !personId) {
+        return;
       }
-      return invite;
-    } catch (error) {
-      console.error("Failed to fetch invite:", error);
-    }
-  };
+      setIsLoading(true);
+      try {
+        const addressesData = await getAllAddresses(personId, token);
+        const inviteCountsPromises = addressesData.map(async (address) => {
+          return await getInviteCountByAddressId(address.id, token);
+        });
+
+        const inviteCounts = await Promise.all(inviteCountsPromises);
+        const inviteCountsMap: Record<number, number> = {};
+        inviteCounts.forEach((item, i) => {
+          inviteCountsMap[addressesData[i].id] = item.count;
+        });
+        setInviteCounts(inviteCountsMap);
+        setAddresses(addressesData);
+      } catch (error) {
+        console.error(`Mensagem de erro: ${error}`);
+        setIsLoading(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAllAddressesAsync();
+
+    const interval = setInterval(fetchAllAddressesAsync, 50000);
+
+    return () => clearInterval(interval);
+  }, [token, username, personId]);
 
   const filterOptions = [
     { label: "Sem filtro", value: "" },
-    { label: "Data crescente", value: "byDateAscending" },
-    { label: "Data decrescente", value: "byDateDescending" },
+    { label: "Número da casa", value: "byHouseNumber" },
+    { label: "Número de convites", value: "byNumberOfInvites" },
   ];
 
-  const applyFilters = (data: typeof rawInvitesData) => {
+  const applyFilters = (data: AddressResponse[]) => {
     let filtered = [...data];
 
     filtered = nome.trim()
       ? filtered.filter((item) =>
-          item.nome.toLowerCase().includes(nome.toLowerCase())
+          item.residents.some((resident) =>
+            resident.name.toLowerCase().includes(nome.toLowerCase())
+          )
         )
       : filtered;
 
-    return selectedFilterOption === "byDateAscending"
-      ? filtered.sort((a, b) =>
-          new Date(a.inicioVisita).getTime() >
-          new Date(b.inicioVisita).getTime()
-            ? 1
-            : -1
-        )
-      : selectedFilterOption === "byDateDescending"
-      ? filtered.sort((a, b) =>
-          new Date(a.inicioVisita).getTime() <
-          new Date(b.inicioVisita).getTime()
-            ? 1
-            : -1
-        )
-      : filtered;
+    if (selectedFilterOption === "byHouseNumber") {
+      filtered = filtered.sort((a, b) =>
+        a.homeNumber > b.homeNumber ? 1 : -1
+      );
+    } else if (selectedFilterOption === "byNumberOfInvites") {
+      filtered = filtered.sort(
+        (a, b) => (inviteCounts[b.id] || 0) - (inviteCounts[a.id] || 0)
+      );
+    }
+
+    return filtered;
   };
 
-  const filteredData = applyFilters(rawInvitesData);
+  const filteredData = applyFilters(addresses);
 
   return (
     <>
       <PageLayout pageTitle="Casas" isResident={false}>
-        {rawInvitesData.length > 0 ? (
+        <FiltersWrapper>
+          <Input
+            type="text"
+            value={nome}
+            label="Número da Casa"
+            placeholder="Digite o número da casa"
+            onChange={(value) => setNome(value as string)}
+          />
+          <Input
+            type="select"
+            label="Ordenar por"
+            value={selectedFilterOption}
+            onChange={(value) => setSelectedFilterOption(value as string)}
+            options={filterOptions.map((option) => ({
+              label: option.label,
+              value: option.value,
+            }))}
+          />
+        </FiltersWrapper>
+        {!isLoading ? (
           <>
-            <FiltersWrapper>
-              <Input
-                type="text"
-                value={nome}
-                label="Número da Casa"
-                placeholder="Digite o número da casa"
-                onChange={(value) => setNome(value as string)}
-              />
-              <Input
-                type="select"
-                label="Ordenar por"
-                value={selectedFilterOption}
-                onChange={(value) => setSelectedFilterOption(value as string)}
-                options={filterOptions.map((option) => ({
-                  label: option.label,
-                  value: option.value,
-                }))}
-              />
-            </FiltersWrapper>
-            <InviteCardsWrapper>
-              {filteredData.map((item, index) => (
-                <HouseCard
-                  key={index}
-                  houseNumber={item.nome}
-                  activeInvites={item.id}
-                  onPress={() => handleCardClick(item.id)}
-                />
-              ))}
-            </InviteCardsWrapper>
+            {addresses.length > 0 ? (
+              <>
+                <InviteCardsWrapper>
+                  {filteredData.map((item) => {
+                    const owner = item.residents.find(
+                      (resident) => resident.isHomeOwner
+                    );
+
+                    return (
+                      <HouseCard
+                        key={item.id}
+                        houseNumber={item.homeNumber}
+                        houseOwnerName={owner ? owner.name : ""}
+                        activeInvites={inviteCounts[item.id] || 0}
+                        onPress={() => {
+                          setAddressId(item.id);
+                          setHouseNumber(item.homeNumber);
+                          router.push({
+                            pathname: "/houseInvites/[id]",
+                            params: { id: item.id },
+                          });
+                        }}
+                      />
+                    );
+                  })}
+                </InviteCardsWrapper>
+              </>
+            ) : (
+              <EmptyList />
+            )}
           </>
         ) : (
-          <StyledText>Não há convites aqui!</StyledText>
+          <Loader />
         )}
       </PageLayout>
-      {selectedInvite && isModalOpen && (
-        <DetailedInvite
-          visible={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          inviteId={selectedInvite.id}
-        />
-      )}
     </>
   );
 }

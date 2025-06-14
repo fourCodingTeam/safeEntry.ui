@@ -15,7 +15,7 @@ export const ToastContainer = styled.View<ToastProps>`
   elevation: 10;
   border-color: ${({ type }: ToastProps) =>
     type === "success"
-      ? theme.colors.blue
+      ? theme.colors.green
       : type === "error"
       ? theme.colors.red
       : theme.colors.midnight};
@@ -23,11 +23,11 @@ export const ToastContainer = styled.View<ToastProps>`
 
 export const ToastText = styled.Text<ToastProps>`
   font-size: ${theme.sizes.md};
-  font-family: ${theme.fonts.poppinsNormal};
+  font-family: ${theme.fonts.poppinsMedium};
   text-align: center;
   color: ${({ type }: ToastProps) =>
     type === "success"
-      ? theme.colors.blue
+      ? theme.colors.green
       : type === "error"
       ? theme.colors.red
       : theme.colors.midnight};

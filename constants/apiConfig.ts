@@ -1,1 +1,1 @@
-export const BASE_URL = "http://192.168.100.177:5053/api";
+export const BASE_URL = "https://safeentry-api.onrender.com/api";

@@ -1,11 +1,14 @@
-import { Tabs } from "expo-router";
+import { Tabs, useRouter } from "expo-router";
 import React from "react";
 
 import { TabBarIcon } from "@/components/ui";
 import { theme } from "@/constants/theme";
+import { useCameraStore } from "@/stores/CameraStore";
 import { Pressable } from "react-native";
 
 export default function AppStack() {
+  const { setIsOpen } = useCameraStore();
+  const router = useRouter();
   return (
     <Tabs
       screenOptions={{
@@ -59,10 +62,29 @@ export default function AppStack() {
         }}
       />
       <Tabs.Screen
+        name="scan"
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} iconName={"qr"} />
+          ),
+          title: "",
+          tabBarButton: (props) => (
+            <Pressable
+              {...props}
+              android_ripple={null}
+              onPress={() => {
+                setIsOpen(true);
+                router.push("/(admin)/scan");
+              }}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="historico"
         options={{
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} iconName={"clock"} />
+            <TabBarIcon focused={focused} iconName={"ticket"} />
           ),
           title: "",
           tabBarButton: (props) => (
@@ -71,10 +93,10 @@ export default function AppStack() {
         }}
       />
       <Tabs.Screen
-        name="scan"
+        name="historicoAprovados"
         options={{
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} iconName={"qr"} />
+            <TabBarIcon focused={focused} iconName={"clock"} />
           ),
           title: "",
           tabBarButton: (props) => (

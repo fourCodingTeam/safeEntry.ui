@@ -14,6 +14,8 @@ import {
 import { StyledText } from "../styles";
 import {
   ContentWrapper,
+  Divider,
+  DividerWrapper,
   Header,
   OptionsWrapper,
   StyledMenuOption,
@@ -22,7 +24,7 @@ import {
 import { MenuProps } from "./Menu.types";
 
 export function Menu({ visible, onClose, isResident }: MenuProps) {
-  const { setUsername, setRole } = useUserStore();
+  const { setUsername, setRole, setToken } = useUserStore();
   const router = useRouter();
 
   const handleOpenPreferences = () => {
@@ -33,7 +35,8 @@ export function Menu({ visible, onClose, isResident }: MenuProps) {
   const handleLogout = () => {
     setUsername(null);
     setRole(null);
-    router.dismissAll();
+    setToken(null);
+    router.replace("/auth");
   };
   return (
     <Modal
@@ -67,6 +70,7 @@ export function Menu({ visible, onClose, isResident }: MenuProps) {
                         <StyledText>Preferências</StyledText>
                       </StyledMenuOption>
                     )}
+                    <DividerWrapper>{isResident && <Divider />}</DividerWrapper>
                     <StyledMenuOption
                       activeOpacity={0.8}
                       onPress={handleLogout}
