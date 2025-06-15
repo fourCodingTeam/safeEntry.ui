@@ -135,7 +135,7 @@ export function Scan() {
           visible={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           resetScanner={resetScanner}
-          message="Negado"
+          message="Convite inválido ou expirado!"
         />
       )}
     </Container>

@@ -18,7 +18,7 @@ export async function getAllAddresses(
     );
 
     if (!response.ok) {
-      throw new Error("Failed to fetch addresses");
+      throw new Error(`Failed to fetch addresses ${response.status}`);
     }
 
     const addresses = (await response.json()) as AddressResponse[];

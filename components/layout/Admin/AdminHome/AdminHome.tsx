@@ -55,7 +55,7 @@ export function AdminHome() {
 
     fetchAllAddressesAsync();
 
-    const interval = setInterval(fetchAllAddressesAsync, 50000);
+    const interval = setInterval(fetchAllAddressesAsync, 10000);
 
     return () => clearInterval(interval);
   }, [token, username, personId]);

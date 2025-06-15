@@ -1,5 +1,5 @@
 import {
-  AdminValidateDetailedInvite,
+  AdminValidatedInviteInformation,
   Loader,
   ValidatedInviteCard,
 } from "@/components/ui";
@@ -155,12 +155,19 @@ export function AdminValidationHistory() {
         )}
       </PageLayout>
       {selectedInvite && isModalOpen && visitorId !== null && (
-        <AdminValidateDetailedInvite
+        <AdminValidatedInviteInformation
           visible={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           code={selectedInvite.code}
-          residentId={selectedInvite.createdByResidentId}
+          createdByResidentId={selectedInvite.createdByResidentId}
           visitorId={selectedInvite.visitorId}
+          createdByResidentName={selectedInvite.createdByResidentName}
+          employeeName={selectedInvite.employeeName}
+          homeDescription={selectedInvite.homeDescription}
+          visitorName={selectedInvite.visitorName}
+          approval={selectedInvite.approval}
+          validatedAt={selectedInvite.validatedAt}
+          inviteExpirationDate={selectedInvite.inviteExpirationDate}
         />
       )}
     </>

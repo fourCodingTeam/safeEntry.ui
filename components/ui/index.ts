@@ -1,4 +1,5 @@
 export * from "./AdminValidateDetailedInvite";
+export * from "./AdminValidatedInviteInformation";
 export * from "./Button";
 export * from "./Header";
 export * from "./Icon";

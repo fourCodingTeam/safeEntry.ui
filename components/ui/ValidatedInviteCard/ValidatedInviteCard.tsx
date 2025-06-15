@@ -1,5 +1,5 @@
 import { theme } from "@/constants/theme";
-import { formatDate } from "@/utils/formatDate";
+import { formatDateLong } from "@/utils/formatDate";
 import { formatName } from "@/utils/formatName";
 import React from "react";
 import { StyledText } from "../styles";
@@ -32,7 +32,7 @@ export function ValidatedInviteCard({
         </InfoAndSubInfoWrapper>
         <InfoAndSubInfoWrapper>
           <StyledText>Aprovado por: {formatName(employeeName)}</StyledText>
-          <StyledDateString>Em {formatDate(validatedAt)}</StyledDateString>
+          <StyledDateString>Em {formatDateLong(validatedAt)}</StyledDateString>
         </InfoAndSubInfoWrapper>
         <StyledText>Visitante: {formatName(visitorName)}</StyledText>
       </PersonInfoWrapper>
