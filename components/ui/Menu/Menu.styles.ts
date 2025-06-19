@@ -6,7 +6,7 @@ export const ContentWrapper = styled.View`
   background-color: ${theme.colors.white};
   border: 1px solid ${theme.colors.black40};
   justify-content: flex-end;
-  gap: ${theme.sizes.md};
+  gap: ${theme.sizes.mdMax};
   bottom: 0;
   width: 100%;
   height: auto;
@@ -22,9 +22,10 @@ export const OptionsWrapper = styled.View`
 
 export const StyledMenuOption = styled.TouchableOpacity`
   flex-direction: row;
+  background-color: ${theme.colors.darkWhite};
   align-items: center;
   gap: ${theme.sizes.sm};
-  padding: ${theme.sizes.md} ${theme.sizes.md};
+  padding: ${theme.sizes.mdMax} ${theme.sizes.mdMax};
   border-radius: ${theme.sizes.sm};
   width: 100%;
 `;
