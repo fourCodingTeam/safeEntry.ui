@@ -160,33 +160,37 @@ export function AdminValidateDetailedInvite({
                     startTitle="Motivo da Visita"
                     startDescription={invite.justification}
                   />
-                  <ValidateCodeWrapper>
-                    <ValidateCodeTitle>Código Numérico</ValidateCodeTitle>
-                    <Input
-                      type="text"
-                      value={validationCode}
-                      onChange={(value) => setValidationCode(value as number)}
-                      placeholder="Digite o código fornecido pelo visitante"
-                      label="Código"
-                    />
-                  </ValidateCodeWrapper>
+                  {invite.isActive && (
+                    <ValidateCodeWrapper>
+                      <ValidateCodeTitle>Código Numérico</ValidateCodeTitle>
+                      <Input
+                        type="text"
+                        value={validationCode}
+                        onChange={(value) => setValidationCode(value as number)}
+                        placeholder="Digite o código fornecido pelo visitante"
+                        label="Código"
+                      />
+                    </ValidateCodeWrapper>
+                  )}
                 </CardsWrapper>
               </View>
-              <View
-                style={{
-                  backgroundColor: theme.colors.white,
-                  paddingHorizontal: 16,
-                }}
-              >
-                <ButtonsWrapper>
-                  <Button
-                    color="blue"
-                    text="Validar"
-                    onPress={handleValidateInvite}
-                    disabled={isLoading}
-                  />
-                </ButtonsWrapper>
-              </View>
+              {invite.isActive && (
+                <View
+                  style={{
+                    backgroundColor: theme.colors.white,
+                    paddingHorizontal: 16,
+                  }}
+                >
+                  <ButtonsWrapper>
+                    <Button
+                      color="blue"
+                      text="Validar"
+                      onPress={handleValidateInvite}
+                      disabled={isLoading}
+                    />
+                  </ButtonsWrapper>
+                </View>
+              )}
             </>
           )}
         </ContentWrapper>

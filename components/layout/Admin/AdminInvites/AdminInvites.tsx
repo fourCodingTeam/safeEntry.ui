@@ -3,14 +3,20 @@ import {
   Input,
   InviteCard,
   Loader,
+  ResidentCard,
 } from "@/components/ui";
 import { EmptyList } from "@/components/ui/EmptyList";
-import { InviteResponse } from "@/services/@types";
-import { getInvitesByAddressId } from "@/services/api";
+import { AddressResponse, InviteResponse } from "@/services/@types";
+import { getAllAddresses, getInvitesByAddressId } from "@/services/api";
 import { useAddressStore, useUserStore } from "@/stores";
 import React, { useEffect, useState } from "react";
 import { PageLayout } from "../../PageLayout";
-import { FiltersWrapper, InviteCardsWrapper } from "./AdminInvites.styles";
+import { StyledTopText } from "../../styles";
+import {
+  FiltersWrapper,
+  InviteCardsWrapper,
+  MoradoresCardWrapper,
+} from "./AdminInvites.styles";
 
 export function AdminInvites() {
   const [nome, setNome] = useState("");
@@ -19,20 +25,41 @@ export function AdminInvites() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [visitorId, setVisitorId] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [addresses, setAddresses] = useState<AddressResponse[]>([]);
   const [invites, setInvites] = useState<InviteResponse[]>([]);
 
-  const { token } = useUserStore();
+  const { token, personId } = useUserStore();
   const { addressId, houseNumber } = useAddressStore();
 
   useEffect(() => {
     const fetchInvitesAsync = async () => {
-      if (!token || !addressId) {
+      if (!token || !addressId || !personId) {
         return;
       }
       setIsLoading(true);
       try {
+        const addressesData = await getAllAddresses(personId, token);
         const invitesData = await getInvitesByAddressId(addressId, token);
         setInvites(invitesData);
+
+        if (invitesData.length > 0 && invitesData[0].residentId) {
+          const residentId = invitesData[0].residentId
+            ? invitesData[0].residentId
+            : null;
+          const filteredAddress = addressesData.find((address) =>
+            address.residents.some((resident) => resident.id === residentId)
+          );
+
+          setAddresses(filteredAddress ? [filteredAddress] : []);
+
+          if (filteredAddress) {
+            console.log("Filtered Address:", filteredAddress);
+          } else {
+            console.log("No address found for the given residentId.");
+          }
+        } else {
+          console.log("No invites or residentId found.");
+        }
       } catch (error) {
         console.error("Erro: ", error);
         setIsLoading(false);
@@ -50,8 +77,8 @@ export function AdminInvites() {
 
   const filterOptions = [
     { label: "Sem filtro", value: "" },
-    { label: "Data crescente", value: "byDateAscending" },
-    { label: "Data decrescente", value: "byDateDescending" },
+    { label: "Mais distantes", value: "byDateAscending" },
+    { label: "Mais próximos", value: "byDateDescending" },
     { label: "Status: ativos primeiro", value: "byStatusActiveFirst" },
     { label: "Status: inativos primeiro", value: "byStatusInactiveFirst" },
   ];
@@ -116,7 +143,21 @@ export function AdminInvites() {
           <Loader />
         ) : invites.length > 0 ? (
           <>
+            <MoradoresCardWrapper>
+              <StyledTopText>Moradores</StyledTopText>
+              {addresses
+                ?.flatMap((address) => address.residents)
+                .map((resident, index) => (
+                  <ResidentCard
+                    key={index}
+                    name={resident.name}
+                    phoneNumber={resident.phoneNumber}
+                    status={resident.status}
+                  />
+                ))}
+            </MoradoresCardWrapper>
             <InviteCardsWrapper>
+              <StyledTopText>Convites</StyledTopText>
               {filteredData.map((item, index) => (
                 <InviteCard
                   key={index}

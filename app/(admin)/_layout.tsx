@@ -84,7 +84,7 @@ export default function AppStack() {
         name="historico"
         options={{
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} iconName={"ticket"} />
+            <TabBarIcon focused={focused} iconName={"housePerson"} />
           ),
           title: "",
           tabBarButton: (props) => (

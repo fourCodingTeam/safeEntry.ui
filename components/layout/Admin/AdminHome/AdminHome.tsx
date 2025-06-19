@@ -18,7 +18,6 @@ import { useCameraStore } from "@/stores/CameraStore";
 
 export function AdminHome() {
   const router = useRouter();
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const { setIsOpen } = useCameraStore();
   const [isLoading, setIsLoading] = useState(false);
   const [inviteCounts, setInviteCounts] = useState<Record<number, number>>({});

@@ -43,8 +43,8 @@ export function History() {
 
   const filterOptions = [
     { label: "Sem filtro", value: "" },
-    { label: "Data crescente", value: "byDateAscending" },
-    { label: "Data decrescente", value: "byDateDescending" },
+    { label: "Mais distantes", value: "byDateAscending" },
+    { label: "Mais próximos", value: "byDateDescending" },
     { label: "Status: ativos primeiro", value: "byStatusActiveFirst" },
     { label: "Status: inativos primeiro", value: "byStatusInactiveFirst" },
   ];

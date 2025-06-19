@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "safeentry",
+    "name": "SafeEntry",
     "slug": "safeentry",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,7 +8,7 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/appLogo.png",
+      "image": "./assets/images/splashScreen.png",
       "resizeMode": "contain",
       "backgroundColor": "#ECF1F5"
     },
@@ -20,7 +20,12 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/appLogo.png",
         "backgroundColor": "#ECF1F5"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.fourcoding.safeentry"
     },
     "web": {
       "bundler": "metro",
@@ -29,15 +34,6 @@
     },
     "plugins": [
       "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/appLogo.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ECF1F5"
-        }
-      ],
       "expo-localization",
       [
         "expo-camera",
@@ -58,6 +54,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "0260aa37-2f33-4c8c-94df-df10e4702b3f"
+      }
+    },
+    "owner": "fourcoding"
   }
 }

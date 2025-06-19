@@ -5,14 +5,20 @@ export const FiltersWrapper = styled.View`
   width: 100%;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   gap: ${theme.sizes.sm};
   padding-horizontal: ${theme.sizes.md};
 `;
 
 export const InviteCardsWrapper = styled.ScrollView`
   width: 100%;
-  margin-bottom: 48px;
+  margin-bottom: 8px;
+  padding-horizontal: ${theme.sizes.md};
+`;
+export const MoradoresCardWrapper = styled.ScrollView`
+  width: 100%;
+  min-height: 180px;
+  max-height: 190px;
   padding-horizontal: ${theme.sizes.md};
 `;
 

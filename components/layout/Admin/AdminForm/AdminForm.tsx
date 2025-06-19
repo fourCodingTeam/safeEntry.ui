@@ -63,25 +63,6 @@ export function AdminForm() {
     }
   };
 
-  function formatPhoneNumber(value: string): string {
-    const cleaned = value.replace(/\D/g, "").slice(0, 11);
-
-    if (cleaned.length <= 2) {
-      return `(${cleaned}`;
-    } else if (cleaned.length <= 6) {
-      return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2)}`;
-    } else if (cleaned.length <= 10) {
-      return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 6)}-${cleaned.slice(
-        6
-      )}`;
-    } else {
-      return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(
-        7,
-        11
-      )}`;
-    }
-  }
-
   return (
     <PageLayout pageTitle="Cadastrar Morador" isResident={false}>
       <FormWrapper>
@@ -95,17 +76,18 @@ export function AdminForm() {
           />
           <Input
             type="text"
-            label="phoneNumber"
+            label="Telefone"
             placeholder="(XX) XXXXX-XXXX"
             value={phoneNumber}
-            onChange={(value) =>
-              setPhoneNumber(formatPhoneNumber(value as string))
-            }
+            maxLength={11}
+            keyboardType="N"
+            onChange={(value) => setPhoneNumber(value as string)}
           />
           <Input
             type="text"
             label="Número da Casa"
             placeholder="Digite o número da casa do morador"
+            keyboardType="N"
             value={houseNumber}
             onChange={(value) => setHouseNumber(value as number)}
           />

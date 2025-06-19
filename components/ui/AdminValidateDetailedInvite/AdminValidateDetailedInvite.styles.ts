@@ -14,6 +14,7 @@ export const Header = styled.View`
   justify-content: left;
   margin-bottom: ${theme.sizes.md};
   width: 100%;
+  padding: ${theme.sizes.lg} 0 0 0;
 `;
 
 export const Title = styled.Text`

@@ -32,7 +32,7 @@ export default function RootLayout() {
 
   return (
     <ToastProvider>
-      <Stack screenOptions={{ statusBarStyle: "dark", headerShown: false }}>
+      <Stack screenOptions={{ statusBarStyle: "light", headerShown: false }}>
         {!username || !role || !token ? (
           <Stack.Screen name="auth" options={{ headerShown: false }} />
         ) : role === "admin" ? (

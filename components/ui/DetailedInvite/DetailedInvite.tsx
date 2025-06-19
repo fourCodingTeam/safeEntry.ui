@@ -209,20 +209,22 @@ export function DetailedInvite({
                   />
 
                   <QrCodeShareWrapper>
-                    <QrCodeTextWrapper>
-                      {!hideItem ? (
-                        <StyledText>QR Code</StyledText>
-                      ) : (
-                        <StyledText>
-                          Apresente este QR Code na entrada
-                        </StyledText>
-                      )}
-                      <QRCode
-                        value={JSON.stringify(qrData)}
-                        size={278}
-                        backgroundColor={theme.colors.white}
-                      />
-                    </QrCodeTextWrapper>
+                    {invite.isActive && (
+                      <QrCodeTextWrapper>
+                        {!hideItem ? (
+                          <StyledText>QR Code</StyledText>
+                        ) : (
+                          <StyledText>
+                            Apresente este QR Code na entrada
+                          </StyledText>
+                        )}
+                        <QRCode
+                          value={JSON.stringify(qrData)}
+                          size={278}
+                          backgroundColor={theme.colors.white}
+                        />
+                      </QrCodeTextWrapper>
+                    )}
                     <CodeWrapper>
                       {!hideItem ? (
                         <StyledText>Código numérico</StyledText>
@@ -242,7 +244,13 @@ export function DetailedInvite({
                 }}
               >
                 <ButtonsWrapper>
-                  <Button color="blue" text="Compartilhar" onPress={onShare} />
+                  {invite.isActive && (
+                    <Button
+                      color="blue"
+                      text="Compartilhar"
+                      onPress={onShare}
+                    />
+                  )}
                   <Button
                     color={invite.isActive ? "black" : "blue"}
                     text={invite.isActive ? "Desativar" : "Ativar"}

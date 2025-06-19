@@ -7,18 +7,13 @@ import {
   KeyboardAvoidingView,
   Modal,
   Platform,
+  Pressable,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { StyledText } from "../styles";
-import {
-  ContentWrapper,
-  Header,
-  OptionsWrapper,
-  StyledMenuOption,
-  Title,
-} from "./Menu.styles";
+import { ContentWrapper, Header, OptionsWrapper, Title } from "./Menu.styles";
 import { MenuProps } from "./Menu.types";
 
 export function Menu({ visible, onClose, isResident }: MenuProps) {
@@ -36,6 +31,7 @@ export function Menu({ visible, onClose, isResident }: MenuProps) {
     setToken(null);
     router.replace("/auth");
   };
+
   return (
     <Modal
       visible={visible}
@@ -60,25 +56,46 @@ export function Menu({ visible, onClose, isResident }: MenuProps) {
                   </Header>
                   <OptionsWrapper>
                     {isResident && (
-                      <StyledMenuOption
-                        activeOpacity={0.5}
+                      <Pressable
                         onPress={handleOpenPreferences}
+                        android_ripple={{ color: "rgba(0,0,0,0.1)" }}
+                        style={({ pressed }) => ({
+                          width: "100%",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          gap: 10,
+                          padding: 20,
+                          backgroundColor: pressed
+                            ? "rgba(0,0,0,0.05)"
+                            : "transparent",
+                        })}
                       >
-                        <Ionicons name="options" size={18} />
+                        <Ionicons name="build" size={18} />
                         <StyledText>Preferências</StyledText>
-                      </StyledMenuOption>
+                      </Pressable>
                     )}
-                    <StyledMenuOption
-                      activeOpacity={0.8}
+
+                    <Pressable
                       onPress={handleLogout}
+                      android_ripple={{ color: "rgba(0,0,0,0.1)" }}
+                      style={({ pressed }) => ({
+                        width: "100%",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 10,
+                        padding: 20,
+                        backgroundColor: pressed
+                          ? "rgba(0,0,0,0.05)"
+                          : "transparent",
+                      })}
                     >
                       <Ionicons
-                        name="log-out-outline"
+                        name="exit"
                         size={18}
                         color={theme.colors.black}
                       />
                       <StyledText>Sair</StyledText>
-                    </StyledMenuOption>
+                    </Pressable>
                   </OptionsWrapper>
                 </ContentWrapper>
               </View>
