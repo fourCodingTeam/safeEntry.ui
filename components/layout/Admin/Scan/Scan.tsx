@@ -13,6 +13,7 @@ import {
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components/native";
+import { StyledText } from "../../styles";
 
 export function Scan() {
   const [facing, setFacing] = useState<CameraType>("back");
@@ -102,7 +103,9 @@ export function Scan() {
   if (!permission.granted) {
     return (
       <Container>
-        <Message>Precisamos de acesso a Câmera</Message>
+        <StyledText style={{ textAlign: "center" }}>
+          Precisamos de acesso a Câmera
+        </StyledText>
         <PermissionButton onPress={requestPermission}>
           <PermissionButtonText>Permitir Acesso</PermissionButtonText>
         </PermissionButton>
@@ -135,7 +138,7 @@ export function Scan() {
           visible={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           resetScanner={resetScanner}
-          message="Negado"
+          message="Convite inválido ou expirado!"
         />
       )}
     </Container>
@@ -147,8 +150,8 @@ const Container = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
+  text-align: center;
 `;
-
 const StyledCameraView = styled(CameraView)`
   background-color: ${theme.colors.black};
   flex: 1;
@@ -200,7 +203,7 @@ const Message = styled.Text`
 const PermissionButton = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
-  width: 50%;
+  width: 90%;
   background-color: ${theme.colors.blue};
   padding: ${theme.sizes.md};
   border-radius: ${theme.sizes.sm};

@@ -20,7 +20,7 @@ export async function getInvitesByResidentId(
     });
 
     if (!response.ok) {
-      return [];
+      throw new Error(`${response.status}`);
     }
 
     const invitesData = (await response.json()) as InviteResponse[];

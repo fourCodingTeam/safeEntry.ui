@@ -4,16 +4,21 @@
     "slug": "safeentry",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/appLogo.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/appLogo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ECF1F5"
+    },
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon.png",
+        "foregroundImage": "./assets/images/appLogo.png",
         "backgroundColor": "#ECF1F5"
       }
     },
@@ -27,7 +32,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/icon.png",
+          "image": "./assets/images/appLogo.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ECF1F5"

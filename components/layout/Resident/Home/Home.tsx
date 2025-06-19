@@ -48,6 +48,8 @@ export function Home() {
     return () => clearInterval(interval);
   }, [personId, token, username]);
 
+  const activeInvites = invites.filter((invite) => invite.isActive).slice(0, 4);
+
   return (
     <>
       <PageLayout>
@@ -63,23 +65,20 @@ export function Home() {
           <StyledSectionTitle>Convites Ativos</StyledSectionTitle>
           {isLoading ? (
             <Loader />
-          ) : invites.length > 0 ? (
+          ) : activeInvites.length > 0 ? (
             <>
-              {invites
-                .filter((invite) => invite.isActive)
-                .slice(0, 4)
-                .map((invite, index) => (
-                  <InviteCard
-                    key={index}
-                    personName={invite.visitorName}
-                    inviteDate={invite.startDate}
-                    ativo={invite.isActive}
-                    onPress={async () => {
-                      setSelectedInvite(invite);
-                      setIsModalOpen(true);
-                    }}
-                  />
-                ))}
+              {activeInvites.map((invite, index) => (
+                <InviteCard
+                  key={index}
+                  personName={invite.visitorName}
+                  inviteDate={invite.startDate}
+                  ativo={invite.isActive}
+                  onPress={async () => {
+                    setSelectedInvite(invite);
+                    setIsModalOpen(true);
+                  }}
+                />
+              ))}
             </>
           ) : (
             <EmptyList />

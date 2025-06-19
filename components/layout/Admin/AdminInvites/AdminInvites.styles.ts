@@ -12,7 +12,7 @@ export const FiltersWrapper = styled.View`
 
 export const InviteCardsWrapper = styled.ScrollView`
   width: 100%;
-  margin-bottom: 96px;
+  margin-bottom: 48px;
   padding-horizontal: ${theme.sizes.md};
 `;
 

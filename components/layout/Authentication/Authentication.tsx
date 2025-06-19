@@ -29,6 +29,8 @@ export function Authentication() {
     try {
       const response = await Login(inputUsername, password);
 
+      console.log(response);
+
       if (!response) {
         toast.show("Usuário ou senha inválidos!", 2000, "error");
         setIsLoading(false);
