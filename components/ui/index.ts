@@ -7,6 +7,7 @@ export * from "./Input";
 export * from "./InviteCard";
 export * from "./Loader";
 export * from "./Menu";
+export * from "./ResidentCard";
 export * from "./TabBarIcon";
 export * from "./Tag";
 export * from "./Toast";

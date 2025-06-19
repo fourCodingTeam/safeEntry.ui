@@ -13,6 +13,7 @@ export const Header = styled.View`
   align-items: center;
   justify-content: left;
   margin-bottom: ${theme.sizes.md};
+  padding: ${theme.sizes.lg} 0 0 0;
   width: 100%;
 `;
 

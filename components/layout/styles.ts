@@ -15,3 +15,8 @@ export const StyledText = styled.Text`
   font-size: ${theme.sizes.mdMax};
   color: ${theme.colors.blue};
 `;
+export const StyledTopText = styled.Text`
+  font-family: ${theme.fonts.poppinsNormal};
+  font-size: 18px;
+  color: ${theme.colors.black60};
+`;

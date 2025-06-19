@@ -93,8 +93,8 @@ export function AdminHistory() {
           <Input
             type="text"
             value={nome}
-            label="Número da Casa"
-            placeholder="Digite o número da casa"
+            label="Nome do Morador"
+            placeholder="Digite o nome do Morador"
             onChange={(value) => setNome(value as string)}
           />
           <Input

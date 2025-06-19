@@ -10,6 +10,7 @@ const icons = {
   ticket: require("@/assets/icons/ticket-icon.png"),
   icon: require("@/assets/icons/logo.png"),
   back: require("@/assets/icons/back-icon.png"),
+  housePerson: require("@/assets/icons/house-chimney-user-solid.png"),
 };
 
 export function Icon({ name, color }: IconProps) {
