@@ -22,7 +22,6 @@ export const OptionsWrapper = styled.View`
 
 export const StyledMenuOption = styled.TouchableOpacity`
   flex-direction: row;
-  background-color: ${theme.colors.darkWhite};
   align-items: center;
   gap: ${theme.sizes.sm};
   padding: ${theme.sizes.mdMax} ${theme.sizes.mdMax};
