@@ -104,7 +104,7 @@ export function DetailedInvite({
       const available = await Sharing.isAvailableAsync();
       if (available) {
         await Clipboard.setStringAsync(
-          `Convite de ${invite?.code}: ${invite?.justification}`
+          `Convite de ${invite?.visitorName}: ${invite?.justification}`
         );
         await Sharing.shareAsync(fileName);
       } else {
