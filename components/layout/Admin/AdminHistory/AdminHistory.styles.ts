@@ -29,3 +29,10 @@ export const StyledImage = styled.Image`
   height: 100%;
   object-fit: contain;
 `;
+
+export const TextFiltersWrapper = styled.View`
+  width: 100%;
+  gap: ${theme.sizes.sm};
+  flex-direction: row;
+  align-items: center;
+`;

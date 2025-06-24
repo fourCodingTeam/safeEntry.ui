@@ -11,12 +11,11 @@ export const ContentWrapper = styled.View`
   width: 100%;
   height: auto;
   border-radius: ${theme.sizes.smMax};
-  padding: 0 0 ${theme.sizes.sm} 0;
+  padding: 0;
 `;
 
 export const OptionsWrapper = styled.View`
   width: 100%;
-  gap: ${theme.sizes.sm};
   align-items: center;
   justify-content: left;
 `;
@@ -41,7 +40,7 @@ export const StyledHighlightedMenuOption = styled.TouchableOpacity`
 `;
 
 export const Header = styled.View`
-  padding: ${theme.sizes.smMax} ${theme.sizes.sm};
+  padding: ${theme.sizes.mdMax} ${theme.sizes.sm};
   gap: ${theme.sizes.md};
   flex-direction: row;
   align-items: center;

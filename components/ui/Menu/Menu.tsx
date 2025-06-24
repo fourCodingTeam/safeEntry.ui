@@ -92,9 +92,11 @@ export function Menu({ visible, onClose, isResident }: MenuProps) {
                       <Ionicons
                         name="exit"
                         size={18}
-                        color={theme.colors.black}
+                        color={theme.colors.red}
                       />
-                      <StyledText>Sair</StyledText>
+                      <StyledText style={{ color: theme.colors.red }}>
+                        Sair
+                      </StyledText>
                     </Pressable>
                   </OptionsWrapper>
                 </ContentWrapper>

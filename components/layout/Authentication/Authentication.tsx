@@ -25,10 +25,11 @@ export function Authentication() {
     }
 
     setIsLoading(true);
+    const formattedUsername = inputUsername.replaceAll(" ", "");
+    const formattedPassword = password.replaceAll(" ", "");
 
     try {
-      const response = await Login(inputUsername, password);
-
+      const response = await Login(formattedUsername, formattedPassword);
       console.log(response);
 
       if (!response) {

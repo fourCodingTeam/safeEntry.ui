@@ -8,6 +8,11 @@ import { PageLayout } from "../../PageLayout";
 import { ButtonWrapper, FormWrapper, InputsWrapper } from "./Form.styles";
 
 export function Form() {
+  const toast = useToast();
+  const { token, personId } = useUserStore();
+
+  const [openSelect, setOpenSelect] = useState<string | null>(null);
+
   const router = useRouter();
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState<string | null>("");
@@ -17,8 +22,7 @@ export function Form() {
   const [motivesOptions, setMotivesOptions] = useState<
     { label: string; value: string }[]
   >([]);
-  const toast = useToast();
-  const { token, personId } = useUserStore();
+
   const [isloading, setIsloading] = useState(false);
 
   const handleSubmit = async () => {
@@ -39,7 +43,7 @@ export function Form() {
       }
       if (visitDate < new Date()) {
         toast.show(
-          "A data da visita não pode ser menor que a data de hoje!",
+          "A data da visita não pode ser menor ou igual à data de hoje!",
           2000,
           "error"
         );
@@ -111,6 +115,9 @@ export function Form() {
             value={reason}
             onChange={(value) => setReason(value as string)}
             options={motivesOptions}
+            name="reason"
+            openSelect={openSelect}
+            setOpenSelect={setOpenSelect}
           />
           <Input
             type="date"
@@ -133,6 +140,9 @@ export function Form() {
               { label: "5 dias", value: "5" },
               { label: "6 dias", value: "6" },
             ]}
+            name="inviteValidity"
+            openSelect={openSelect}
+            setOpenSelect={setOpenSelect}
           />
         </InputsWrapper>
         <ButtonWrapper>

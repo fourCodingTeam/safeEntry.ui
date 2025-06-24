@@ -9,7 +9,7 @@ export function Loader() {
         width: "100%",
         justifyContent: "center",
         alignItems: "center",
-        paddingVertical: 200,
+        paddingVertical: 150,
       }}
     >
       <ActivityIndicator color={theme.colors.blue} size={32} />

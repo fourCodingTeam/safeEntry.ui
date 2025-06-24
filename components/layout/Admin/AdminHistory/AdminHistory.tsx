@@ -10,15 +10,18 @@ import { PageLayout } from "../../PageLayout";
 import { FiltersWrapper, InviteCardsWrapper } from "./AdminHistory.styles";
 
 export function AdminHistory() {
+  const router = useRouter();
+  const { setAddressId, setHouseNumber } = useAddressStore();
+  const { token, username, personId } = useUserStore();
+
+  const [openSelect, setOpenSelect] = useState<string | null>(null);
+
   const [nome, setNome] = useState("");
+  const [searchHouseNumber, setSearchHouseNumber] = useState(0);
   const [selectedFilterOption, setSelectedFilterOption] = useState("");
   const [inviteCounts, setInviteCounts] = useState<Record<number, number>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [addresses, setAddresses] = useState<AddressResponse[]>([]);
-  const { setAddressId, setHouseNumber } = useAddressStore();
-  const router = useRouter();
-
-  const { token, username, personId } = useUserStore();
 
   useEffect(() => {
     const fetchAllAddressesAsync = async () => {
@@ -71,6 +74,12 @@ export function AdminHistory() {
         )
       : filtered;
 
+    filtered = searchHouseNumber
+      ? filtered.filter((item) =>
+          item.homeNumber.toString().includes(searchHouseNumber.toString())
+        )
+      : filtered;
+
     if (selectedFilterOption === "byHouseNumber") {
       filtered = filtered.sort((a, b) =>
         a.homeNumber > b.homeNumber ? 1 : -1
@@ -94,8 +103,16 @@ export function AdminHistory() {
             type="text"
             value={nome}
             label="Nome do Morador"
-            placeholder="Digite o nome do Morador"
+            placeholder="Pesquisar com o nome do Morador"
             onChange={(value) => setNome(value as string)}
+          />
+          <Input
+            type="text"
+            value={searchHouseNumber}
+            label="Número da Casa"
+            placeholder="Pesquisar com o Nº da casa"
+            keyboardType="N"
+            onChange={(value) => setSearchHouseNumber(value as number)}
           />
           <Input
             type="select"
@@ -106,6 +123,9 @@ export function AdminHistory() {
               label: option.label,
               value: option.value,
             }))}
+            name="filterOptions"
+            openSelect={openSelect}
+            setOpenSelect={setOpenSelect}
           />
         </FiltersWrapper>
         {!isLoading ? (

@@ -19,6 +19,11 @@ import {
 } from "./AdminInvites.styles";
 
 export function AdminInvites() {
+  const { token, personId } = useUserStore();
+  const { addressId, houseNumber } = useAddressStore();
+
+  const [openSelect, setOpenSelect] = useState<string | null>(null);
+
   const [nome, setNome] = useState("");
   const [selectedFilterOption, setSelectedFilterOption] = useState("");
   const [selectedInvite, setSelectedInvite] = useState<InviteResponse>();
@@ -27,9 +32,6 @@ export function AdminInvites() {
   const [isLoading, setIsLoading] = useState(false);
   const [addresses, setAddresses] = useState<AddressResponse[]>([]);
   const [invites, setInvites] = useState<InviteResponse[]>([]);
-
-  const { token, personId } = useUserStore();
-  const { addressId, houseNumber } = useAddressStore();
 
   useEffect(() => {
     const fetchInvitesAsync = async () => {
@@ -137,6 +139,9 @@ export function AdminInvites() {
               label: option.label,
               value: option.value,
             }))}
+            name="filterOptions"
+            openSelect={openSelect}
+            setOpenSelect={setOpenSelect}
           />
         </FiltersWrapper>
         {isLoading ? (

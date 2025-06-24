@@ -14,4 +14,7 @@ export interface InputProps {
   isPassword?: boolean;
   keyboardType?: string;
   maxLength?: number;
+  name?: string;
+  openSelect?: string | null;
+  setOpenSelect?: (name: string | null) => void;
 }

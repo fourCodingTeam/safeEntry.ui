@@ -1,3 +1,4 @@
+import { theme } from "@/constants/theme";
 import { useUserStore } from "@/stores";
 import { formatName } from "@/utils/formatName";
 import { Ionicons } from "@expo/vector-icons";
@@ -8,7 +9,10 @@ import { Menu } from "../Menu";
 import {
   HeaderText,
   HeaderWrapper,
+  IconLetter,
   LeftWrapper,
+  LetterWrapper,
+  StatusTag,
   StyledTouchableOpacity,
 } from "./Header.styles";
 import { HeaderProps } from "./Header.types";
@@ -19,9 +23,10 @@ export function Header({
   ableToShowOptions = true,
   isResident = true,
 }: HeaderProps) {
-  const username = useUserStore((state) => state.username);
+  const { username, statusId } = useUserStore();
   const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter();
+  const firstLetter = username?.slice(0, 1).toUpperCase();
 
   const handleOpenMenu = () => {
     setMenuOpen(true);
@@ -31,6 +36,13 @@ export function Header({
     setMenuOpen(false);
   };
 
+  const colorByStatusId =
+    statusId === 1
+      ? theme.colors.green
+      : statusId === 2 || statusId === 3
+      ? theme.colors.yellow
+      : theme.colors.red;
+
   return (
     <>
       <HeaderWrapper>
@@ -38,6 +50,12 @@ export function Header({
           {ableToGoBack && (
             <TouchableOpacity
               onPress={() => router.canGoBack() && router.back()}
+              style={{
+                width: 24,
+                height: 24,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
             >
               <Ionicons name="chevron-back" size={18} />
             </TouchableOpacity>
@@ -50,7 +68,20 @@ export function Header({
         </LeftWrapper>
         {ableToShowOptions && (
           <StyledTouchableOpacity onPress={handleOpenMenu}>
-            <Ionicons name="ellipsis-vertical" size={18} />
+            {isResident ? (
+              <>
+                <StatusTag color={colorByStatusId} />
+                <LetterWrapper>
+                  <IconLetter>{firstLetter}</IconLetter>
+                </LetterWrapper>
+              </>
+            ) : (
+              <Ionicons
+                name="ellipsis-vertical"
+                size={18}
+                color={theme.colors.black}
+              />
+            )}
           </StyledTouchableOpacity>
         )}
       </HeaderWrapper>

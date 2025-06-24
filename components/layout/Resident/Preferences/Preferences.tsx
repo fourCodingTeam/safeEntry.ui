@@ -21,14 +21,14 @@ import {
 
 export function Preferences() {
   const router = useRouter();
-  const [callPreference, setCallPreference] = useState(0);
-  const { username } = useUserStore();
-  const firstLetter = username?.slice(0, 1).toUpperCase();
-  const [isLoading, setIsLoading] = useState(false);
-
+  const { username, token, personId, setStatusId } = useUserStore();
   const toast = useToast();
 
-  const { token, personId } = useUserStore();
+  const [openSelect, setOpenSelect] = useState<string | null>(null);
+
+  const [callPreference, setCallPreference] = useState(0);
+  const firstLetter = username?.slice(0, 1).toUpperCase();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handlePress = () => {
     if (router.canGoBack()) {
@@ -63,6 +63,7 @@ export function Preferences() {
     setIsLoading(true);
     try {
       await patchUpdatePersonStatus(personId, callPreference, token);
+      setStatusId(callPreference);
       toast.show("Status atualizado com sucesso!", 2500, "success");
     } catch (error) {
       throw error;
@@ -98,6 +99,9 @@ export function Preferences() {
             value={callPreference}
             onChange={(value) => setCallPreference(Number(value))}
             options={allStatus}
+            name="callPreference"
+            openSelect={openSelect}
+            setOpenSelect={setOpenSelect}
           />
           <Button
             color="blue"

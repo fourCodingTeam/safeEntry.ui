@@ -8,6 +8,7 @@ export * from "./InviteCard";
 export * from "./Loader";
 export * from "./Menu";
 export * from "./ResidentCard";
+export * from "./StatusIndicator";
 export * from "./TabBarIcon";
 export * from "./Tag";
 export * from "./Toast";

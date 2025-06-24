@@ -1,4 +1,4 @@
-import { Button, InviteCard, Loader } from "@/components/ui";
+import { Button, InviteCard, Loader, StatusIndicator } from "@/components/ui";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { PageLayout } from "../../PageLayout";
@@ -13,6 +13,7 @@ import { DetailedInvite } from "@/components/ui/DetailedInvite";
 import { EmptyList } from "@/components/ui/EmptyList";
 import { InviteResponse } from "@/services/@types";
 import { getInvitesByResidentId } from "@/services/api";
+import { getResidentById } from "@/services/api/Status";
 import { useUserStore } from "@/stores";
 
 export function Home() {
@@ -22,7 +23,7 @@ export function Home() {
   >(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [invites, setInvites] = useState<InviteResponse[]>([]);
-  const { personId, token, username } = useUserStore();
+  const { personId, token, username, setStatusId } = useUserStore();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -32,7 +33,9 @@ export function Home() {
       }
       setIsLoading(true);
       try {
+        const residentData = await getResidentById(personId, token);
         const invitesData = await getInvitesByResidentId(personId, token);
+        setStatusId(residentData.status);
         setInvites(invitesData);
       } catch (error) {
         console.error("Erro top", error);
@@ -53,6 +56,7 @@ export function Home() {
   return (
     <>
       <PageLayout>
+        <StatusIndicator />
         <ImageWrapper
           activeOpacity={0.6}
           onPress={() => {
@@ -84,11 +88,11 @@ export function Home() {
             <EmptyList />
           )}
           {invites.length < 3 ||
-            (!invites && (
+            (invites && !isLoading && (
               <Button
                 color={"blue"}
                 text={"Ver mais"}
-                onPress={() => router.replace("/historico")}
+                onPress={() => router.push("/historico")}
               />
             ))}
         </InviteCardsWrapper>

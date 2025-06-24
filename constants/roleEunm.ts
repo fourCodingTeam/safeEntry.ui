@@ -6,5 +6,5 @@ export enum StatusEnum {
   Disponivel = "Disponível",
   AguardandoEntrega = "Aguardando Entrega",
   AguardandoVisita = "Aguardando Visita",
-  NaoQueroReceberVisitas = "Nao Quero Receber Visitas",
+  NaoQueroReceberVisitas = "Ocupado",
 }
