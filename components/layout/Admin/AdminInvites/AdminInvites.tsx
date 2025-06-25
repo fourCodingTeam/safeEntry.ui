@@ -12,11 +12,7 @@ import { useAddressStore, useUserStore } from "@/stores";
 import React, { useEffect, useState } from "react";
 import { PageLayout } from "../../PageLayout";
 import { StyledTopText } from "../../styles";
-import {
-  FiltersWrapper,
-  InviteCardsWrapper,
-  MoradoresCardWrapper,
-} from "./AdminInvites.styles";
+import { FiltersWrapper, InviteCardsWrapper } from "./AdminInvites.styles";
 
 export function AdminInvites() {
   const { token, personId } = useUserStore();
@@ -148,7 +144,7 @@ export function AdminInvites() {
           <Loader />
         ) : invites.length > 0 ? (
           <>
-            <MoradoresCardWrapper>
+            <InviteCardsWrapper>
               <StyledTopText>Moradores</StyledTopText>
               {addresses
                 ?.flatMap((address) => address.residents)
@@ -160,8 +156,6 @@ export function AdminInvites() {
                     status={resident.status}
                   />
                 ))}
-            </MoradoresCardWrapper>
-            <InviteCardsWrapper>
               <StyledTopText>Convites</StyledTopText>
               {filteredData.map((item, index) => (
                 <InviteCard

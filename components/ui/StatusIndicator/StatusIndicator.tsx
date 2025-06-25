@@ -25,10 +25,10 @@ export function StatusIndicator() {
   ];
 
   const allEmojis = {
-    [StatusEnum.Disponivel]: "😃",
+    [StatusEnum.Disponivel]: "😎",
     [StatusEnum.AguardandoEntrega]: "📦",
-    [StatusEnum.AguardandoVisita]: "⏲️",
-    [StatusEnum.NaoQueroReceberVisitas]: "😴",
+    [StatusEnum.AguardandoVisita]: "⏳",
+    [StatusEnum.NaoQueroReceberVisitas]: "📵",
   };
 
   const statusLabel =
