@@ -46,8 +46,8 @@ export function History() {
   }, [token, username]);
 
   const filterOptions = [
-    { label: "Mais distantes", value: "byDateAscending" },
-    { label: "Mais próximos", value: "byDateDescending" },
+    { label: "Mais próximos", value: "byDateAscending" },
+    { label: "Mais distantes", value: "byDateDescending" },
     { label: "Status: ativos primeiro", value: "byStatusActiveFirst" },
     { label: "Status: inativos primeiro", value: "byStatusInactiveFirst" },
   ];
@@ -78,7 +78,7 @@ export function History() {
       : selectedFilterOption === "byStatusInactiveFirst"
       ? filtered.sort((a, b) => (a.isActive ? 1 : 0) - (b.isActive ? 1 : 0))
       : filtered.sort((a, b) =>
-          new Date(a.startDate).getTime() < new Date(b.startDate).getTime()
+          new Date(a.startDate).getTime() > new Date(b.startDate).getTime()
             ? 1
             : -1
         );
@@ -101,7 +101,7 @@ export function History() {
             type="select"
             label="Ordenar por"
             value={
-              selectedFilterOption ? selectedFilterOption : "byDateDescending"
+              selectedFilterOption ? selectedFilterOption : "byDateAscending"
             }
             onChange={(value) => setSelectedFilterOption(value as string)}
             options={filterOptions.map((option) => ({
