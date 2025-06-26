@@ -2,7 +2,7 @@ import { theme } from "@/constants/theme";
 import { formatDate } from "@/utils/formatDate";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
-import { Text } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {
   InputWrapper,
@@ -13,6 +13,7 @@ import {
   StyledSelectInputText,
   StyledTextInput,
   Subtitle,
+  TextInputWrapper,
 } from "./Input.styles";
 import { InputProps } from "./Input.types";
 
@@ -39,6 +40,7 @@ export function Input({
     width: 0,
     height: 0,
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const selectedOptionLabel =
     options.find((option) => option.value === value)?.label ||
@@ -50,19 +52,35 @@ export function Input({
       {type === "text" ? (
         <>
           {label && <Subtitle>{label}</Subtitle>}
-          <StyledTextInput
-            value={value}
-            placeholder={placeholder}
-            placeholderTextColor={theme.colors.placeholder}
-            editable={!disabled}
-            maxLength={maxLength}
-            onChangeText={onChange}
-            keyboardType={keyboardType === "N" ? "numeric" : "default"}
-            secureTextEntry={isPassword}
-            style={{
-              color: value ? theme.colors.black : theme.colors.placeholder,
-            }}
-          />
+          <TextInputWrapper>
+            <StyledTextInput
+              value={value}
+              onChangeText={onChange}
+              placeholder={placeholder}
+              placeholderTextColor={theme.colors.placeholder}
+              editable={!disabled}
+              maxLength={maxLength}
+              secureTextEntry={isPassword && !showPassword}
+              keyboardType={keyboardType === "N" ? "numeric" : "default"}
+            />
+
+            {isPassword && (
+              <TouchableOpacity
+                onPress={() => setShowPassword((prev) => !prev)}
+              >
+                <Ionicons
+                  name={showPassword ? "eye-off" : "eye"}
+                  size={24}
+                  color={
+                    showPassword ? theme.colors.midnight60 : theme.colors.black
+                  }
+                  style={{
+                    marginRight: 16,
+                  }}
+                />
+              </TouchableOpacity>
+            )}
+          </TextInputWrapper>
         </>
       ) : type === "select" ? (
         <PickerWrapper>

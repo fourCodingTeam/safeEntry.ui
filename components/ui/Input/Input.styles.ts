@@ -11,12 +11,22 @@ interface OptionItemProps {
 export const InputWrapper = styled.View`
   width: 100%;
 `;
-
-export const StyledTextInput = styled.TextInput`
+export const TextInputWrapper = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   max-height: 200px;
-  padding: ${theme.sizes.md};
   border-radius: ${theme.sizes.sm};
   border: 1px solid ${theme.colors.placeholder};
+  color: ${theme.colors.black60};
+  font-size: ${theme.sizes.md};
+  background-color: ${theme.colors.white};
+`;
+export const StyledTextInput = styled.TextInput`
+  flex: 1;
+  padding: ${theme.sizes.md};
+  border-radius: ${theme.sizes.sm};
+  border: none;
   color: ${theme.colors.black60};
   font-size: ${theme.sizes.md};
   background-color: ${theme.colors.white};

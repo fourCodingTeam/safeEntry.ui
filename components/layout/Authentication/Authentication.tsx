@@ -1,6 +1,7 @@
 import { Button, Input, ToastProvider, useToast } from "@/components/ui";
 import { RoleEnum } from "@/constants/roleEunm";
 import { Login } from "@/services/api/Auth";
+import { getResidentById } from "@/services/api/Status";
 import { useUserStore } from "@/stores";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -11,7 +12,8 @@ import {
 } from "./Authentication.styles";
 
 export function Authentication() {
-  const { setUsername, setRole, setToken, setPersonId } = useUserStore();
+  const { setUsername, setRole, setToken, setPersonId, setStatusId } =
+    useUserStore();
   const [inputUsername, setInputUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -55,8 +57,13 @@ export function Authentication() {
         setPassword("");
         setInputUsername("");
       } else {
-        setTimeout(() => {
+        setTimeout(async () => {
           if (response.role === 1) {
+            const residentData = await getResidentById(
+              response.personId,
+              response.token
+            );
+            setStatusId(residentData.status);
             router.replace("/(tabs)");
           } else {
             router.replace("/(admin)");
@@ -84,7 +91,7 @@ export function Authentication() {
           <Input
             type="text"
             value={inputUsername || ""}
-            placeholder="Usuário"
+            placeholder="Usuário ou e-mail"
             onChange={(value: string | number | Date) => {
               if (typeof value === "string") {
                 setInputUsername(value);

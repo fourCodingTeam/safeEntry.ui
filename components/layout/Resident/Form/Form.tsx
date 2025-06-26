@@ -41,7 +41,9 @@ export function Form() {
       if (!token || !personId) {
         return;
       }
-      if (visitDate < new Date()) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (visitDate < today) {
         toast.show(
           "A data da visita não pode ser menor ou igual à data de hoje!",
           2000,
@@ -102,7 +104,7 @@ export function Form() {
           <Input
             type="text"
             label="Telefone"
-            placeholder="Telefone do visitante"
+            placeholder="(XX) XXXXX-XXXX"
             keyboardType="N"
             maxLength={11}
             value={telefone as string}

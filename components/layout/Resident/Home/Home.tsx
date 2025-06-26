@@ -13,7 +13,6 @@ import { DetailedInvite } from "@/components/ui/DetailedInvite";
 import { EmptyList } from "@/components/ui/EmptyList";
 import { InviteResponse } from "@/services/@types";
 import { getInvitesByResidentId } from "@/services/api";
-import { getResidentById } from "@/services/api/Status";
 import { useUserStore } from "@/stores";
 
 export function Home() {
@@ -33,9 +32,8 @@ export function Home() {
       }
       setIsLoading(true);
       try {
-        const residentData = await getResidentById(personId, token);
         const invitesData = await getInvitesByResidentId(personId, token);
-        setStatusId(residentData.status);
+
         setInvites(invitesData);
       } catch (error) {
         console.error("Erro top", error);
@@ -87,7 +85,7 @@ export function Home() {
           ) : (
             <EmptyList />
           )}
-          {activeInvites.length < 3 ||
+          {activeInvites.length < 4 ||
             (!isLoading && (
               <Button
                 color={"blue"}

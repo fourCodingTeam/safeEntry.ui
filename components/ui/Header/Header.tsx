@@ -1,6 +1,6 @@
 import { theme } from "@/constants/theme";
 import { useUserStore } from "@/stores";
-import { formatName } from "@/utils/formatName";
+import { getFirstName } from "@/utils/formatName";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -61,7 +61,7 @@ export function Header({
             </TouchableOpacity>
           )}
           {!pageTitle ? (
-            <HeaderText>Olá, {formatName(username)}</HeaderText>
+            <HeaderText>Olá, {getFirstName(username)}</HeaderText>
           ) : (
             <HeaderText>{pageTitle}</HeaderText>
           )}

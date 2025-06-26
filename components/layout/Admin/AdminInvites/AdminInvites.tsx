@@ -74,9 +74,8 @@ export function AdminInvites() {
   }, [token, addressId]);
 
   const filterOptions = [
-    { label: "Sem filtro", value: "" },
-    { label: "Mais distantes", value: "byDateAscending" },
-    { label: "Mais próximos", value: "byDateDescending" },
+    { label: "Mais próximos", value: "byDateAscending" },
+    { label: "Mais distantes", value: "byDateDescending" },
     { label: "Status: ativos primeiro", value: "byStatusActiveFirst" },
     { label: "Status: inativos primeiro", value: "byStatusInactiveFirst" },
   ];
@@ -106,7 +105,11 @@ export function AdminInvites() {
       ? filtered.sort((a, b) => (b.isActive ? 1 : 0) - (a.isActive ? 1 : 0))
       : selectedFilterOption === "byStatusInactiveFirst"
       ? filtered.sort((a, b) => (a.isActive ? 1 : 0) - (b.isActive ? 1 : 0))
-      : filtered;
+      : filtered.sort((a, b) =>
+          new Date(a.startDate).getTime() > new Date(b.startDate).getTime()
+            ? 1
+            : -1
+        );
   };
 
   const filteredData = applyFilters(invites);

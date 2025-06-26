@@ -30,7 +30,7 @@ export function AdminForm() {
     if (!personId || !token) {
       return;
     }
-    if (!nome || !phoneNumber || !houseNumber || !email || !isHomeOwner) {
+    if (!nome || !phoneNumber || !houseNumber || !email) {
       toast.show("Preencha todos os campos!", 2500, "error");
       return;
     }
@@ -43,7 +43,7 @@ export function AdminForm() {
         1,
         houseNumber,
         email,
-        "SaF3Entry@2025",
+        "@safeentry1!",
         isHomeOwner
       );
 
