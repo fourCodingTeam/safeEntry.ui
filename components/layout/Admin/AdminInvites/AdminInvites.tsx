@@ -145,40 +145,39 @@ export function AdminInvites() {
             setOpenSelect={setOpenSelect}
           />
         </FiltersWrapper>
-        {isLoading ? (
-          <Loader />
-        ) : invites.length > 0 ? (
-          <>
-            <InviteCardsWrapper>
-              <StyledTopText>Moradores</StyledTopText>
-              {addresses
-                ?.flatMap((address) => address.residents)
-                .map((resident, index) => (
-                  <ResidentCard
-                    key={index}
-                    name={resident.name}
-                    phoneNumber={resident.phoneNumber}
-                    status={resident.status}
-                  />
-                ))}
-              <StyledTopText>Convites</StyledTopText>
-              {filteredData.map((item, index) => (
-                <InviteCard
+        {isLoading && <Loader />}
+
+        {!isLoading && invites.length === 0 && <EmptyList />}
+
+        {!isLoading && invites.length > 0 && (
+          <InviteCardsWrapper>
+            <StyledTopText>Moradores</StyledTopText>
+            {addresses
+              ?.flatMap((address) => address.residents)
+              .map((resident, index) => (
+                <ResidentCard
                   key={index}
-                  personName={item.visitorName}
-                  inviteDate={item.startDate}
-                  ativo={item.isActive}
-                  onPress={async () => {
-                    setVisitorId(item.visitorId);
-                    setSelectedInvite(item);
-                    setIsModalOpen(true);
-                  }}
+                  name={resident.name}
+                  phoneNumber={resident.phoneNumber}
+                  status={resident.status}
                 />
               ))}
-            </InviteCardsWrapper>
-          </>
-        ) : (
-          <EmptyList />
+
+            <StyledTopText>Convites</StyledTopText>
+            {filteredData.map((item, index) => (
+              <InviteCard
+                key={index}
+                personName={item.visitorName}
+                inviteDate={item.startDate}
+                ativo={item.isActive}
+                onPress={() => {
+                  setVisitorId(item.visitorId);
+                  setSelectedInvite(item);
+                  setIsModalOpen(true);
+                }}
+              />
+            ))}
+          </InviteCardsWrapper>
         )}
       </PageLayout>
       {selectedInvite && isModalOpen && visitorId !== null && (
