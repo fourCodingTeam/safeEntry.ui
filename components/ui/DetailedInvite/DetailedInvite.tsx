@@ -82,6 +82,9 @@ export function DetailedInvite({
     code: invite.code,
   };
 
+  const daysToExpirationInDateFormat =
+    invite.daysToExpiration * 24 * 60 * 60 * 1000;
+
   const formatName = (fullName: string) => {
     const shortName = fullName.trim().split(" ");
     return shortName.slice(0, 2).join(" ");
@@ -104,7 +107,7 @@ export function DetailedInvite({
       const available = await Sharing.isAvailableAsync();
       if (available) {
         await Clipboard.setStringAsync(
-          `Convite de ${invite?.code}: ${invite?.justification}`
+          `Convite de ${invite?.visitorName}: ${invite?.justification}`
         );
         await Sharing.shareAsync(fileName);
       } else {
@@ -208,8 +211,8 @@ export function DetailedInvite({
                     startDescription={invite.justification}
                   />
 
-                  <QrCodeShareWrapper>
-                    {invite.isActive && (
+                  {invite.isActive && (
+                    <QrCodeShareWrapper>
                       <QrCodeTextWrapper>
                         {!hideItem ? (
                           <StyledText>QR Code</StyledText>
@@ -224,44 +227,46 @@ export function DetailedInvite({
                           backgroundColor={theme.colors.white}
                         />
                       </QrCodeTextWrapper>
-                    )}
-                    <CodeWrapper>
-                      {!hideItem ? (
-                        <StyledText>Código numérico</StyledText>
-                      ) : (
-                        <StyledText>Ou informe este código:</StyledText>
-                      )}
-                      <Code>{invite.code}</Code>
-                    </CodeWrapper>
-                  </QrCodeShareWrapper>
+                      <CodeWrapper>
+                        {!hideItem ? (
+                          <StyledText>Código numérico</StyledText>
+                        ) : (
+                          <StyledText>Ou informe este código:</StyledText>
+                        )}
+                        <Code>{invite.code}</Code>
+                      </CodeWrapper>
+                    </QrCodeShareWrapper>
+                  )}
                 </CardsWrapper>
               </View>
+              {new Date(invite.expirationDate) >= new Date() && (
+                <View
+                  style={{
+                    backgroundColor: theme.colors.white,
+                    paddingHorizontal: 16,
+                  }}
+                >
+                  <ButtonsWrapper>
+                    {invite.isActive && (
+                      <Button
+                        color="blue"
+                        text="Compartilhar"
+                        onPress={onShare}
+                      />
+                    )}
 
-              <View
-                style={{
-                  backgroundColor: theme.colors.white,
-                  paddingHorizontal: 16,
-                }}
-              >
-                <ButtonsWrapper>
-                  {invite.isActive && (
                     <Button
-                      color="blue"
-                      text="Compartilhar"
-                      onPress={onShare}
+                      color={invite.isActive ? "black" : "blue"}
+                      text={invite.isActive ? "Desativar" : "Ativar"}
+                      onPress={
+                        invite.isActive
+                          ? handleDeactivateInvite
+                          : handleActivateInvite
+                      }
                     />
-                  )}
-                  <Button
-                    color={invite.isActive ? "black" : "blue"}
-                    text={invite.isActive ? "Desativar" : "Ativar"}
-                    onPress={
-                      invite.isActive
-                        ? handleDeactivateInvite
-                        : handleActivateInvite
-                    }
-                  />
-                </ButtonsWrapper>
-              </View>
+                  </ButtonsWrapper>
+                </View>
+              )}
             </>
           )}
         </ContentWrapper>

@@ -14,6 +14,7 @@ export const theme = {
     red: "#8A1126",
     purple: "#7E44C6",
     placeholder: "#95989B",
+    yellow: "#f5b914",
   },
   sizes: {
     xs: "4px",

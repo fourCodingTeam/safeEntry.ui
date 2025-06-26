@@ -9,13 +9,17 @@ import { PageLayout } from "../../PageLayout";
 import { FiltersWrapper, InviteCardsWrapper } from "./History.styles";
 
 export function History() {
+  const { token, username, personId } = useUserStore();
+
+  const [openSelect, setOpenSelect] = useState<string | null>(null);
+
   const [nome, setNome] = useState("");
   const [selectedFilterOption, setSelectedFilterOption] = useState("");
   const [selectedInvite, setSelectedInvite] = useState<InviteResponse>();
+  const [invites, setInvites] = useState<InviteResponse[]>([]);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [invites, setInvites] = useState<InviteResponse[]>([]);
-  const { token, username, personId } = useUserStore();
 
   useEffect(() => {
     const fetchInvitesAsync = async () => {
@@ -99,6 +103,9 @@ export function History() {
               label: option.label,
               value: option.value,
             }))}
+            name="filterOptions"
+            openSelect={openSelect}
+            setOpenSelect={setOpenSelect}
           />
         </FiltersWrapper>
         {isLoading ? (

@@ -5,7 +5,6 @@ export const TestView = styled.ScrollView``;
 
 export const InviteCardsWrapper = styled.ScrollView`
   width: 100%;
-  padding-top: ${theme.sizes.md};
   margin-bottom: ${theme.sizes.lgMax};
   padding-horizontal: ${theme.sizes.md};
 `;

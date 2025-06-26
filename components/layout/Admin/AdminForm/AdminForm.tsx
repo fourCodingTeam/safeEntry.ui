@@ -16,16 +16,15 @@ import {
 
 export function AdminForm() {
   const router = useRouter();
+  const { personId, token } = useUserStore();
+  const toast = useToast();
+
   const [nome, setNome] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [houseNumber, setHouseNumber] = useState(0);
   const [email, setEmail] = useState("");
   const [isHomeOwner, setIsHomeOwner] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  const { personId, token } = useUserStore();
-
-  const toast = useToast();
 
   const handleSubmit = async () => {
     if (!personId || !token) {
@@ -40,7 +39,7 @@ export function AdminForm() {
       await postCreateResident(
         token,
         nome,
-        parseInt(phoneNumber.replace(/\D/g, "")),
+        parseInt(phoneNumber),
         1,
         houseNumber,
         email,
@@ -72,6 +71,7 @@ export function AdminForm() {
             label="Nome"
             placeholder="Digite o nome do morador"
             value={nome}
+            maxLength={75}
             onChange={(value) => setNome(value as string)}
           />
           <Input
@@ -96,6 +96,7 @@ export function AdminForm() {
             label="E-mail"
             placeholder="Digite o e-mail do morador"
             value={email}
+            maxLength={150}
             onChange={(value) => setEmail(value as string)}
           />
           <StyledCheckBoxWrapper>

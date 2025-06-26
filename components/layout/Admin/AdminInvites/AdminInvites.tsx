@@ -12,13 +12,14 @@ import { useAddressStore, useUserStore } from "@/stores";
 import React, { useEffect, useState } from "react";
 import { PageLayout } from "../../PageLayout";
 import { StyledTopText } from "../../styles";
-import {
-  FiltersWrapper,
-  InviteCardsWrapper,
-  MoradoresCardWrapper,
-} from "./AdminInvites.styles";
+import { FiltersWrapper, InviteCardsWrapper } from "./AdminInvites.styles";
 
 export function AdminInvites() {
+  const { token, personId } = useUserStore();
+  const { addressId, houseNumber } = useAddressStore();
+
+  const [openSelect, setOpenSelect] = useState<string | null>(null);
+
   const [nome, setNome] = useState("");
   const [selectedFilterOption, setSelectedFilterOption] = useState("");
   const [selectedInvite, setSelectedInvite] = useState<InviteResponse>();
@@ -27,9 +28,6 @@ export function AdminInvites() {
   const [isLoading, setIsLoading] = useState(false);
   const [addresses, setAddresses] = useState<AddressResponse[]>([]);
   const [invites, setInvites] = useState<InviteResponse[]>([]);
-
-  const { token, personId } = useUserStore();
-  const { addressId, houseNumber } = useAddressStore();
 
   useEffect(() => {
     const fetchInvitesAsync = async () => {
@@ -137,13 +135,16 @@ export function AdminInvites() {
               label: option.label,
               value: option.value,
             }))}
+            name="filterOptions"
+            openSelect={openSelect}
+            setOpenSelect={setOpenSelect}
           />
         </FiltersWrapper>
         {isLoading ? (
           <Loader />
         ) : invites.length > 0 ? (
           <>
-            <MoradoresCardWrapper>
+            <InviteCardsWrapper>
               <StyledTopText>Moradores</StyledTopText>
               {addresses
                 ?.flatMap((address) => address.residents)
@@ -155,8 +156,6 @@ export function AdminInvites() {
                     status={resident.status}
                   />
                 ))}
-            </MoradoresCardWrapper>
-            <InviteCardsWrapper>
               <StyledTopText>Convites</StyledTopText>
               {filteredData.map((item, index) => (
                 <InviteCard

@@ -9,7 +9,6 @@ import {
   CardWrapper,
   ContactTag,
   ContactTagWhatsapp,
-  ContactText,
   ContactTextWhite,
   IconWrapper,
   InfoWrapper,
@@ -70,13 +69,26 @@ export function ResidentCard({ name, phoneNumber, status }: ResidentCardProps) {
         </InfoWrapperEnd>
       </Row>
       <IconWrapper>
-        <ContactTagWhatsapp onPress={openWhatsApp} activeOpacity={0.6}>
+        <ContactTagWhatsapp
+          onPress={openWhatsApp}
+          activeOpacity={0.6}
+          disabled={status === 4}
+        >
           <Ionicons name="logo-whatsapp" size={20} color={theme.colors.white} />
           <ContactTextWhite>WhatsApp</ContactTextWhite>
         </ContactTagWhatsapp>
-        <ContactTag onPress={makeCall} activeOpacity={0.6}>
-          <Ionicons name="call" size={20} color={theme.colors.black} />
-          <ContactText>Ligar</ContactText>
+        <ContactTag
+          onPress={makeCall}
+          activeOpacity={0.6}
+          disabled={status === 4}
+        >
+          <Ionicons
+            name="call"
+            size={20}
+            color={theme.colors.white}
+            disabled={status === 4}
+          />
+          <ContactTextWhite>Ligar</ContactTextWhite>
         </ContactTag>
       </IconWrapper>
     </CardWrapper>

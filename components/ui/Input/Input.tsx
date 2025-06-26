@@ -1,6 +1,6 @@
 import { theme } from "@/constants/theme";
+import { formatDate } from "@/utils/formatDate";
 import { Ionicons } from "@expo/vector-icons";
-import { format } from "date-fns";
 import React, { useState } from "react";
 import { Text } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -27,9 +27,12 @@ export function Input({
   isPassword,
   keyboardType,
   maxLength,
+  name,
+  openSelect,
+  setOpenSelect,
 }: InputProps) {
   const [showPicker, setShowPicker] = useState(false);
-  const [showOptions, setShowOptions] = useState(false);
+  const isSelectOpen = openSelect === name;
 
   const selectedOptionLabel =
     options.find((option) => option.value === value)?.label ||
@@ -60,7 +63,9 @@ export function Input({
           {label && <Subtitle>{label}</Subtitle>}
           <StyledSelectInput
             placeholder={placeholder}
-            onPress={() => setShowOptions(!showOptions)}
+            onPress={() =>
+              setOpenSelect && setOpenSelect(isSelectOpen ? null : name ?? null)
+            }
             disabled={disabled}
           >
             <StyledSelectInputText
@@ -71,13 +76,13 @@ export function Input({
               {selectedOptionLabel}
             </StyledSelectInputText>
             <Ionicons
-              name={showOptions ? "chevron-up" : "chevron-down"}
+              name={isSelectOpen ? "chevron-up" : "chevron-down"}
               size={16}
               color={theme.colors.black60}
             />
           </StyledSelectInput>
 
-          {showOptions && (
+          {isSelectOpen && (
             <OptionList>
               {options.map((option, index) => (
                 <OptionItem
@@ -85,7 +90,7 @@ export function Input({
                   isLast={index === options.length - 1}
                   onPress={() => {
                     onChange(option.value);
-                    setShowOptions(false);
+                    setOpenSelect && setOpenSelect(null);
                   }}
                 >
                   <Text style={{ fontSize: 16 }}>{option.label}</Text>
@@ -107,9 +112,7 @@ export function Input({
                 color: value ? theme.colors.black : theme.colors.placeholder,
               }}
             >
-              {value instanceof Date
-                ? format(value, "yyyy-MM-dd")
-                : placeholder}
+              {value instanceof Date ? formatDate(value) : placeholder}
             </StyledSelectInputText>
             <Ionicons
               name="calendar"
@@ -125,6 +128,13 @@ export function Input({
               onChange(date);
             }}
             onCancel={() => setShowPicker(false)}
+            minimumDate={new Date()}
+            locale="pt-BR"
+            positiveButton={{
+              label: "Confirmar",
+              textColor: theme.colors.blue,
+            }}
+            negativeButton={{ label: "Cancelar", textColor: theme.colors.red }}
           />
         </>
       )}

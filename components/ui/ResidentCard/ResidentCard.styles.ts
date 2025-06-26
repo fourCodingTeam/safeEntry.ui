@@ -1,6 +1,10 @@
 import { theme } from "@/constants/theme";
 import styled from "styled-components/native";
 
+interface ContactTagProps {
+  disabled?: boolean;
+}
+
 export const CardWrapper = styled.View`
   flex-direction: column;
   justify-content: space-between;
@@ -44,19 +48,21 @@ export const IconWrapper = styled.View`
   justify-content: space-between;
   gap: 8px;
 `;
-export const ContactTagWhatsapp = styled.TouchableOpacity`
+export const ContactTagWhatsapp = styled.TouchableOpacity<ContactTagProps>`
   min-width: 160px;
   flex-direction: row;
   gap: 8px;
-  background-color: ${theme.colors.green};
+  background-color: ${({ disabled }: ContactTagProps) =>
+    disabled ? theme.colors.black40 : theme.colors.green};
   padding: 8px 8px;
   border-radius: 8px;
 `;
-export const ContactTag = styled.TouchableOpacity`
+export const ContactTag = styled.TouchableOpacity<ContactTagProps>`
   min-width: 160px;
   flex-direction: row;
   gap: 8px;
-  background-color: ${theme.colors.offWhite};
+  background-color: ${({ disabled }: ContactTagProps) =>
+    disabled ? theme.colors.black40 : theme.colors.blue};
   padding: 8px 8px;
   border-radius: 8px;
 `;

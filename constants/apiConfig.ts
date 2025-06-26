@@ -1,1 +1,1 @@
-export const BASE_URL = "https://safeentry-api.onrender.com/api";
+export const BASE_URL = "https://dev.fourcoding.com/api";
