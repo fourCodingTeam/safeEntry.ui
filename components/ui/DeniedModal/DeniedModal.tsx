@@ -12,6 +12,7 @@ import {
   ErrorText,
   Header,
   StyledImage,
+  TextImageWrapper,
   Title,
 } from "./DeniedModal.styles";
 import { DeniedModalProps } from "./DeniedModal.types";
@@ -48,19 +49,16 @@ export function DeniedModal({
           </Header>
           <ContentWrapper>
             <CardsWrapper>
-              <ErrorText>{message}</ErrorText>
-              <StyledImage
-                source={require("@/assets/images/DeniedInvite.png")}
-              />
+              <TextImageWrapper>
+                <ErrorText>{message}</ErrorText>
+                <StyledImage
+                  source={require("@/assets/images/DeniedInvite.png")}
+                />
+              </TextImageWrapper>
               <ButtonsWrapper>
                 <Button
                   color="blue"
                   text="Ler Novamente"
-                  onPress={resetScanner}
-                />
-                <Button
-                  color="black"
-                  text="Voltar ao Inicio"
                   onPress={resetScanner}
                 />
               </ButtonsWrapper>

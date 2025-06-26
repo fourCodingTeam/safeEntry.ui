@@ -39,14 +39,13 @@ export function History() {
     };
 
     fetchInvitesAsync();
-
+    applyFilters(invites);
     const interval = setInterval(fetchInvitesAsync, 10000);
 
     return () => clearInterval(interval);
   }, [token, username]);
 
   const filterOptions = [
-    { label: "Sem filtro", value: "" },
     { label: "Mais distantes", value: "byDateAscending" },
     { label: "Mais próximos", value: "byDateDescending" },
     { label: "Status: ativos primeiro", value: "byStatusActiveFirst" },
@@ -78,7 +77,11 @@ export function History() {
       ? filtered.sort((a, b) => (b.isActive ? 1 : 0) - (a.isActive ? 1 : 0))
       : selectedFilterOption === "byStatusInactiveFirst"
       ? filtered.sort((a, b) => (a.isActive ? 1 : 0) - (b.isActive ? 1 : 0))
-      : filtered;
+      : filtered.sort((a, b) =>
+          new Date(a.startDate).getTime() < new Date(b.startDate).getTime()
+            ? 1
+            : -1
+        );
   };
 
   const filteredData = applyFilters(invites);
@@ -97,7 +100,9 @@ export function History() {
           <Input
             type="select"
             label="Ordenar por"
-            value={selectedFilterOption}
+            value={
+              selectedFilterOption ? selectedFilterOption : "byDateDescending"
+            }
             onChange={(value) => setSelectedFilterOption(value as string)}
             options={filterOptions.map((option) => ({
               label: option.label,

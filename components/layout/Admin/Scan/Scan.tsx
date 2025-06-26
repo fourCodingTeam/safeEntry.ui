@@ -12,10 +12,45 @@ import {
 } from "expo-camera";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
+import { Dimensions } from "react-native";
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from "react-native-reanimated";
+import Svg, { Defs, Mask, Rect } from "react-native-svg";
 import styled from "styled-components/native";
-import { StyledText } from "../../styles";
+import { StyledText, StyledTopText } from "../../styles";
+
+const { width, height } = Dimensions.get("window");
 
 export function Scan() {
+  const boxSize = 250;
+  const borderRadius = 20;
+  const boxX = (width - boxSize) / 2;
+  const boxY = (height - boxSize) / 2;
+
+  const scale = useSharedValue(1);
+
+  useEffect(() => {
+    scale.value = withRepeat(
+      withTiming(1.04, {
+        duration: 1000,
+        easing: Easing.inOut(Easing.ease),
+      }),
+      -1,
+      true
+    );
+  }, []);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: scale.value }],
+    };
+  });
+
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
@@ -27,10 +62,6 @@ export function Scan() {
   const toast = useToast();
   const { token, personId } = useUserStore();
   const { isOpen, setIsOpen } = useCameraStore();
-
-  const toggleCameraFacing = () => {
-    setFacing((current) => (current === "back" ? "front" : "back"));
-  };
 
   const handleBarcodeScanned = async (data: BarcodeScanningResult) => {
     setScanned(true);
@@ -124,19 +155,75 @@ export function Scan() {
           }}
         >
           {isLoading && <Loader />}
-          <FocusBox />
-          <ButtonContainer>
-            <FlipButton onPress={toggleCameraFacing}>
-              <FlipButtonText>Virar a Câmera</FlipButtonText>
-            </FlipButton>
-          </ButtonContainer>
+          <Svg
+            height={height}
+            width={width}
+            style={{ position: "absolute", top: 0, left: 0 }}
+          >
+            <Defs>
+              <Mask id="mask" x="0" y="0" height="100%" width="100%">
+                <Rect x="0" y="0" width="100%" height="100%" fill="white" />
+                <Rect
+                  x={boxX}
+                  y={boxY}
+                  width={boxSize}
+                  height={boxSize}
+                  rx={borderRadius}
+                  ry={borderRadius}
+                  fill="black"
+                />
+              </Mask>
+            </Defs>
+
+            <Rect
+              x="0"
+              y="0"
+              width="100%"
+              height="100%"
+              fill="rgba(0,0,0,0.7)"
+              mask="url(#mask)"
+            />
+          </Svg>
+          <TextWrapper
+            style={{
+              top: boxY + 270,
+              width: width,
+            }}
+          >
+            <StyledTopText
+              style={{
+                color: theme.colors.white,
+              }}
+            >
+              APONTE PARA O QRCODE
+            </StyledTopText>
+          </TextWrapper>
+          <Animated.View
+            style={[
+              {
+                position: "absolute",
+                borderWidth: 3,
+                borderColor: "white",
+                borderStyle: "dashed",
+                top: boxY - 5,
+                left: boxX - 5,
+                width: boxSize + 10,
+                height: boxSize + 10,
+                borderRadius: borderRadius + 5,
+              },
+              animatedStyle,
+            ]}
+          />
         </StyledCameraView>
       )}
 
       {!isValidQRCode && (
         <DeniedModal
           visible={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          onClose={() => {
+            setIsModalOpen(false);
+            resetScanner();
+          }}
           resetScanner={resetScanner}
           message="Convite inválido ou expirado!"
         />
@@ -152,52 +239,23 @@ const Container = styled.View`
   align-items: center;
   text-align: center;
 `;
+
 const StyledCameraView = styled(CameraView)`
   background-color: ${theme.colors.black};
-  flex: 1;
+  height: 100%;
   width: 100%;
 `;
 
 const FocusBox = styled.View`
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 200px;
-  height: 200px;
-  margin-left: -100px;
-  margin-top: -100px;
-  border-width: 2px;
-  border-radius: 10px;
+  border-width: 3px;
   border-color: white;
   border-style: dashed;
-  background-color: transparent;
 `;
 
-const ButtonContainer = styled.View`
-  position: absolute;
-  bottom: 100px;
-  align-self: center;
-`;
-
-const FlipButton = styled.TouchableOpacity`
-  align-items: center;
-  justify-content: center;
-  width: 328px;
-  background-color: ${theme.colors.blue};
-  padding: ${theme.sizes.md};
-  border-radius: ${theme.sizes.sm};
-`;
-
-const FlipButtonText = styled.Text`
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-`;
-
-const Message = styled.Text`
-  font-size: 16px;
+const TextWrapper = styled.View`
   text-align: center;
-  margin-bottom: 20px;
+  align-items: center;
 `;
 
 const PermissionButton = styled.TouchableOpacity`
@@ -215,33 +273,4 @@ const PermissionButtonText = styled.Text`
   font-weight: bold;
 `;
 
-const ValidationContainer = styled.View`
-  width: 100%;
-  padding: ${theme.sizes.md};
-  background-color: ${theme.colors.white};
-  justify-content: center;
-  align-items: center;
-`;
-
-const ValidationMessage = styled.Text<{ isValid: boolean | null }>`
-  font-size: 20px;
-  font-weight: bold;
-  color: ${(props: { isValid: boolean | null }) =>
-    props.isValid ? "green" : "red"};
-  margin-bottom: 20px;
-`;
-
-const ResetButton = styled.TouchableOpacity`
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  background-color: ${theme.colors.blue};
-  padding: ${theme.sizes.md};
-  border-radius: ${theme.sizes.sm};
-`;
-
-const ResetButtonText = styled.Text`
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-`;
+const AnimatedFocusBox = Animated.createAnimatedComponent(FocusBox);

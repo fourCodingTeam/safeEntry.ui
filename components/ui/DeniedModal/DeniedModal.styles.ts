@@ -23,11 +23,19 @@ export const Title = styled.Text`
   font-size: ${theme.sizes.mdPart};
 `;
 
-export const CardsWrapper = styled.View`
+export const TextImageWrapper = styled.View`
   align-items: center;
   justify-content: center;
   width: 100%;
   gap: ${theme.sizes.sm};
+`;
+
+export const CardsWrapper = styled.View`
+  align-items: center;
+  justify-content: center;
+  height: 75%;
+  width: 100%;
+  gap: ${theme.sizes.xl};
 `;
 
 export const ButtonsWrapper = styled.View`
@@ -45,7 +53,6 @@ export const ErrorText = styled.Text`
 `;
 
 export const StyledImage = styled.Image`
-  width: 100%;
   height: 160px;
   object-fit: contain;
 `;
