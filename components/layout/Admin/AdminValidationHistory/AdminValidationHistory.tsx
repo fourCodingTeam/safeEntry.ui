@@ -127,36 +127,34 @@ export function AdminValidationHistory() {
             ))}
           </ScrollView>
         </FiltersWrapper>
-        {isLoading ? (
-          <Loader />
-        ) : invites.length > 0 ? (
-          filteredData.length > 0 ? (
-            <>
-              <InviteCardsWrapper>
-                {filteredData.map((item, index) => (
-                  <ValidatedInviteCard
-                    key={index}
-                    personName={item.createdByResidentName}
-                    employeeName={item.employeeName}
-                    houseNumber={item.homeDescription}
-                    validated={item.approval}
-                    validatedAt={item.validatedAt}
-                    visitorName={item.visitorName}
-                    onPress={async () => {
-                      setVisitorId(item.visitorId);
-                      setSelectedInvite(item);
-                      setIsModalOpen(true);
-                    }}
-                  />
-                ))}
-              </InviteCardsWrapper>
-            </>
+        {isLoading && <Loader />}
+
+        {!isLoading && invites.length === 0 && <EmptyList />}
+
+        {!isLoading &&
+          invites.length > 0 &&
+          (filteredData.length > 0 ? (
+            <InviteCardsWrapper>
+              {filteredData.map((item, index) => (
+                <ValidatedInviteCard
+                  key={index}
+                  personName={item.createdByResidentName}
+                  employeeName={item.employeeName}
+                  houseNumber={item.homeDescription}
+                  validated={item.approval}
+                  validatedAt={item.validatedAt}
+                  visitorName={item.visitorName}
+                  onPress={() => {
+                    setVisitorId(item.visitorId);
+                    setSelectedInvite(item);
+                    setIsModalOpen(true);
+                  }}
+                />
+              ))}
+            </InviteCardsWrapper>
           ) : (
             <EmptyList />
-          )
-        ) : (
-          <EmptyList />
-        )}
+          ))}
       </PageLayout>
       {selectedInvite && isModalOpen && visitorId !== null && (
         <AdminValidatedInviteInformation

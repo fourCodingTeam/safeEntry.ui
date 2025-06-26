@@ -128,41 +128,35 @@ export function AdminHistory() {
             setOpenSelect={setOpenSelect}
           />
         </FiltersWrapper>
-        {!isLoading ? (
-          <>
-            {addresses.length > 0 ? (
-              <>
-                <InviteCardsWrapper>
-                  {filteredData.map((item) => {
-                    const owner = item.residents.find(
-                      (resident) => resident.isHomeOwner
-                    );
+        {isLoading && <Loader />}
 
-                    return (
-                      <HouseCard
-                        key={item.id}
-                        houseNumber={item.homeNumber}
-                        houseOwnerName={owner ? owner.name : ""}
-                        activeInvites={inviteCounts[item.id] || 0}
-                        onPress={() => {
-                          setAddressId(item.id);
-                          setHouseNumber(item.homeNumber);
-                          router.push({
-                            pathname: "/houseInvites/[id]",
-                            params: { id: item.id },
-                          });
-                        }}
-                      />
-                    );
-                  })}
-                </InviteCardsWrapper>
-              </>
-            ) : (
-              <EmptyList />
-            )}
-          </>
-        ) : (
-          <Loader />
+        {!isLoading && addresses.length === 0 && <EmptyList />}
+
+        {!isLoading && addresses.length > 0 && (
+          <InviteCardsWrapper>
+            {filteredData.map((item) => {
+              const owner = item.residents.find(
+                (resident) => resident.isHomeOwner
+              );
+
+              return (
+                <HouseCard
+                  key={item.id}
+                  houseNumber={item.homeNumber}
+                  houseOwnerName={owner ? owner.name : ""}
+                  activeInvites={inviteCounts[item.id] || 0}
+                  onPress={() => {
+                    setAddressId(item.id);
+                    setHouseNumber(item.homeNumber);
+                    router.push({
+                      pathname: "/houseInvites/[id]",
+                      params: { id: item.id },
+                    });
+                  }}
+                />
+              );
+            })}
+          </InviteCardsWrapper>
         )}
       </PageLayout>
     </>

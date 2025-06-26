@@ -77,39 +77,40 @@ export function AdminHome() {
         </ImageWrapper>
         <InviteCardsWrapper>
           <StyledSectionTitle>Casas com mais convites</StyledSectionTitle>
-          {!isLoading ? (
-            sortedAddresses.length > 0 ? (
-              <>
-                {sortedAddresses.slice(0, 4).map((item) => {
-                  const owner = item.residents.find((res) => res.isHomeOwner);
-                  return (
-                    <HouseCard
-                      key={item.id}
-                      houseNumber={item.homeNumber}
-                      houseOwnerName={owner?.name || ""}
-                      activeInvites={inviteCounts[item.id] || 0}
-                      onPress={() => {
-                        setAddressId(item.id);
-                        setHouseNumber(item.homeNumber);
-                        router.push({
-                          pathname: "/houseInvites/[id]",
-                          params: { id: item.id },
-                        });
-                      }}
-                    />
-                  );
-                })}
+
+          {isLoading && <Loader />}
+
+          {!isLoading && sortedAddresses.length === 0 && <EmptyList />}
+
+          {!isLoading && sortedAddresses.length > 0 && (
+            <>
+              {sortedAddresses.slice(0, 4).map((item) => {
+                const owner = item.residents.find((res) => res.isHomeOwner);
+                return (
+                  <HouseCard
+                    key={item.id}
+                    houseNumber={item.homeNumber}
+                    houseOwnerName={owner?.name || ""}
+                    activeInvites={inviteCounts[item.id] || 0}
+                    onPress={() => {
+                      setAddressId(item.id);
+                      setHouseNumber(item.homeNumber);
+                      router.push({
+                        pathname: "/houseInvites/[id]",
+                        params: { id: item.id },
+                      });
+                    }}
+                  />
+                );
+              })}
+              {!isLoading && sortedAddresses.length > 4 && (
                 <Button
-                  color={"blue"}
-                  text={"Ver mais"}
+                  color="blue"
+                  text="Ver mais"
                   onPress={() => router.replace("/historico")}
                 />
-              </>
-            ) : (
-              <EmptyList />
-            )
-          ) : (
-            <Loader />
+              )}
+            </>
           )}
         </InviteCardsWrapper>
       </PageLayout>

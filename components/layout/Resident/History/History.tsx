@@ -113,9 +113,15 @@ export function History() {
             setOpenSelect={setOpenSelect}
           />
         </FiltersWrapper>
-        {isLoading ? (
-          <Loader />
-        ) : invites.length > 0 ? (
+        {isLoading && <Loader />}
+
+        {!isLoading && invites.length === 0 && (
+          <InviteCardsWrapper>
+            <EmptyList />
+          </InviteCardsWrapper>
+        )}
+
+        {!isLoading && invites.length > 0 && (
           <InviteCardsWrapper>
             {filteredData.map((item, index) => (
               <InviteCard
@@ -123,16 +129,12 @@ export function History() {
                 personName={item.visitorName}
                 inviteDate={item.startDate}
                 ativo={item.isActive}
-                onPress={async () => {
+                onPress={() => {
                   setSelectedInvite(item);
                   setIsModalOpen(true);
                 }}
               />
             ))}
-          </InviteCardsWrapper>
-        ) : (
-          <InviteCardsWrapper>
-            <EmptyList />
           </InviteCardsWrapper>
         )}
       </PageLayout>

@@ -65,9 +65,12 @@ export function Home() {
         </ImageWrapper>
         <InviteCardsWrapper>
           <StyledSectionTitle>Convites Ativos</StyledSectionTitle>
-          {isLoading ? (
-            <Loader />
-          ) : activeInvites.length > 0 ? (
+
+          {isLoading && <Loader />}
+
+          {!isLoading && activeInvites.length === 0 && <EmptyList />}
+
+          {!isLoading && activeInvites.length > 0 && (
             <>
               {activeInvites.map((invite, index) => (
                 <InviteCard
@@ -75,24 +78,22 @@ export function Home() {
                   personName={invite.visitorName}
                   inviteDate={invite.startDate}
                   ativo={invite.isActive}
-                  onPress={async () => {
+                  onPress={() => {
                     setSelectedInvite(invite);
                     setIsModalOpen(true);
                   }}
                 />
               ))}
             </>
-          ) : (
-            <EmptyList />
           )}
-          {activeInvites.length < 4 ||
-            (!isLoading && (
-              <Button
-                color={"blue"}
-                text={"Ver mais"}
-                onPress={() => router.push("/historico")}
-              />
-            ))}
+
+          {!isLoading && activeInvites.length >= 4 && (
+            <Button
+              color="blue"
+              text="Ver mais"
+              onPress={() => router.push("/historico")}
+            />
+          )}
         </InviteCardsWrapper>
       </PageLayout>
       {selectedInvite && isModalOpen && personId !== null && (
