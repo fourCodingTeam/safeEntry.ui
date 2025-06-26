@@ -101,7 +101,7 @@ export function History() {
             type="select"
             label="Ordenar por"
             value={
-              selectedFilterOption ? selectedFilterOption : "byDateDescending"
+              selectedFilterOption ? selectedFilterOption : "byDateAscending"
             }
             onChange={(value) => setSelectedFilterOption(value as string)}
             options={filterOptions.map((option) => ({

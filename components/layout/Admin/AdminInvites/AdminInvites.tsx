@@ -132,7 +132,9 @@ export function AdminInvites() {
           <Input
             type="select"
             label="Ordenar por"
-            value={selectedFilterOption}
+            value={
+              selectedFilterOption ? selectedFilterOption : "byDateAscending"
+            }
             onChange={(value) => setSelectedFilterOption(value as string)}
             options={filterOptions.map((option) => ({
               label: option.label,
