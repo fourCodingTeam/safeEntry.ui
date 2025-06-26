@@ -33,6 +33,12 @@ export function Input({
 }: InputProps) {
   const [showPicker, setShowPicker] = useState(false);
   const isSelectOpen = openSelect === name;
+  const [selectLayout, setSelectLayout] = useState({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+  });
 
   const selectedOptionLabel =
     options.find((option) => option.value === value)?.label ||
@@ -62,6 +68,10 @@ export function Input({
         <PickerWrapper>
           {label && <Subtitle>{label}</Subtitle>}
           <StyledSelectInput
+            onLayout={(event: any) => {
+              const { x, y, width, height } = event.nativeEvent.layout;
+              setSelectLayout({ x, y, width, height });
+            }}
             placeholder={placeholder}
             onPress={() =>
               setOpenSelect && setOpenSelect(isSelectOpen ? null : name ?? null)
@@ -83,7 +93,15 @@ export function Input({
           </StyledSelectInput>
 
           {isSelectOpen && (
-            <OptionList>
+            <OptionList
+              style={{
+                top: selectLayout.y + selectLayout.height,
+                left: selectLayout.x,
+                width: selectLayout.width,
+                position: "absolute",
+                zIndex: 1010,
+              }}
+            >
               {options.map((option, index) => (
                 <OptionItem
                   key={option.value}

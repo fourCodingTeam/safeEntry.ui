@@ -69,6 +69,7 @@ export function Preferences() {
       throw error;
     } finally {
       setIsLoading(false);
+      handlePress();
     }
   };
 

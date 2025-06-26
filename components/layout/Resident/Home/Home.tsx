@@ -87,8 +87,8 @@ export function Home() {
           ) : (
             <EmptyList />
           )}
-          {invites.length < 3 ||
-            (invites && !isLoading && (
+          {activeInvites.length < 3 ||
+            (!isLoading && (
               <Button
                 color={"blue"}
                 text={"Ver mais"}

@@ -16,8 +16,7 @@ export const StatusCard = styled.View`
   border: 1px solid ${theme.colors.black40};
 `;
 export const StyledEmoji = styled.Text`
-  font-size: ${theme.sizes.lg};
-  line-height: 38px;
+  font-size: ${theme.sizes.mdMax};
 `;
 export const StatusTextWrapper = styled.View`
   display: flex;
@@ -38,6 +37,7 @@ export const StyledStatusText = styled.Text`
   font-size: ${theme.sizes.md};
   font-family: ${theme.fonts.poppinsNormal};
   color: ${theme.colors.black};
+  margin-top: ${theme.sizes.xs};
 `;
 export const StyledEditText = styled.Text`
   font-size: ${theme.sizes.smMax};

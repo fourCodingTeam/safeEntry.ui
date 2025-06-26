@@ -1,3 +1,5 @@
+// @ts-ignore
+import icon from "@/assets/images/qrCodeLogo.png";
 import { theme } from "@/constants/theme";
 import { InviteResponse } from "@/services/@types";
 import {
@@ -225,6 +227,10 @@ export function DetailedInvite({
                           value={JSON.stringify(qrData)}
                           size={278}
                           backgroundColor={theme.colors.white}
+                          logo={icon}
+                          logoSize={55}
+                          logoBackgroundColor="transparent"
+                          logoMargin={-999}
                         />
                       </QrCodeTextWrapper>
                       <CodeWrapper>

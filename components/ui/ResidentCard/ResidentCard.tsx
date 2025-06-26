@@ -38,7 +38,7 @@ export function ResidentCard({ name, phoneNumber, status }: ResidentCardProps) {
   };
 
   const openWhatsApp = () => {
-    const whatsappUrl = `https://wa.me/${phoneNumber}`;
+    const whatsappUrl = `https://wa.me/+55${phoneNumber}`;
     console.log(phoneNumber);
     Linking.openURL(whatsappUrl).catch((err) =>
       console.error("Erro ao abrir o WhatsApp:", err)
