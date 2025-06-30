@@ -1,6 +1,8 @@
 export interface UserState {
   username: string | null;
   setUsername: (username: string | null) => void;
+  email: string | null;
+  setEmail: (email: string | null) => void;
   role: string | null;
   setRole: (role: string | null) => void;
   token: string | null;

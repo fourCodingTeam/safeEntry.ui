@@ -34,7 +34,7 @@ export async function postCreateResident(
 
     if (!response.ok) {
       console.error("Failed to create resident:", response.status);
-      return null;
+      throw new Error();
     }
     const data = await response.json();
     return data as createResidentResponse;
