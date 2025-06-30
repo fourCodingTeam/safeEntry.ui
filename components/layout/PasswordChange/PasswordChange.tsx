@@ -15,10 +15,9 @@ import {
 
 export function PasswordChange() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const { token } = useUserStore();
+  const { token, email } = useUserStore();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,10 +28,34 @@ export function PasswordChange() {
       toast.show("Preencha todos os campos!", 3000, "error");
       return;
     }
+
+    const hasSuficientCharacters = password.length >= 8;
+    const hasLowercase = /[a-z]/.test(password);
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecialChar = /[@$!%*?&]/.test(password);
+
+    const missingCriteria = [];
+    if (!hasSuficientCharacters) missingCriteria.push("no mínimo 8 caracteres");
+    if (!hasLowercase) missingCriteria.push("letras minúsculas");
+    if (!hasUppercase) missingCriteria.push("letras maiúsculas");
+    if (!hasNumber) missingCriteria.push("números");
+    if (!hasSpecialChar) missingCriteria.push("caracteres especiais");
+
+    if (missingCriteria.length > 0) {
+      const criteriaMessage =
+        missingCriteria.length === 1
+          ? `A senha deve conter ${missingCriteria[0]}.`
+          : `A senha deve conter ${missingCriteria.join(", ")}.`;
+      toast.show(criteriaMessage, 3000, "error");
+      return;
+    }
+
     if (password !== confirmPassword) {
       toast.show("A senha deve ser igual nos dois campos.", 3000, "error");
       return;
     }
+
     setIsLoading(true);
     try {
       await postPasswordChange(token, email, password, confirmPassword);
@@ -65,13 +88,6 @@ export function PasswordChange() {
           <InputsWrapper>
             <Input
               type="text"
-              label="E-mail"
-              placeholder="Digite seu e-mail"
-              value={email}
-              onChange={(value) => setEmail(value as string)}
-            />
-            <Input
-              type="text"
               label="Senha"
               placeholder="Digite sua nova senha"
               value={password}
@@ -80,15 +96,15 @@ export function PasswordChange() {
             />
             <Input
               type="text"
-              label="Confirmação de Senha"
-              placeholder="Digite sua nova senha novamente"
+              label="Confirmar Senha"
+              placeholder="Confirme sua nova senha"
               value={confirmPassword}
               isPassword
               onChange={(value) => setConfirmPassword(value as string)}
             />
             <Button
-              color="blue"
-              text="Salvar"
+              color={"blue"}
+              text={"Atualizar Senha"}
               onPress={handleSubmitPasswordChange}
               disabled={isLoading}
             />

@@ -12,7 +12,7 @@ import {
 } from "./Authentication.styles";
 
 export function Authentication() {
-  const { setUsername, setRole, setToken, setPersonId, setStatusId } =
+  const { setUsername, setRole, setToken, setPersonId, setStatusId, setEmail } =
     useUserStore();
   const [inputUsername, setInputUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -40,6 +40,7 @@ export function Authentication() {
         return;
       }
 
+      setEmail(formattedUsername);
       setUsername(response.personName);
       setRole(
         (response.role === RoleEnum.RESIDENT

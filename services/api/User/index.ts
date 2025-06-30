@@ -1,4 +1,5 @@
 import { BASE_URL } from "@/constants/apiConfig";
+import { GetUsersResponse } from "@/services/@types/users/users";
 
 export async function postRegisterUser(
   token: string,
@@ -62,6 +63,27 @@ export async function postPasswordChange(
     return true;
   } catch (error) {
     console.error("Erro ao alterar a senha", error);
+    throw error;
+  }
+}
+
+export async function getUsers(token: string): Promise<GetUsersResponse[]> {
+  try {
+    const response = await fetch(`${BASE_URL}/Auth/users`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw response.status;
+    }
+
+    const userData = (await response.json()) as GetUsersResponse[];
+    return userData;
+  } catch (error) {
     throw error;
   }
 }

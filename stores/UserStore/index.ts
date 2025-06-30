@@ -12,4 +12,6 @@ export const useUserStore = create<UserState>((set) => ({
   setPersonId: (personId: number | null) => set({ personId: personId }),
   statusId: null,
   setStatusId: (statusId: number | null) => set({ statusId: statusId }),
+  email: null,
+  setEmail: (email: string | null) => set({ email: email }),
 }));

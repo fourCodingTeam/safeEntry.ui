@@ -1,5 +1,6 @@
 import { theme } from "@/constants/theme";
 import { postCreateResident } from "@/services/api";
+import { getUsers } from "@/services/api/User";
 import { useUserStore } from "@/stores";
 import Checkbox from "expo-checkbox";
 import { useRouter } from "expo-router";
@@ -34,8 +35,22 @@ export function AdminForm() {
       toast.show("Preencha todos os campos!", 2500, "error");
       return;
     }
+
     setIsLoading(true);
+
     try {
+      const users = await getUsers(token);
+
+      const emailExists = users.some((user) => user.email === email);
+      console.log(users);
+      console.log(emailExists);
+
+      if (emailExists) {
+        toast.show("E-mail já cadastrado. Use outro e-mail.", 3000, "error");
+        setIsLoading(false);
+        return;
+      }
+
       await postCreateResident(
         token,
         nome,
@@ -50,6 +65,7 @@ export function AdminForm() {
       toast.show("Morador cadastrado com sucesso!", 3000, "success");
       router.replace("/historico");
     } catch (error) {
+      toast.show("Erro ao cadastrar morador.", 3000, "error");
       setIsLoading(false);
       return error;
     } finally {
